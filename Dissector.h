@@ -35,13 +35,13 @@ class DissectorBody {
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual void dissectorBodyReset() = 0;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool dissectorBodyIsAccepting() const = 0;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual BC dissectorBodyDissect(StreamReader& reader) = 0;
 
 };
@@ -72,47 +72,47 @@ private:
 	/* true if dissector has been closed */
 	bool closed_;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StreamStreamReader* reader_;
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	Dissector(DissectorBody& body);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC reset();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC reset(const BC& size);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline void close() {
 
 		closed_ = true;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	void setSize(const BC& size);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const BC& getSize() const {
 
 		return size_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline BC getLength() const {
 
 		return length_ + ((reader_ != 0) ? reader_->getAccumulator() : 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline BC getAcceptance() const {
 
 		/* returns an undefined value if size_ is undefined */
@@ -120,24 +120,24 @@ public:
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool isAccepting() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline BC getOverflow() const {
 
 		return overflow_;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasOverflow() const {
 
 		/* excess_ is never undefined */
 		return overflow_ > 0;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasUnderflow() const {
 
         /* TODO: use just "body_.dissectorBodyIsAccepting()"? */
@@ -145,14 +145,14 @@ public:
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC dissect(StreamReader& reader, const BC& max = -1);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC dissectFromBuffer(const BufferReader& reader, const BC& max = -1);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~Dissector();
 
 };

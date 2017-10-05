@@ -18,7 +18,7 @@ private:
 	static TypeDescriptor desc_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t N_;
 
 
@@ -26,12 +26,12 @@ protected:
 
 	/* --- from CompositeDataUnit class: ----------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool expand_(size_t len, size_t decoded, bool dry, bool ahead);
 
 	/* --- from DataUnit class: -------------------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* newInstance_() const;
 
 	/* --------------------------------------------------------------------- */
@@ -39,22 +39,22 @@ protected:
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StaticVectorDataUnit(size_t N);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~StaticVectorDataUnit();
 
 };

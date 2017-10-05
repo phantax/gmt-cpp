@@ -18,44 +18,44 @@ private:
 	static TypeDescriptor desc_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* template_;
 
 
 protected:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	VectorDataUnit(bool empty);
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	VectorDataUnit();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	VectorDataUnit(DataUnit* elementTemplate);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	void setElementTemplate(DataUnit* elementTemplate);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getElementTemplate() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~VectorDataUnit();
 
 };

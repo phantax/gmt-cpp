@@ -27,18 +27,18 @@ protected:
 
 	/* --- from FieldDataUnit class: --------------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool decode_(const BufferReader& reader);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool encode_();
 
 	/* --- from DataUnit class: -------------------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool isDecoded_() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* newInstance_() const;
 
 	/* --------------------------------------------------------------------- */
@@ -46,28 +46,28 @@ protected:
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	OpaqueField();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	OpaqueField(const BC& capacity);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	OpaqueField(const BufferReader& reader, const BC& max = -1);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~OpaqueField();
 
 };

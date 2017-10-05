@@ -26,10 +26,10 @@ protected:
 
 	/* --- from DataUnit class: -------------------------------------------- */
 
-    /* TODO: Add description */
+    // TODO: Add description
 	virtual std::string getInfo_() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* newInstance_() const;
 
 	/* --------------------------------------------------------------------- */
@@ -37,28 +37,28 @@ protected:
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StringField();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StringField(const BC& capacity);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StringField(const BufferReader& reader, const BC& max = -1);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~StringField();
 
 };

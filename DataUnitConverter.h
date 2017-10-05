@@ -16,21 +16,21 @@ private:
 
 	const DataUnit& dataUnit_;
 
-    /* TODO: Add description */
+    // TODO: Add description
 	std::string getAsJSON_(const DataUnit& dataUnit) const;
 
 
 public:
 
-    /* TODO: Add description */
+    // TODO: Add description
 	DataUnitConverter(const DataUnit& dataUnit);
 
 
-    /* TODO: Add description */
+    // TODO: Add description
 	std::string getAsJSON() const;
 
 
-    /* TODO: Add description */
+    // TODO: Add description
 	virtual ~DataUnitConverter();
 
 };

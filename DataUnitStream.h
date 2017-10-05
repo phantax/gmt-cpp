@@ -21,32 +21,32 @@ private:
 	static TypeDescriptor desc_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	std::vector<DataUnitFragment*>	fragments_;
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnitStream(DataUnit* unit);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnitFragment* newFragment(const BC& size = -1);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~DataUnitStream();
 
 };

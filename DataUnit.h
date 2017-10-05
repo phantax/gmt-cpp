@@ -23,40 +23,40 @@ class TypeRegistry {
 
 private:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	typedef std::vector<const TypeDescriptor*> registry_t;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	registry_t registry_;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static TypeRegistry* singleton;
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static TypeRegistry& getInstance();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	TypeRegistry();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool add(const TypeDescriptor& typeDescriptor);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor* findByName(const std::string& typeName);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor* findById(size_t typeId);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t print();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	~TypeRegistry();
 };
 
@@ -72,52 +72,52 @@ class TypeDescriptor {
 
 private:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor* baseTypeDesc_;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t typeId_;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const std::string typeName_;
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	TypeDescriptor(size_t typeId, const std::string& typeName);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	TypeDescriptor(const TypeDescriptor& baseTypeDesc,
 			size_t typeId, const std::string& typeName);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool registerType() const {
 
 		return this->registerType(TypeRegistry::getInstance());
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool registerType(TypeRegistry& registry) const {
 
 		return registry.add(*this);
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline size_t getTypeId() const {
 
 		return typeId_;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const std::string& getTypeName() const {
 
 		return typeName_;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const TypeDescriptor* getBaseTypeDescriptor() const {
 
 		return baseTypeDesc_;
@@ -135,21 +135,21 @@ public:
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool inheritsFrom(const TypeDescriptor& other) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool contains(const TypeDescriptor& other) const {
 
 		return (*this == other) || this->inheritsFrom(other);
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	std::string getTypeInheritance() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	~TypeDescriptor();
 
 };
@@ -216,17 +216,17 @@ private:
 	DataUnit* next_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	std::string	name_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline void setPrevious(DataUnit* previous) {
 
 		previous_ = previous;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline void setNext(DataUnit* next) {
 
 		next_ = next;
@@ -235,72 +235,72 @@ private:
 
 protected:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual void printBody(const PrintOptions& options) const;
 
 
 	/* --- To be implemented by sub-classes: ------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool isDecoded_() const = 0;
 
 	/* --- To be overwritten by sub-classes: ------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* newInstance_() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool repair_(bool recursive = true);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual std::string getDynamicTypeName_() const;
 
 	/* --- Potentially to be overwritten by sub-classes: ------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool propRedirectHook_(std::string& name,
 			PropertyNode*& node) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
     virtual void propReadHook_(const std::string& name,
     		DynamicValue& value) const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
     virtual void reset_();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual std::string getInfo_() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual std::string getAnchorBrackets_() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* getChild_() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual void setChild_(DataUnit* child);
 
 	/* --------------------------------------------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline void setParent(DataUnit* parent) {
 
 		parent_ = parent;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool setChild(DataUnit* child);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	std::string getAnchorString_() const;
 
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
@@ -311,27 +311,27 @@ public:
 	DataUnit();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline Dissector& dissector() {
 
 		return dissector_;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const Dissector& dissector() const {
 
 		return dissector_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline PropertyNode& properties() {
 
 		return static_cast<PropertyNode&>(*this);
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual const TypeDescriptor& getTypeDescriptor() const;
 
 
@@ -358,7 +358,7 @@ public:
 		return name_;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline std::string getDynamicTypeName() const {
 
 		return this->getDynamicTypeName_();
@@ -381,40 +381,40 @@ public:
 
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const size_t getTypeID() const {
 
 		return this->getTypeDescriptor().getTypeId();
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline const std::string& getTypeName() const {
 
 		return this->getTypeDescriptor().getTypeName();
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	std::string getFullTypeName() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline std::string getTypeInheritance() const {
 
 		return this->getTypeDescriptor().getTypeInheritance();
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool inheritsFromType(const TypeDescriptor& desc) const {
 
 		return this->getTypeDescriptor().inheritsFrom(desc);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool isOfType(const TypeDescriptor& desc) const {
 
 		return this->getTypeDescriptor() == desc;
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool containsType(const TypeDescriptor& desc) const {
 
 		return this->getTypeDescriptor().contains(desc);
@@ -463,178 +463,178 @@ public:
 	DataUnit* getByPath(const std::string& path);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline DataUnit* getChild() const {
 
 		return this->getChild_();
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getChild(size_t index) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getChildTail() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getChildByBC(BC& bc) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getChildByConstBC(const BC& bc) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getChildByName(const std::string& name);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getNeighbourByName(const std::string& name);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getRoot();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getHead();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getTail();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getPredecessor() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* getSuccessor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasParent() const {
 
 		return (parent_ != 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasPrevious() const {
 
 		return (previous_ != 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasNext() const {
 
 		return (next_ != 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool hasChild() const {
 
 		return (this->getChild_() != 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool isRoot() const {
 
 		return (parent_ == 0) && (previous_ == 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool isPrimary() const {
 
 		return (parent_ == 0) && (previous_ == 0);
 	}
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool isDescendantOf(const DataUnit& dataUnit) const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t getDistanceToRoot() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool repair(bool recursive = true) {
 
 		return this->repair_(recursive);
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC redissect();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	void print() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	void print(const PrintOptions& options) const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	void printChain(ssize_t maxLen = -1, const std::string& prefix = "") const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual std::string getAsText() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool appendNext(DataUnit* dataUnit);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	DataUnit* remove();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool replaceBy(DataUnit* replacement);
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool insert(DataUnit* insertion);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t deleteFollowing();
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t getNElements() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t getNChildren() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t getNNodes() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline bool isDecoded() const {
 
 		return (dissector_.getSize() == 0) || this->isDecoded_();
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	size_t getIndexOffset() const;
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC getDataOffset() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline DataUnit* operator[](size_t index) const {
 
 		return this->getChild(index);
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	inline DataUnit& operator()(size_t index) const {
 
 		return *(this->getChild(index));
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	bool checkConsistency(bool printErrors = false) const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~DataUnit();
 
 };

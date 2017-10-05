@@ -66,40 +66,6 @@ bool CompositeDataUnit::printCollapsed_() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::propRedirectHook_(string& name,
-		PropertyNode*& node) const {
-
-	bool redirected = false;
-
-	String name_(name);
-
-	bool isLast = false;
-	String token = name_.getLeadingToken("/", isLast);
-	if (!isLast) {
-		/* TODO: make this conversion more robust */
-		if (token.removeLeading("~") == 1) {
-			int index = 0;
-			if (token.length() > 0) {
-				index = atoi(token.c_str());
-			}
-			name_.removeLeadingToken("/");
-			name = name_;
-			node = this->getChild(index);
-			redirected = true;
-		}
-	}
-
-	if (!redirected) {
-		redirected = DataUnit::propRedirectHook_(name, node);
-	}
-
-	return redirected;
-}
-
-
-/*
- * ___________________________________________________________________________
- */
 void CompositeDataUnit::dissectorBodyReset() {
 
 	this->deleteChildren();

@@ -18,7 +18,7 @@ private:
 	static TypeDescriptor desc_;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	BC N_;
 
 
@@ -26,12 +26,12 @@ protected:
 
 	/* --- from CompositeDataUnit class: ----------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual bool expand_(size_t len, size_t decoded, bool dry, bool ahead);
 
 	/* --- from DataUnit class: -------------------------------------------- */
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual DataUnit* newInstance_() const;
 
 	/* --------------------------------------------------------------------- */
@@ -39,25 +39,25 @@ protected:
 
 public:
 
-	/* TODO: Add description */
+	// TODO: Add description
 	static inline const TypeDescriptor& typeDescriptor() {
 
 		return desc_;
 	}
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StreamVectorDataUnit();
 
-	/* TODO: Add description */
+	// TODO: Add description
 	StreamVectorDataUnit(const BC& N);
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	const TypeDescriptor& getTypeDescriptor() const;
 
 
-	/* TODO: Add description */
+	// TODO: Add description
 	virtual ~StreamVectorDataUnit();
 
 };
