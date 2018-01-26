@@ -15,6 +15,10 @@ SOURCES = $(shell ls *.cpp)
 
 OBJECTS = $(foreach o, $(SOURCES:.cpp=.o), build/$o)
 
+USES = bitbuffers-cpp propertynode-cpp
+
+CFLAGS += $(foreach u, $(USES), -I./$u/)
+
 all: library
 
 build/%.o: %.cpp %.h
