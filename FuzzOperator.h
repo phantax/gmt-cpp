@@ -54,7 +54,7 @@ class FuzzIntOperator : public FuzzOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -85,7 +85,7 @@ class TruncationFuzzOperator : public FuzzOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -112,7 +112,7 @@ class RepairingFuzzOperator : public FuzzOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -144,7 +144,7 @@ private:
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -175,7 +175,7 @@ class AppendingFuzzOperator : public FuzzOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -212,7 +212,7 @@ private:
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:

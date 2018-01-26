@@ -3,7 +3,7 @@
 
 #include "PropertyNode.h"
 
-class DataUnitCursor;
+class Cursor;
 class DataUnitFilter;
 
 
@@ -24,7 +24,7 @@ private:
 protected:
 
 	// TODO: Add description
-	virtual bool apply_(DataUnitCursor& cursor, PropertyNode& log) = 0;
+	virtual bool apply_(Cursor& cursor, PropertyNode& log) = 0;
 
 
 public:
@@ -34,7 +34,7 @@ public:
 
 
 	// TODO: Add description
-	bool apply(DataUnitCursor& cursor);
+	bool apply(Cursor& cursor);
 
 
 	// TODO: Add description
@@ -66,7 +66,7 @@ class VoidingOperator : public DataUnitOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -93,7 +93,7 @@ class OpacifyingOperator : public DataUnitOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -124,7 +124,7 @@ class DuplicatingOperator : public DataUnitOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -151,7 +151,7 @@ class DeletingOperator : public DataUnitOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:
@@ -178,7 +178,7 @@ class RepairingOperator : public DataUnitOperator {
 protected:
 
 	// TODO: Add description
-	bool apply_(DataUnitCursor& cursor, PropertyNode& log);
+	bool apply_(Cursor& cursor, PropertyNode& log);
 
 
 public:

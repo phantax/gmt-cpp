@@ -4,7 +4,7 @@
 
 #include "FuzzOperator.h"
 #include "DataUnit.h"
-#include "DataUnitCursor.h"
+#include "Cursor.h"
 #include "VectorDataUnit.h"
 #include "EnumerationField.h"
 #include "IntegerField.h"
@@ -47,7 +47,7 @@ FuzzIntOperator::FuzzIntOperator(DecisionReader& decisionReader)
 /*
  * ___________________________________________________________________________
  */
-bool FuzzIntOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool FuzzIntOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -121,7 +121,7 @@ TruncationFuzzOperator::TruncationFuzzOperator(DecisionReader& decisionReader)
 /*
  * ___________________________________________________________________________
  */
-bool TruncationFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool TruncationFuzzOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -162,7 +162,7 @@ RepairingFuzzOperator::RepairingFuzzOperator(DecisionReader& decisionReader)
 /*
  * ___________________________________________________________________________
  */
-bool RepairingFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool RepairingFuzzOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -215,7 +215,7 @@ FuzzDataOperator::FuzzDataOperator(
 /*
  * ___________________________________________________________________________
  */
-bool FuzzDataOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool FuzzDataOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -291,7 +291,7 @@ AppendingFuzzOperator::AppendingFuzzOperator(
 /*
  * ___________________________________________________________________________
  */
-bool AppendingFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool AppendingFuzzOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -439,7 +439,7 @@ bool GeneratingFuzzOperator::generate(DataUnit& du) {
 /*
  * ___________________________________________________________________________
  */
-bool GeneratingFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool GeneratingFuzzOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 

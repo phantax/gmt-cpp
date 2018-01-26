@@ -1,5 +1,5 @@
-#ifndef __DataUnitCursor_H__
-#define __DataUnitCursor_H__
+#ifndef __Cursor_H__
+#define __Cursor_H__
 
 #include <cstdlib>
 #include <inttypes.h>
@@ -15,7 +15,7 @@ class DataUnitFilter;
  *
  * ========================================================================== */
 
-class DataUnitCursor {
+class Cursor {
 
 private:
 
@@ -47,16 +47,16 @@ private:
 public:
 
 	// TODO: Add description
-	DataUnitCursor(DataUnit& root);
+	Cursor(DataUnit& root);
 
 	// TODO: Add description
-	DataUnitCursor(DataUnit& root, DataUnit& position);
+	Cursor(DataUnit& root, DataUnit& position);
 
 	// TODO: Add description
-	DataUnitCursor(DataUnit& root, const DataUnitFilter& filter);
+	Cursor(DataUnit& root, const DataUnitFilter& filter);
 
 	// TODO: Add description
-	DataUnitCursor(DataUnit& root, DataUnit& position,
+	Cursor(DataUnit& root, DataUnit& position,
 			const DataUnitFilter& filter);
 
 
@@ -200,7 +200,7 @@ public:
 
 
 	// TODO: Add description
-	virtual ~DataUnitCursor();
+	virtual ~Cursor();
 
 };
 

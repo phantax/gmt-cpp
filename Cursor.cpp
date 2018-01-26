@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
-#include "DataUnitCursor.h"
+#include "Cursor.h"
 #include "DataUnit.h"
 #include "DataUnitFilter.h"
 #include "String_.h"
@@ -18,7 +18,7 @@ using std::vector;
 /*
  * ___________________________________________________________________________
  */
-DataUnitCursor::DataUnitCursor(DataUnit& root)
+Cursor::Cursor(DataUnit& root)
 		: root_(root), position_(0), globalFilter_(0) {
 
 	/* move to first position after root matching criteria */
@@ -29,7 +29,7 @@ DataUnitCursor::DataUnitCursor(DataUnit& root)
 /*
  * ___________________________________________________________________________
  */
-DataUnitCursor::DataUnitCursor(DataUnit& root, DataUnit& position)
+Cursor::Cursor(DataUnit& root, DataUnit& position)
 		: root_(root), position_(0), globalFilter_(0) {
 
 	this->moveTo(position);
@@ -39,7 +39,7 @@ DataUnitCursor::DataUnitCursor(DataUnit& root, DataUnit& position)
 /*
  * ___________________________________________________________________________
  */
-DataUnitCursor::DataUnitCursor(DataUnit& root, const DataUnitFilter& filter)
+Cursor::Cursor(DataUnit& root, const DataUnitFilter& filter)
 		: root_(root), position_(0), globalFilter_(&filter) {
 
 	/* move to first position after root matching criteria */
@@ -50,7 +50,7 @@ DataUnitCursor::DataUnitCursor(DataUnit& root, const DataUnitFilter& filter)
 /*
  * ___________________________________________________________________________
  */
-DataUnitCursor::DataUnitCursor(DataUnit& root, DataUnit& position,
+Cursor::Cursor(DataUnit& root, DataUnit& position,
 		const DataUnitFilter& filter)
 		: root_(root), position_(0), globalFilter_(&filter) {
 
@@ -61,7 +61,7 @@ DataUnitCursor::DataUnitCursor(DataUnit& root, DataUnit& position,
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::applyFilter(const DataUnit* dataUnit,
+bool Cursor::applyFilter(const DataUnit* dataUnit,
 		const DataUnitFilter* filter) const {
 
 	bool passes = true;
@@ -85,7 +85,7 @@ bool DataUnitCursor::applyFilter(const DataUnit* dataUnit,
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveTo(DataUnit* position) {
+bool Cursor::moveTo(DataUnit* position) {
 
 	bool accepted = false;
 	if (position != 0 && applyFilter(position)) {
@@ -99,7 +99,7 @@ bool DataUnitCursor::moveTo(DataUnit* position) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::setTo(DataUnit* position) {
+bool Cursor::setTo(DataUnit* position) {
 
 	bool accepted = this->moveTo(position);
 	if (!accepted) {
@@ -112,7 +112,7 @@ bool DataUnitCursor::setTo(DataUnit* position) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::seekByIndex_(size_t n, const DataUnitFilter* filter) {
+bool Cursor::seekByIndex_(size_t n, const DataUnitFilter* filter) {
 
 	DataUnit* pos = &root_;
 	/* move to index 0, i.e. first position from root matching criteria */
@@ -133,7 +133,7 @@ bool DataUnitCursor::seekByIndex_(size_t n, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveToEnd() {
+bool Cursor::moveToEnd() {
 
 	DataUnit* pos = position_;
 	DataUnit* tst = position_;
@@ -148,7 +148,7 @@ bool DataUnitCursor::moveToEnd() {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveRight(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveRight(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -164,7 +164,7 @@ bool DataUnitCursor::moveRight(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveLeft(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveLeft(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -180,7 +180,7 @@ bool DataUnitCursor::moveLeft(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveUp(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveUp(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -196,7 +196,7 @@ bool DataUnitCursor::moveUp(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveDown(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveDown(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -212,7 +212,7 @@ bool DataUnitCursor::moveDown(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveForward(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveForward(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -228,7 +228,7 @@ bool DataUnitCursor::moveForward(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::moveBackward(size_t steps, const DataUnitFilter* filter) {
+bool Cursor::moveBackward(size_t steps, const DataUnitFilter* filter) {
 
 	DataUnit* pos = position_;
 	while ((pos != 0) && (steps > 0)) {
@@ -244,7 +244,7 @@ bool DataUnitCursor::moveBackward(size_t steps, const DataUnitFilter* filter) {
 /*
  * ___________________________________________________________________________
  */
-size_t DataUnitCursor::scan(std::vector<DataUnit*>* dataUnits,
+size_t Cursor::scan(std::vector<DataUnit*>* dataUnits,
 		const DataUnitFilter* filter) const {
 
 	size_t n = 0;
@@ -267,7 +267,7 @@ size_t DataUnitCursor::scan(std::vector<DataUnit*>* dataUnits,
 /*
  * ___________________________________________________________________________
  */
-size_t DataUnitCursor::printScan_(
+size_t Cursor::printScan_(
 		const DataUnitFilter* filter, bool printAll) const {
 
 	vector<DataUnit*> dataUnits;
@@ -317,7 +317,7 @@ size_t DataUnitCursor::printScan_(
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::doInsert(DataUnit* insertion) {
+bool Cursor::doInsert(DataUnit* insertion) {
 
 	bool success = false;
 
@@ -338,7 +338,7 @@ bool DataUnitCursor::doInsert(DataUnit* insertion) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::doReplace(DataUnit* replacement) {
+bool Cursor::doReplace(DataUnit* replacement) {
 
 	bool success = false;
 
@@ -361,7 +361,7 @@ bool DataUnitCursor::doReplace(DataUnit* replacement) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::doTruncate(const BC& length) {
+bool Cursor::doTruncate(const BC& length) {
 
 	bool success = false;
 
@@ -377,7 +377,7 @@ bool DataUnitCursor::doTruncate(const BC& length) {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::doRemove() {
+bool Cursor::doRemove() {
 
 	bool success = false;
 
@@ -399,7 +399,7 @@ bool DataUnitCursor::doRemove() {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitCursor::doDelete() {
+bool Cursor::doDelete() {
 
 	bool success = false;
 
@@ -416,6 +416,6 @@ bool DataUnitCursor::doDelete() {
 /*
  * ___________________________________________________________________________
  */
-DataUnitCursor::~DataUnitCursor() {
+Cursor::~Cursor() {
 }
 

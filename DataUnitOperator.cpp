@@ -5,7 +5,7 @@
 #include <string>
 #include "DataUnitOperator.h"
 #include "DataUnitFilter.h"
-#include "DataUnitCursor.h"
+#include "Cursor.h"
 #include "DataUnit.h"
 #include "VoidField.h"
 #include "OpaqueField.h"
@@ -23,7 +23,7 @@ DataUnitOperator::DataUnitOperator() {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnitOperator::apply(DataUnitCursor& cursor) {
+bool DataUnitOperator::apply(Cursor& cursor) {
 
 	bool applied = false;
 
@@ -86,7 +86,7 @@ VoidingOperator::VoidingOperator() : DataUnitOperator() {
 /*
  * ___________________________________________________________________________
  */
-bool VoidingOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool VoidingOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -136,7 +136,7 @@ const DataUnitFilter& OpacifyingOperator::getApplicationFilter() const {
 /*
  * ___________________________________________________________________________
  */
-bool OpacifyingOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool OpacifyingOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -177,7 +177,7 @@ DuplicatingOperator::DuplicatingOperator() : DataUnitOperator() {
 /*
  * ___________________________________________________________________________
  */
-bool DuplicatingOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool DuplicatingOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = false;
 
@@ -216,7 +216,7 @@ DeletingOperator::DeletingOperator() : DataUnitOperator() {
 /*
  * ___________________________________________________________________________
  */
-bool DeletingOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool DeletingOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	log.propSet<string>("operator.type", "DeletingOperator");
 
@@ -246,7 +246,7 @@ RepairingOperator::RepairingOperator() : DataUnitOperator() {
 /*
  * ___________________________________________________________________________
  */
-bool RepairingOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
+bool RepairingOperator::apply_(Cursor& cursor, PropertyNode& log) {
 
 	bool applied = true;
 
