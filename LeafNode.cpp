@@ -1,4 +1,4 @@
-#include "FieldDataUnit.h"
+#include "LeafNode.h"
 #include "String_.h"
 #include <iostream>
 #include <stdexcept>
@@ -12,21 +12,21 @@ using std::string;
 /*
  * ___________________________________________________________________________
  */
-TypeDescriptor FieldDataUnit::desc_(
-		DataUnit::typeDescriptor(), 0, "FieldDataUnit");
+TypeDescriptor LeafNode::desc_(
+		DataUnit::typeDescriptor(), 0, "LeafNode");
 
 
 /*
  * ___________________________________________________________________________
  */
-FieldDataUnit::FieldDataUnit() : DataUnit(), buffer_() {
+LeafNode::LeafNode() : DataUnit(), buffer_() {
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-FieldDataUnit::FieldDataUnit(const BC& capacity) :
+LeafNode::LeafNode(const BC& capacity) :
 		DataUnit(), buffer_(capacity) {
 
     /* TODO: do we really need this? */
@@ -37,7 +37,7 @@ FieldDataUnit::FieldDataUnit(const BC& capacity) :
 /*
  * ___________________________________________________________________________
  */
-const TypeDescriptor& FieldDataUnit::getTypeDescriptor() const {
+const TypeDescriptor& LeafNode::getTypeDescriptor() const {
 
 	return typeDescriptor();
 }
@@ -46,7 +46,7 @@ const TypeDescriptor& FieldDataUnit::getTypeDescriptor() const {
 /*
  * ___________________________________________________________________________
  */
-void FieldDataUnit::printBody(const PrintOptions& options) const {
+void LeafNode::printBody(const PrintOptions& options) const {
 
 	bool first = true;
 
@@ -82,7 +82,7 @@ void FieldDataUnit::printBody(const PrintOptions& options) const {
 /*
  * ___________________________________________________________________________
  */
-string FieldDataUnit::getAsText() const {
+string LeafNode::getAsText() const {
 
 	String text;
 	text.appendFormat("%s(\"%s\", %s of %s) [ %s ] <%s>",
@@ -98,7 +98,7 @@ string FieldDataUnit::getAsText() const {
 /*
  * ___________________________________________________________________________
  */
-void FieldDataUnit::dissectorBodyReset() {
+void LeafNode::dissectorBodyReset() {
 
 	/* clear the buffer to accept new data */
 	buffer_.clear();
@@ -108,7 +108,7 @@ void FieldDataUnit::dissectorBodyReset() {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::dissectorBodyIsAccepting() const {
+bool LeafNode::dissectorBodyIsAccepting() const {
 
 	BC remCap = buffer_.getRemainingCapacity();
 	return remCap.isUndef() || remCap > 0;
@@ -118,7 +118,7 @@ bool FieldDataUnit::dissectorBodyIsAccepting() const {
 /*
  * ___________________________________________________________________________
  */
-BC FieldDataUnit::dissectorBodyDissect(StreamReader& reader) {
+BC LeafNode::dissectorBodyDissect(StreamReader& reader) {
 
 	BC len = buffer_.consumeStream(reader);
 
@@ -134,7 +134,7 @@ BC FieldDataUnit::dissectorBodyDissect(StreamReader& reader) {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::encode() {
+bool LeafNode::encode() {
 
 	return this->encode_();
 }
@@ -143,7 +143,7 @@ bool FieldDataUnit::encode() {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::getBit_(const BC& bc) const {
+bool LeafNode::getBit_(const BC& bc) const {
 
 	return buffer_.getBit(bc);
 }
@@ -152,7 +152,7 @@ bool FieldDataUnit::getBit_(const BC& bc) const {
 /*
  * ___________________________________________________________________________
  */
-uint8_t	FieldDataUnit::getByte_(const BC& bc) const {
+uint8_t	LeafNode::getByte_(const BC& bc) const {
 
 	return buffer_.getByte(bc);
 }
@@ -161,7 +161,7 @@ uint8_t	FieldDataUnit::getByte_(const BC& bc) const {
 /*
  * ___________________________________________________________________________
  */
-BC FieldDataUnit::copyTo_(BufferWriter& buffer) const {
+BC LeafNode::copyTo_(BufferWriter& buffer) const {
 
 	return buffer_.copyTo(buffer);
 }
@@ -170,7 +170,7 @@ BC FieldDataUnit::copyTo_(BufferWriter& buffer) const {
 /*
  * ___________________________________________________________________________
  */
-BC FieldDataUnit::getLength_() const {
+BC LeafNode::getLength_() const {
 
 	return buffer_.getLength();
 }
@@ -179,7 +179,7 @@ BC FieldDataUnit::getLength_() const {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::appendBit(bool bit) {
+bool LeafNode::appendBit(bool bit) {
 
 	return buffer_.appendBit(bit);
 }
@@ -188,7 +188,7 @@ bool FieldDataUnit::appendBit(bool bit) {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::appendByte(uint8_t byte) {
+bool LeafNode::appendByte(uint8_t byte) {
 
 	return buffer_.appendByte(byte);
 }
@@ -197,7 +197,7 @@ bool FieldDataUnit::appendByte(uint8_t byte) {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::setBit(const BC& bc, bool bit) {
+bool LeafNode::setBit(const BC& bc, bool bit) {
 
 	return buffer_.setBit(bc, bit);
 }
@@ -206,7 +206,7 @@ bool FieldDataUnit::setBit(const BC& bc, bool bit) {
 /*
  * ___________________________________________________________________________
  */
-bool FieldDataUnit::setByte(const BC& bc, uint8_t byte) {
+bool LeafNode::setByte(const BC& bc, uint8_t byte) {
 
 	return buffer_.setByte(bc, byte);
 }
@@ -215,7 +215,7 @@ bool FieldDataUnit::setByte(const BC& bc, uint8_t byte) {
 /*
  * ___________________________________________________________________________
  */
-void FieldDataUnit::clear() {
+void LeafNode::clear() {
 
 	buffer_.clear();
 }
@@ -224,7 +224,7 @@ void FieldDataUnit::clear() {
 /*
  * ___________________________________________________________________________
  */
-void FieldDataUnit::truncate(const BC& length) {
+void LeafNode::truncate(const BC& length) {
 
 	buffer_.truncate(length);
 }
@@ -233,7 +233,7 @@ void FieldDataUnit::truncate(const BC& length) {
 /*
  * ___________________________________________________________________________
  */
-void FieldDataUnit::clearBuffer() {
+void LeafNode::clearBuffer() {
 
 	buffer_.clear();
 }
@@ -242,7 +242,7 @@ void FieldDataUnit::clearBuffer() {
 /*
  * ___________________________________________________________________________
  */
-BC FieldDataUnit::getCapacity() const {
+BC LeafNode::getCapacity() const {
 
 	return buffer_.getCapacity();
 }
@@ -251,5 +251,5 @@ BC FieldDataUnit::getCapacity() const {
 /*
  * ___________________________________________________________________________
  */
-FieldDataUnit::~FieldDataUnit() {
+LeafNode::~LeafNode() {
 }

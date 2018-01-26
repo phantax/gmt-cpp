@@ -10,7 +10,7 @@
 #include "IntegerField.h"
 #include "DataUnitFilter.h"
 #include "OpaqueField.h"
-#include "CompositeDataUnit.h"
+#include "InternalNode.h"
 #include "String_.h"
 
 using std::string;
@@ -221,7 +221,7 @@ bool FuzzDataOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
 
 	log.propSet<string>("operator.type", "FuzzDataOperator");
 
-	FieldDataUnit& fdu = (FieldDataUnit&)cursor.getCurrent();
+	LeafNode& fdu = (LeafNode&)cursor.getCurrent();
 
 	BC oldLen = fdu.getLength();
 	BC newLen(oldLen);
@@ -262,7 +262,7 @@ bool FuzzDataOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
  */
 const DataUnitFilter& FuzzDataOperator::getApplicationFilter() const {
 
-	static DataUnitTypeFilter filter(FieldDataUnit::typeDescriptor());
+	static DataUnitTypeFilter filter(LeafNode::typeDescriptor());
 	return filter;
 }
 
@@ -301,8 +301,8 @@ bool AppendingFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
 	OpaqueField* opaque = new OpaqueField(len);
 	opaque->dissector().dissect(this->getDecisionReader());
 
-	CompositeDataUnit& cdu =
-			static_cast<CompositeDataUnit&>(cursor.getCurrent());
+	InternalNode& cdu =
+			static_cast<InternalNode&>(cursor.getCurrent());
 
 	if (cdu.appendChild(opaque)) {
 		applied = true;
@@ -319,7 +319,7 @@ bool AppendingFuzzOperator::apply_(DataUnitCursor& cursor, PropertyNode& log) {
  */
 const DataUnitFilter& AppendingFuzzOperator::getApplicationFilter() const {
 
-	static DataUnitTypeFilter filter(CompositeDataUnit::typeDescriptor());
+	static DataUnitTypeFilter filter(InternalNode::typeDescriptor());
 	return filter;
 }
 
@@ -380,9 +380,9 @@ bool GeneratingFuzzOperator::generate(DataUnit& du) {
 
 		vdu.repair(false);
 
-	} else if (du.containsType(CompositeDataUnit::typeDescriptor())) {
+	} else if (du.containsType(InternalNode::typeDescriptor())) {
 
-		CompositeDataUnit& cdu = (CompositeDataUnit&)du;
+		InternalNode& cdu = (InternalNode&)du;
 
 		size_t i = cdu.getNChildren();
 

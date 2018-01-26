@@ -4,18 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-#include "FieldDataUnit.h"
+#include "LeafNode.h"
 
 class BufferReader;
 
 
 /* ==========================================================================
  *
- *	TODO: Let OpaqueField replace FieldDataUnit class?
+ *	TODO: Let OpaqueField replace LeafNode class?
  *
  * ========================================================================== */
 
-class OpaqueField : public FieldDataUnit {
+class OpaqueField : public LeafNode {
 
 private:
 
@@ -25,7 +25,7 @@ private:
 
 protected:
 
-	/* --- from FieldDataUnit class: --------------------------------------- */
+	/* --- from LeafNode class: --------------------------------------- */
 
 	// TODO: Add description
 	virtual bool decode_(const BufferReader& reader);

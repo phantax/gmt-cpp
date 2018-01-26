@@ -5,10 +5,10 @@
 #include <vector>
 #include <inttypes.h>
 
-#include "FieldDataUnit.h"
+#include "LeafNode.h"
 
 
-class IntegerField : public FieldDataUnit {
+class IntegerField : public LeafNode {
 
 private:
 
@@ -47,7 +47,7 @@ protected:
 	// TODO: Add description
 	virtual void propWriteHook_(const std::string& name, DynamicValue& value);
 
-	/* --- from FieldDataUnit class: --------------------------------------- */
+	/* --- from LeafNode class: --------------------------------------- */
 
 	// TODO: Add description
 	virtual bool decode_(const BufferReader& reader);

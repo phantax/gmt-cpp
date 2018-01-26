@@ -10,7 +10,7 @@ using std::string;
  * ___________________________________________________________________________
  */
 TypeDescriptor IntegerField::desc_(
-		FieldDataUnit::typeDescriptor(), 0, "IntegerField");
+		LeafNode::typeDescriptor(), 0, "IntegerField");
 
 
 /*
@@ -54,7 +54,7 @@ IntegerField* IntegerField::newUIntLE(size_t bitWidth) {
  */
 IntegerField::IntegerField(const BC& size,
 		bool isSigned, bool bigEndianBytes,	bool bigEndianBits)
-		: FieldDataUnit(size) {
+		: LeafNode(size) {
 
 	isSigned_		= isSigned;
 	bigEndianBytes_	= bigEndianBytes;
@@ -257,7 +257,7 @@ void IntegerField::propReadHook_(
 		value.setValue<int>(this->getValue<int>());
 	} else {
 		/* process base class hook */
-		FieldDataUnit::propReadHook_(name, value);
+		LeafNode::propReadHook_(name, value);
 	}
 }
 
@@ -281,7 +281,7 @@ void IntegerField::propWriteHook_(const string& name, DynamicValue& value) {
 		value.setUndef();
 	} else {
 		/* process base class hook */
-		FieldDataUnit::propWriteHook_(name, value);
+		LeafNode::propWriteHook_(name, value);
 	}
 }
 

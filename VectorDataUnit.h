@@ -1,7 +1,7 @@
 #ifndef __VectorDataUnit_H__
 #define __VectorDataUnit_H__
 
-#include "CompositeDataUnit.h"
+#include "InternalNode.h"
 
 
 /* ==========================================================================
@@ -10,7 +10,7 @@
  *
  * ========================================================================== */
 
-class VectorDataUnit : public CompositeDataUnit {
+class VectorDataUnit : public InternalNode {
 
 private:
 

@@ -178,7 +178,7 @@ protected:
 	// TODO: Add description
 	virtual bool isDecoded_() const;
 
-	/* --- from FieldDataUnit class: --------------------------------------- */
+	/* --- from LeafNode class: --------------------------------------- */
 
 	// TODO: Add description
 	virtual bool decode_(const BufferReader& reader);

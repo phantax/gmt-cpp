@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <inttypes.h>
-#include "FieldDataUnit.h"
+#include "LeafNode.h"
 
 class BC;
 
@@ -16,7 +16,7 @@ class BC;
  *
  * ========================================================================== */
 
-class VoidField : public FieldDataUnit {
+class VoidField : public LeafNode {
 
 private:
 
@@ -26,7 +26,7 @@ private:
 
 protected:
 
-	/* --- from FieldDataUnit class: --------------------------------------- */
+	/* --- from LeafNode class: --------------------------------------- */
 
 	// TODO: Add description
 	virtual bool decode_(const BufferReader& reader);

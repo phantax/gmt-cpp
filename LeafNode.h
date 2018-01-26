@@ -13,7 +13,7 @@ class BC;
  *
  * ========================================================================== */
 
-class FieldDataUnit : public DataUnit {
+class LeafNode : public DataUnit {
 
 private:
 
@@ -83,10 +83,10 @@ public:
 
 
 	// TODO: Add description
-	FieldDataUnit();
+	LeafNode();
 
 	// TODO: Add description
-	FieldDataUnit(const BC& capacity);
+	LeafNode(const BC& capacity);
 
 
 	// TODO: Add description
@@ -136,7 +136,7 @@ public:
 
 
 	// TODO: Add description
-	virtual ~FieldDataUnit();
+	virtual ~LeafNode();
 
 };
 

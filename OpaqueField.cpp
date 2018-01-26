@@ -8,20 +8,20 @@ using std::string;
  * ___________________________________________________________________________
  */
 TypeDescriptor OpaqueField::desc_(
-		FieldDataUnit::typeDescriptor(), 0, "OpaqueField");
+		LeafNode::typeDescriptor(), 0, "OpaqueField");
 
 
 /*
  * ___________________________________________________________________________
  */
-OpaqueField::OpaqueField() : FieldDataUnit() {
+OpaqueField::OpaqueField() : LeafNode() {
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-OpaqueField::OpaqueField(const BC& capacity) : FieldDataUnit(capacity) {
+OpaqueField::OpaqueField(const BC& capacity) : LeafNode(capacity) {
 }
 
 
@@ -29,7 +29,7 @@ OpaqueField::OpaqueField(const BC& capacity) : FieldDataUnit(capacity) {
  * ___________________________________________________________________________
  */
 OpaqueField::OpaqueField(const BufferReader& reader, const BC& max)
-		: FieldDataUnit() {
+		: LeafNode() {
 
 	this->dissector().dissectFromBuffer(reader, max);
 }

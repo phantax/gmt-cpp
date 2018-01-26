@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "String_.h"
-#include "CompositeDataUnit.h"
+#include "InternalNode.h"
 #include "StreamReader.h"
 #include "OpaqueField.h"
 
@@ -14,14 +14,14 @@ using std::vector;
 /*
  * ___________________________________________________________________________
  */
-TypeDescriptor CompositeDataUnit::desc_(
-		DataUnit::typeDescriptor(), 0, "CompositeDataUnit");
+TypeDescriptor InternalNode::desc_(
+		DataUnit::typeDescriptor(), 0, "InternalNode");
 
 
 /*
  * ___________________________________________________________________________
  */
-CompositeDataUnit::CompositeDataUnit()
+InternalNode::InternalNode()
 		: child_(0), autoExtend_(false), expanded_(false),
 		  stalled_(false), dissectionHeadIndex_(0) {
 }
@@ -30,7 +30,7 @@ CompositeDataUnit::CompositeDataUnit()
 /*
  * ___________________________________________________________________________
  */
-CompositeDataUnit::CompositeDataUnit(bool expanded)
+InternalNode::InternalNode(bool expanded)
 		: child_(0), autoExtend_(false), expanded_(expanded),
 		  stalled_(false), dissectionHeadIndex_(0) {
 }
@@ -39,7 +39,7 @@ CompositeDataUnit::CompositeDataUnit(bool expanded)
 /*
  * ___________________________________________________________________________
  */
-const TypeDescriptor& CompositeDataUnit::getTypeDescriptor() const {
+const TypeDescriptor& InternalNode::getTypeDescriptor() const {
 
 	return typeDescriptor();
 }
@@ -48,7 +48,7 @@ const TypeDescriptor& CompositeDataUnit::getTypeDescriptor() const {
 /*
  * ___________________________________________________________________________
  */
-string CompositeDataUnit::getAnchorBrackets_() const {
+string InternalNode::getAnchorBrackets_() const {
 
 	return "{}";
 }
@@ -57,7 +57,7 @@ string CompositeDataUnit::getAnchorBrackets_() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::printCollapsed_() const {
+bool InternalNode::printCollapsed_() const {
 
 	return false;
 }
@@ -66,7 +66,7 @@ bool CompositeDataUnit::printCollapsed_() const {
 /*
  * ___________________________________________________________________________
  */
-void CompositeDataUnit::dissectorBodyReset() {
+void InternalNode::dissectorBodyReset() {
 
 	this->deleteChildren();
 	expanded_ = false;
@@ -77,7 +77,7 @@ void CompositeDataUnit::dissectorBodyReset() {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::dissectorBodyIsAccepting() const {
+bool InternalNode::dissectorBodyIsAccepting() const {
 
 	bool accepting = false;
 
@@ -98,7 +98,7 @@ bool CompositeDataUnit::dissectorBodyIsAccepting() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::expand(bool dry) {
+bool InternalNode::expand(bool dry) {
 
 	if (!expanded_) {
 
@@ -118,7 +118,7 @@ bool CompositeDataUnit::expand(bool dry) {
 /*
  * ___________________________________________________________________________
  */
-BC CompositeDataUnit::dissectorBodyDissect(StreamReader& reader) {
+BC InternalNode::dissectorBodyDissect(StreamReader& reader) {
 
 	/* try to expand children (if not yet fully expanded) */
 	this->expand(reader.isEmpty());
@@ -164,7 +164,7 @@ BC CompositeDataUnit::dissectorBodyDissect(StreamReader& reader) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::repair_(bool recursive) {
+bool InternalNode::repair_(bool recursive) {
 
 	bool repaired = true;
 
@@ -187,7 +187,7 @@ bool CompositeDataUnit::repair_(bool recursive) {
 	if ((index == 0) != (child == 0)) {
 		/* this should never happen */
 		throw std::runtime_error(
-				"CompositeDataUnit::repair_(...): inconsistency");
+				"InternalNode::repair_(...): inconsistency");
 	}
 
 	return repaired;
@@ -197,9 +197,9 @@ bool CompositeDataUnit::repair_(bool recursive) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::getBit_(const BC& bc) const {
+bool InternalNode::getBit_(const BC& bc) const {
 
-	/* CompositeDataUnit::getChildByDP(...) will
+	/* InternalNode::getChildByDP(...) will
 	 * change its input parameter, so use a copy */
 	BC dp_ = bc;
 
@@ -208,7 +208,7 @@ bool CompositeDataUnit::getBit_(const BC& bc) const {
 	if (unit != 0) {
 		return unit->getBit(dp_);
 	} else {
-		throw std::runtime_error("CompositeDataUnit::getBit(...): Out of range");
+		throw std::runtime_error("InternalNode::getBit(...): Out of range");
 	}
 }
 
@@ -216,9 +216,9 @@ bool CompositeDataUnit::getBit_(const BC& bc) const {
 /*
  * ___________________________________________________________________________
  */
-uint8_t	CompositeDataUnit::getByte_(const BC& bc) const {
+uint8_t	InternalNode::getByte_(const BC& bc) const {
 
-	/* CompositeDataUnit::getChildByDP(...) will
+	/* InternalNode::getChildByDP(...) will
 	 * change its input parameter, so use a copy */
 	BC dp_ = bc;
 
@@ -235,7 +235,7 @@ uint8_t	CompositeDataUnit::getByte_(const BC& bc) const {
 
 			for (size_t i = 0; i < 8; i++) {
 				if (unit == 0) {
-					throw std::runtime_error("CompositeDataUnit::"
+					throw std::runtime_error("InternalNode::"
 							"getByte(...): Out of range");
 				}
 				if (unit->getBit(dp_)) {
@@ -255,7 +255,7 @@ uint8_t	CompositeDataUnit::getByte_(const BC& bc) const {
 		return byte;
 
 	} else {
-		throw std::runtime_error("CompositeDataUnit::getByte(...): Out of range");
+		throw std::runtime_error("InternalNode::getByte(...): Out of range");
 	}
 }
 
@@ -263,7 +263,7 @@ uint8_t	CompositeDataUnit::getByte_(const BC& bc) const {
 /*
  * ___________________________________________________________________________
  */
-BC CompositeDataUnit::copyTo_(BufferWriter& buffer) const {
+BC InternalNode::copyTo_(BufferWriter& buffer) const {
 
     BC len = 0;
 
@@ -280,7 +280,7 @@ BC CompositeDataUnit::copyTo_(BufferWriter& buffer) const {
 /*
  * ___________________________________________________________________________
  */
-BC CompositeDataUnit::getLength_() const {
+BC InternalNode::getLength_() const {
 
 	BC len = 0;
 
@@ -297,9 +297,9 @@ BC CompositeDataUnit::getLength_() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::appendBit(bool bit) {
+bool InternalNode::appendBit(bool bit) {
 
-	throw std::runtime_error("CompositeDataUnit::appendBit(...): "
+	throw std::runtime_error("InternalNode::appendBit(...): "
 			"Not yet implemented");
 }
 
@@ -307,9 +307,9 @@ bool CompositeDataUnit::appendBit(bool bit) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::appendByte(uint8_t byte) {
+bool InternalNode::appendByte(uint8_t byte) {
 
-	throw std::runtime_error("CompositeDataUnit::appendByte(...): "
+	throw std::runtime_error("InternalNode::appendByte(...): "
 			"Not yet implemented");
 }
 
@@ -317,9 +317,9 @@ bool CompositeDataUnit::appendByte(uint8_t byte) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::setBit(const BC& bc, bool bit) {
+bool InternalNode::setBit(const BC& bc, bool bit) {
 
-	throw std::runtime_error("CompositeDataUnit::setBit(...): "
+	throw std::runtime_error("InternalNode::setBit(...): "
 			"Not yet implemented");
 }
 
@@ -327,9 +327,9 @@ bool CompositeDataUnit::setBit(const BC& bc, bool bit) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::setByte(const BC& bc, uint8_t byte) {
+bool InternalNode::setByte(const BC& bc, uint8_t byte) {
 
-	throw std::runtime_error("CompositeDataUnit::setByte(...): "
+	throw std::runtime_error("InternalNode::setByte(...): "
 			"Not yet implemented");
 }
 
@@ -337,9 +337,9 @@ bool CompositeDataUnit::setByte(const BC& bc, uint8_t byte) {
 /*
  * ___________________________________________________________________________
  */
-void CompositeDataUnit::clear() {
+void InternalNode::clear() {
 
-	throw std::runtime_error("CompositeDataUnit::clear(): "
+	throw std::runtime_error("InternalNode::clear(): "
 			"Not yet implemented");
 }
 
@@ -347,7 +347,7 @@ void CompositeDataUnit::clear() {
 /*
  * ___________________________________________________________________________
  */
-void CompositeDataUnit::truncate(const BC& length) {
+void InternalNode::truncate(const BC& length) {
 
 	BC dp = length;
 	DataUnit* unit = this->getChildByBC(dp);
@@ -366,7 +366,7 @@ void CompositeDataUnit::truncate(const BC& length) {
 /*
  * ___________________________________________________________________________
  */
-string CompositeDataUnit::getAsText() const {
+string InternalNode::getAsText() const {
 
 	String text;
 	text.appendFormat("%s(\"%s\", %s of %s) {",
@@ -397,7 +397,7 @@ string CompositeDataUnit::getAsText() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::isDecoded_() const {
+bool InternalNode::isDecoded_() const {
 
 	size_t n = this->getNChildren();
 	return (expanded_ && n == this->getNDecoded());
@@ -407,7 +407,7 @@ bool CompositeDataUnit::isDecoded_() const {
 /*
  * ___________________________________________________________________________
  */
-DataUnit* CompositeDataUnit::getChild_() const {
+DataUnit* InternalNode::getChild_() const {
 
 	return child_;
 }
@@ -416,7 +416,7 @@ DataUnit* CompositeDataUnit::getChild_() const {
 /*
  * ___________________________________________________________________________
  */
-void CompositeDataUnit::setChild_(DataUnit* child) {
+void InternalNode::setChild_(DataUnit* child) {
 
 	child_ = child;
 }
@@ -425,7 +425,7 @@ void CompositeDataUnit::setChild_(DataUnit* child) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::appendChild(DataUnit* child) {
+bool InternalNode::appendChild(DataUnit* child) {
 
 	bool success = false;
 
@@ -442,7 +442,7 @@ bool CompositeDataUnit::appendChild(DataUnit* child) {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::appendChildRenamed(
+bool InternalNode::appendChildRenamed(
 		DataUnit* child, const string& newName) {
 
 	bool success = this->appendChild(child);
@@ -458,7 +458,7 @@ bool CompositeDataUnit::appendChildRenamed(
 /*
  * ___________________________________________________________________________
  */
-void CompositeDataUnit::printBody(const PrintOptions& options) const {
+void InternalNode::printBody(const PrintOptions& options) const {
 
 	bool prefixMasking = true;
 	//bool suffixMasking = true;
@@ -530,7 +530,7 @@ void CompositeDataUnit::printBody(const PrintOptions& options) const {
 /*
  * ___________________________________________________________________________
  */
-size_t CompositeDataUnit::getNDecoded() const {
+size_t InternalNode::getNDecoded() const {
 
 	size_t n = 0;
 	DataUnit* child = child_;
@@ -549,7 +549,7 @@ size_t CompositeDataUnit::getNDecoded() const {
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::expand_(
+bool InternalNode::expand_(
 		size_t len, size_t decoded, bool dry, bool ahead) {
 
 	return true;
@@ -559,7 +559,7 @@ bool CompositeDataUnit::expand_(
 /*
  * ___________________________________________________________________________
  */
-bool CompositeDataUnit::updateMember_(size_t index) {
+bool InternalNode::updateMember_(size_t index) {
 
 	return true;
 }
@@ -568,7 +568,7 @@ bool CompositeDataUnit::updateMember_(size_t index) {
 /*
  * ___________________________________________________________________________
  */
-size_t CompositeDataUnit::deleteChildren(size_t from) {
+size_t InternalNode::deleteChildren(size_t from) {
 
 	size_t n = 0;
 
@@ -590,7 +590,7 @@ size_t CompositeDataUnit::deleteChildren(size_t from) {
 /*
  * ___________________________________________________________________________
  */
-CompositeDataUnit::~CompositeDataUnit() {
+InternalNode::~InternalNode() {
 
 	this->deleteChildren();
 }

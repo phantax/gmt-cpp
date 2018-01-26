@@ -1,5 +1,5 @@
-#ifndef __CompositeDataUnit_H__
-#define __CompositeDataUnit_H__
+#ifndef __InternalNode_H__
+#define __InternalNode_H__
 
 #include "DataUnit.h"
 
@@ -9,7 +9,7 @@
  *
  * ========================================================================== */
 
-class CompositeDataUnit : public DataUnit {
+class InternalNode : public DataUnit {
 
 private:
 
@@ -36,7 +36,7 @@ private:
 protected:
 
 	// TODO: Add description
-	CompositeDataUnit(bool expanded);
+	InternalNode(bool expanded);
 
 
 	// TODO: Add description
@@ -111,7 +111,7 @@ public:
 
 
 	// TODO: Add description
-	CompositeDataUnit();
+	InternalNode();
 
 
 	// TODO: Add description
@@ -179,7 +179,7 @@ public:
 
 
 	// TODO: Add description
-	virtual ~CompositeDataUnit();
+	virtual ~InternalNode();
 
 };
 

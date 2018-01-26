@@ -5,13 +5,13 @@
  * ___________________________________________________________________________
  */
 TypeDescriptor VectorDataUnit::desc_(
-		CompositeDataUnit::typeDescriptor(), 0, "VectorDataUnit");
+		InternalNode::typeDescriptor(), 0, "VectorDataUnit");
 
 
 /*
  * ___________________________________________________________________________
  */
-VectorDataUnit::VectorDataUnit() : CompositeDataUnit(), template_(0) {
+VectorDataUnit::VectorDataUnit() : InternalNode(), template_(0) {
 }
 
 
@@ -19,7 +19,7 @@ VectorDataUnit::VectorDataUnit() : CompositeDataUnit(), template_(0) {
  * ___________________________________________________________________________
  */
 VectorDataUnit::VectorDataUnit(bool empty)
-	: CompositeDataUnit(empty), template_(0) {
+	: InternalNode(empty), template_(0) {
 }
 
 
@@ -27,7 +27,7 @@ VectorDataUnit::VectorDataUnit(bool empty)
  * ___________________________________________________________________________
  */
 VectorDataUnit::VectorDataUnit(DataUnit* elementTemplate) :
-		CompositeDataUnit(), template_(elementTemplate) {
+		InternalNode(), template_(elementTemplate) {
 
 }
 

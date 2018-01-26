@@ -10,7 +10,7 @@ class BufferReader;
 
 /* ==========================================================================
  *
- *	TODO: Let StringField replace FieldDataUnit class?
+ *	TODO: Let StringField replace LeafNode class?
  *
  * ========================================================================== */
 

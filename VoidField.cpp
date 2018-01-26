@@ -5,13 +5,13 @@
  * ___________________________________________________________________________
  */
 TypeDescriptor VoidField::desc_(
-		FieldDataUnit::typeDescriptor(), 0, "VoidField");
+		LeafNode::typeDescriptor(), 0, "VoidField");
 
 
 /*
  * ___________________________________________________________________________
  */
-VoidField::VoidField() : FieldDataUnit(0) {
+VoidField::VoidField() : LeafNode(0) {
 
 	this->setName("void");
 }

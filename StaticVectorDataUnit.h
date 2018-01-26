@@ -24,7 +24,7 @@ private:
 
 protected:
 
-	/* --- from CompositeDataUnit class: ----------------------------------- */
+	/* --- from InternalNode class: ----------------------------------- */
 
 	// TODO: Add description
 	virtual bool expand_(size_t len, size_t decoded, bool dry, bool ahead);

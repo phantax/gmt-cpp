@@ -5,7 +5,7 @@
 #include "DataUnitConverter.h"
 #include <string>
 #include "String_.h"
-#include "FieldDataUnit.h"
+#include "LeafNode.h"
 
 using std::string;
 
@@ -39,7 +39,7 @@ string DataUnitConverter::getAsJSON_(const DataUnit& dataUnit) const {
 	json.appendFormat("\"__type__\": \"%s\",\n",
 			dataUnit.getTypeName().c_str());
 
-	if (dataUnit.containsType(FieldDataUnit::typeDescriptor())) {
+	if (dataUnit.containsType(LeafNode::typeDescriptor())) {
 		json.appendFormat("\"__data__\": \"%s\",\n",
 				dataUnit.toHexString().c_str());
 	} else if (dataUnit.hasChild()) {
