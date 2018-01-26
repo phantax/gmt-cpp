@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #include "DataUnitVisitor.h"
 #include "DataUnit.h"
 

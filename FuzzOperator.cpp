@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #include "FuzzOperator.h"
 #include "DataUnit.h"
 #include "Cursor.h"

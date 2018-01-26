@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #include "DataUnitConverter.h"
 #include <string>
 #include "String_.h"

@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #include "DecisionReader.h"
 #include <math.h>
 #include <stdexcept>

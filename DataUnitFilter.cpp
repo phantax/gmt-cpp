@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #include "DataUnitFilter.h"
 #include "DataUnit.h"
 
