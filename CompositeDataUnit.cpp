@@ -503,7 +503,7 @@ void CompositeDataUnit::printBody(const PrintOptions& options) const {
 		BC pos = 0;
 		BC len = buffer.getLength();
 		while (pos == 0 || pos < len) {
-			String hex = buffer.toHexString(true, pos, 8, true);
+			String hex = buffer.toHexString(true, pos, 8);
 			if (options.from.isDef() && options.from > pos) {
 				for (size_t i = 0; i < 8 && i < (options.from - pos).byte(); i++) {
 					if (hex.length() > 3*i) {

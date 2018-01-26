@@ -54,7 +54,7 @@ bool TypeRegistry::add(const TypeDescriptor& typeDescriptor) {
  * ___________________________________________________________________________
  */
 const TypeDescriptor* TypeRegistry::findByName(
-		const std::string& typeName) {
+		const string& typeName) {
 
 	const TypeDescriptor* desc = (TypeDescriptor*)0;
 	size_t n = registry_.size();
@@ -132,7 +132,7 @@ TypeRegistry::~TypeRegistry() {
 /*
  * ___________________________________________________________________________
  */
-TypeDescriptor::TypeDescriptor(size_t typeId, const std::string& typeName)
+TypeDescriptor::TypeDescriptor(size_t typeId, const string& typeName)
 		: baseTypeDesc_(0), typeId_(typeId), typeName_(typeName) {
 }
 
@@ -141,7 +141,7 @@ TypeDescriptor::TypeDescriptor(size_t typeId, const std::string& typeName)
  * ___________________________________________________________________________
  */
 TypeDescriptor::TypeDescriptor(const TypeDescriptor& baseTypeDesc,
-		size_t typeId, const std::string& typeName)
+		size_t typeId, const string& typeName)
 		: baseTypeDesc_(&baseTypeDesc), typeId_(typeId), typeName_(typeName) {
 }
 
@@ -169,14 +169,14 @@ bool TypeDescriptor::inheritsFrom(const TypeDescriptor& other) const {
 /*
  * ___________________________________________________________________________
  */
-std::string TypeDescriptor::getTypeInheritance() const {
+string TypeDescriptor::getTypeInheritance() const {
 
 	string inheritance;
 
 	const TypeDescriptor* type = this;
 	while (type != 0) {
 		if (inheritance.length() > 0) {
-			inheritance.insert(0, '/');
+			inheritance.insert(0, 1, '/');
 		}
 		inheritance.insert(0, type->getTypeName());
 		type = type->getBaseTypeDescriptor();
@@ -283,7 +283,7 @@ string DataUnit::getRefName() const {
 /*
  * ___________________________________________________________________________
  */
-string DataUnit::getChainedName(const std::string& separator) const {
+string DataUnit::getChainedName(const string& separator) const {
 
 	string name;
 
@@ -303,7 +303,7 @@ string DataUnit::getChainedName(const std::string& separator) const {
 /*
  * ___________________________________________________________________________
  */
-string DataUnit::getChainedRefName(const std::string& separator) const {
+string DataUnit::getChainedRefName(const string& separator) const {
 
 	string name;
 
@@ -323,7 +323,7 @@ string DataUnit::getChainedRefName(const std::string& separator) const {
 /*
  * ___________________________________________________________________________
  */
-string DataUnit::getChainedIndex(const std::string& separator) const {
+string DataUnit::getChainedIndex(const string& separator) const {
 
 	string name;
 
@@ -350,10 +350,12 @@ string DataUnit::getPath() const {
 	const DataUnit* du = this;
 	while (du != 0) {
 		path.insert(0, du->getRefName());
-		path.insert(0, '/');
+		path.insert(0, 1, '/');
 		du = du->getParent();
 	}
-	path.insert(0, '/');
+
+    // Finally insert the leading slash
+	path.insert(0, 1, '/');
 
 	return path;
 }
@@ -912,7 +914,7 @@ DataUnit* DataUnit::getByConstBC(const BC& bc) {
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getByPath(const std::string& path) {
+DataUnit* DataUnit::getByPath(const string& path) {
 
     /*  
      *  Special names:
