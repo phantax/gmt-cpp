@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
-#include "CompositeDataUnit.h"
+#include "InternalNode.h"
 
 using std::cout;
 using std::endl;
@@ -10,7 +10,7 @@ using std::endl;
 
 int main(int argc , char *argv[]) {
 
-    CompositeDataUnit cdu;
+    InternalNode cdu;
 
     cdu.print();
 

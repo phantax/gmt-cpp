@@ -9,8 +9,6 @@ ifeq ($(origin LD), default)
     LD=g++
 endif
 
-CFLAGS  = -O0 -g
-
 SOURCES = $(shell ls *.cpp)
 
 all: test
@@ -18,7 +16,7 @@ all: test
 test: $(SOURCES) ../build/libgmt-cpp.a
 	@echo "\033[01;32m=> Compiling '$<' ...\033[00;00m"
 	@mkdir -p $(shell dirname $@)
-	$(CC) $(CFLAGS) $(SOURCES) -lgmt-cpp -L../build -I../ -o $@
+	$(CC) -I../ $(CFLAGS) $(SOURCES) -lgmt-cpp -L../build $(LDFLAGS) -o $@
 	@echo ""
 
 info:

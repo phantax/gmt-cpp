@@ -9,15 +9,21 @@ ifeq ($(origin LD), default)
     LD=g++
 endif
 
-CFLAGS  = -O0 -g
-
 SOURCES = $(shell ls *.cpp)
 
 OBJECTS = $(foreach o, $(SOURCES:.cpp=.o), build/$o)
 
 USES = bitbuffers-cpp propertynode-cpp
 
-CFLAGS += $(foreach u, $(USES), -I./$u/)
+CFLAGS  = -O0 -g
+CFLAGS += $(foreach u, $(USES), -I$(realpath $u))
+
+LDFLAGS = $(foreach u, $(USES), -L$(realpath $u)/build)
+LDFLAGS += $(foreach u, $(USES), -l$u)
+
+export CFLAGS
+export LDFLAGS
+
 
 all: library
 
