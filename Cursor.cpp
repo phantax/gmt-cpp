@@ -37,6 +37,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <queue>
 #include "Cursor.h"
 #include "DataUnit.h"
 #include "DataUnitFilter.h"
@@ -45,6 +46,7 @@
 using std::cout;
 using std::endl;
 using std::vector;
+using std::queue;
 
 
 /*
@@ -277,19 +279,35 @@ bool Cursor::moveBackward(size_t steps, const DataUnitFilter* filter) {
  * ___________________________________________________________________________
  */
 size_t Cursor::scan(std::vector<DataUnit*>* dataUnits,
-		const DataUnitFilter* filter) const {
+		const DataUnitFilter* filter, bool depthFirst) const {
 
 	size_t n = 0;
+    queue<DataUnit*> toExplore;
 
 	DataUnit* pos = &root_;
 	while (pos != 0) {
+        if (!depthFirst) {
+            // A subtree is searched for matching nodes even
+            // if the subtree's root does not match
+            toExplore.push(pos);
+        }
 		if (applyFilter(pos, filter)) {
 			if (dataUnits != 0) {
 				dataUnits->push_back(pos);
 			}
 			++n;
 		}
-		pos = pos->getSuccessor();
+        if (depthFirst) {
+            // >>> Depth-first search >>>
+    		pos = pos->getSuccessor();
+        } else {
+            // >>> Breadth-first search >>>
+            pos = pos->getNext();
+            while (pos == 0 && !toExplore.empty()) {
+                pos = toExplore.front()->getChild();
+                toExplore.pop();
+            }
+        }
 	}
 
 	return n;
@@ -303,7 +321,7 @@ size_t Cursor::printScan_(
 		const DataUnitFilter* filter, bool printAll) const {
 
 	vector<DataUnit*> dataUnits;
-	this->scan(&dataUnits);
+	this->scan(&dataUnits, (const DataUnitFilter*)0, true);
 
 	size_t max = 9;
 	size_t w = 1;

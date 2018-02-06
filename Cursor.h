@@ -71,7 +71,7 @@ private:
 
 	// TODO: Add description
 	size_t scan(std::vector<DataUnit*>* dataUnits,
-			const DataUnitFilter* filter = 0) const;
+			const DataUnitFilter* filter, bool depthFirst) const;
 
 	// TODO: Add description
 	size_t printScan_(const DataUnitFilter* filter, bool printAll) const;
@@ -196,26 +196,28 @@ public:
 	// TODO: Add description
 	inline size_t count() const {
 
-		return this->scan((std::vector<DataUnit*>*)0, (const DataUnitFilter*)0);
+		return this->scan((std::vector<DataUnit*>*)0,
+                (const DataUnitFilter*)0, true);
 	}
 
 	// TODO: Add description
 	inline size_t count(const DataUnitFilter& filter) const {
 
-		return this->scan((std::vector<DataUnit*>*)0, &filter);
-	}
-
-	// TODO: Add description
-	inline size_t enumerate(std::vector<DataUnit*>& dataUnits) const {
-
-		return this->scan(&dataUnits, (const DataUnitFilter*)0);
+		return this->scan((std::vector<DataUnit*>*)0, &filter, true);
 	}
 
 	// TODO: Add description
 	inline size_t enumerate(std::vector<DataUnit*>& dataUnits,
-			const DataUnitFilter& filter) const {
+            bool depthFirst = true) const {
 
-		return this->scan(&dataUnits, &filter);
+		return this->scan(&dataUnits, (const DataUnitFilter*)0, depthFirst);
+	}
+
+	// TODO: Add description
+	inline size_t enumerate(std::vector<DataUnit*>& dataUnits,
+			const DataUnitFilter& filter, bool depthFirst = true) const {
+
+		return this->scan(&dataUnits, &filter, depthFirst);
 	}
 
 
