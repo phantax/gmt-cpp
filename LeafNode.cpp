@@ -260,6 +260,15 @@ void LeafNode::clear() {
 /*
  * ___________________________________________________________________________
  */
+void LeafNode::zero() {
+
+	buffer_.zero();
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
 void LeafNode::truncate(const BC& length) {
 
 	buffer_.truncate(length);

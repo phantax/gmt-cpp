@@ -383,6 +383,19 @@ void InternalNode::clear() {
 /*
  * ___________________________________________________________________________
  */
+void InternalNode::zero() {
+
+	DataUnit* child = child_;
+    while (child != 0) {
+        child->zero();
+        child = child->getNext();
+    }
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
 void InternalNode::truncate(const BC& length) {
 
 	BC dp = length;

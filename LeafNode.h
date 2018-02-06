@@ -149,6 +149,9 @@ public:
 	virtual void clear();
 
 	// TODO: Add description
+	virtual void zero();
+
+	// TODO: Add description
 	virtual void truncate(const BC& length);
 
 	/* --------------------------------------------------------------------- */

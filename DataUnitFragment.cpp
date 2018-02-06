@@ -221,6 +221,16 @@ void DataUnitFragment::clear() {
 /*
  * ___________________________________________________________________________
  */
+void DataUnitFragment::zero() {
+
+	throw std::runtime_error("DataUnitFragment::zero(): "
+			"Not yet implemented");
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
 void DataUnitFragment::truncate(const BC& length) {
 
 	throw std::runtime_error("DataUnitFragment::truncate(...): "
