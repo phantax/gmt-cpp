@@ -460,7 +460,15 @@ void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
 	} else if (name == ".typeid") {
 		value.setValue<int>(this->getTypeID());
 	} else if (name == ".overflow") {
-		value.setValue<bool>(this->dissector().hasOverflow());
+        // Overflow discarded by dissector?
+        bool hasOverflow = this->dissector().hasOverflow();
+        // Overflow pushed into additional overflow node?
+        DataUnit* ovNode = this->getChildTail();
+        if (ovNode != 0 && ovNode->getName() == ".overflow"
+                && ovNode->getLength() > 0) {
+            hasOverflow = true;
+        }
+		value.setValue<bool>(hasOverflow);
 	} else if (name == ".underflow") {
 		value.setValue<bool>(this->dissector().hasUnderflow());
 	}
@@ -529,7 +537,7 @@ string DataUnit::getAnchorString_() const {
 		anchor.append("--");
 	}
 
-	if (this->dissector().hasOverflow()) {
+	if (this->propGetDefault<bool>(".overflow", false)) {
 		anchor.appendBoldRed("<OF>");
 	} else if (this->dissector().hasUnderflow()) {
 		anchor.appendBoldRed("<UF>");
