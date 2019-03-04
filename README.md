@@ -24,8 +24,8 @@ is also available.
 
 ## Contact
 
-Andreas Walz
-andreas.walz@hs-offenburg.de
-Institute of Reliable Embedded Systems and Communication Electronics
-Offenburg University of Applied Sciences
+Andreas Walz  
+andreas.walz@hs-offenburg.de  
+Institute of Reliable Embedded Systems and Communication Electronics  
+Offenburg University of Applied Sciences  
 ivesk.hs-offenburg.de
