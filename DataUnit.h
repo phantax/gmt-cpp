@@ -416,12 +416,6 @@ public:
 		return name_;
 	}
 
-	// TODO: Add description
-	inline const size_t getTypeID() const {
-
-		return this->getTypeDescriptor().id();
-	}
-
 	// Return the static type as string
 	inline const std::string& getStaticType() const {
 

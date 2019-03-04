@@ -614,8 +614,6 @@ void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
 
 	if (name == ".typename") {
 		value.setValue<string>(this->getStaticType());
-	} else if (name == ".typeid") {
-		value.setValue<int>(this->getTypeID());
 	} else if (name == ".overflow") {
         // Overflow discarded by dissector?
         bool hasOverflow = this->dissector().hasOverflow();
@@ -761,7 +759,7 @@ void DataUnit::print(const PrintOptions& options) const {
 		line.append(this->getAnchorString_());
 		line.setWidth(50);
 		line.appendFixedWidth(String::format("%s",
-				this->getFullTypeName().c_str(), this->getTypeID()), 40);
+				this->getFullTypeName().c_str()), 40);
 //				this->getStaticType().c_str(), this->getTypeID()), 40);
 //				this->getPath().c_str(), this->getTypeID()), 40);
 		cout << line;
