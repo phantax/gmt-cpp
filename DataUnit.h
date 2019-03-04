@@ -239,6 +239,12 @@ private:
 	static TypeDescriptor desc_;
 
 
+	// TODO: Add description
+    static bool splitIdentifier(const std::string& identifier,
+            std::string& name, std::string& staticType,
+            std::string& dynamicType);
+
+
 	/* data unit dissector */
 	Dissector dissector_;
 
@@ -399,6 +405,20 @@ public:
 
 		return this->getDynamicTypeName_();
 	}
+
+	// TODO: Add description
+	std::string getIdentifier(bool name = true, bool staticType = true,
+            bool dynamicType = true) const;
+
+	// TODO: Add description
+	std::string getUniqueIdentifier() const;
+
+	// TODO: Add description
+	bool matchesIdentifier(const std::string& identifier) const;
+
+	// TODO: Add description
+	bool matchesIdentifier(const std::string& name,
+            const std::string& staticType, const std::string& dynamicType) const;
 
 	/* Method for getting this data unit's name path */
 	std::string getRefName() const;

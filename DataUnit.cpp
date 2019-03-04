@@ -319,6 +319,163 @@ string DataUnit::getRefName() const {
 /*
  * ___________________________________________________________________________
  */
+string DataUnit::getIdentifier(bool name, bool staticType,
+        bool dynamicType) const {
+
+    string identifier;
+
+    if (staticType) {
+        identifier.append(this->getTypeName());
+    }
+    if (dynamicType) {
+        string dynamicTypeStr = this->getDynamicTypeName();
+	    if (!dynamicTypeStr.empty()) {
+            identifier.append(":");
+            identifier.append(dynamicTypeStr);
+        } else {
+            dynamicType = false;
+        }
+    }
+    if (staticType || dynamicType) {
+        identifier.append("%");    
+    }
+    if (name) {
+        identifier.append(this->getName());
+    }
+
+    return identifier;
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+string DataUnit::getUniqueIdentifier() const {
+    
+	string name = this->getName();
+	string staticType = this->getTypeName();
+	string dynamicType = this->getDynamicTypeName();
+
+	size_t indexByName = 0;
+	size_t indexByType = 0;
+	size_t indexByFullType = 0;
+	size_t indexByFullTypeAndName = 0;
+
+	const DataUnit* du = this->getPrevious();
+	while (du != 0) {
+		if (du->matchesIdentifier(name)) {
+			++indexByName;
+		}
+		if (du->matchesIdentifier("", staticType, "")) {
+			++indexByType;
+		}
+		if (du->matchesIdentifier("", staticType, dynamicType)) {
+			++indexByFullType;
+		}
+		if (du->matchesIdentifier(name, staticType, dynamicType)) {
+			++indexByFullTypeAndName;
+		}
+		du = du->getPrevious();
+	}
+
+    String id;
+    size_t index = 0;
+
+    if (indexByFullTypeAndName == 0 && indexByFullType > 0) {
+        id = this->getIdentifier(true, true, true);
+        index = indexByFullTypeAndName;
+
+    } else if (indexByFullType == 0 && indexByType > 0) {
+        id = this->getIdentifier(false, true, true);
+        index = indexByFullType;
+
+    } else if (indexByType == 0 && indexByName > 0) {
+        id = this->getIdentifier(false, true, false);
+        index = indexByType;
+
+    } else {
+        id = name;
+        index = indexByName;
+    }
+
+	if (index > 0) {
+		id.appendFormat("~%u", index);
+	}
+
+	return id;
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+bool DataUnit::splitIdentifier(const string& identifier, string& name,
+        string& staticType, string& dynamicType) {
+
+    // Extract name
+	size_t namePos = identifier.find_first_of("%");
+	if (namePos != string::npos) {
+		name = identifier.substr(namePos + 1);
+	} else {
+        // >>> It's a name-only identifier >>>
+        name = identifier;
+        return true;
+    }
+
+    // Extract type
+	size_t typePos = identifier.find_first_of(":");
+	if (typePos != string::npos) {
+        if (typePos > namePos) {
+            // >>> Invalid identifier >>>
+            return false;
+        }
+        staticType = identifier.substr(0, typePos);
+        dynamicType = identifier.substr(typePos + 1, namePos - typePos - 1);
+	} else {
+        // It's a static-type-only type identifier
+        staticType = identifier.substr(0, namePos);
+    }
+
+    return true;
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+bool DataUnit::matchesIdentifier(const string& identifier) const {
+
+	string name;
+	string staticType;
+	string dynamicType;
+
+    if (!splitIdentifier(identifier, name, staticType, dynamicType)) {
+        return false;
+    }
+
+    return this->matchesIdentifier(name, staticType, dynamicType);
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+bool DataUnit::matchesIdentifier(const string& name,
+        const string& staticType, const string& dynamicType) const {
+
+    return
+        // Matching name
+        (name.empty() || name == this->getName()) &&
+        // Matching static type
+        (staticType.empty() || staticType == this->getTypeName()) &&
+        // Matching dynamic type
+        (dynamicType.empty() || dynamicType == this->getDynamicTypeName());
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
 string DataUnit::getChainedName(const string& separator) const {
 
 	string name;
@@ -538,9 +695,9 @@ string DataUnit::getAnchorString_() const {
 	}
 
 	if (this->propGetDefault<bool>(".overflow", false)) {
-		anchor.appendBoldRed("<OF>");
+		anchor.appendBoldRedBg("<OF>");
 	} else if (this->dissector().hasUnderflow()) {
-		anchor.appendBoldRed("<UF>");
+		anchor.appendBoldRedBg("<UF>");
 	}
 
 	anchor.append(1, brackets[0]);

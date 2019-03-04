@@ -1302,6 +1302,11 @@ void String::appendBoldBlue(const string& str) {
 	this->append(String::makeBoldBlue(str));
 }
 
+void String::appendBoldBlueBg(const string& str) {
+
+	this->append(String::makeBoldBlueBg(str));
+}
+
 void String::appendBoldYellow(const string& str) {
 
 	this->append(String::makeBoldYellow(str));
@@ -1312,9 +1317,19 @@ void String::appendBoldGreen(const string& str) {
 	this->append(String::makeBoldGreen(str));
 }
 
+void String::appendBoldGreenBg(const string& str) {
+
+	this->append(String::makeBoldGreenBg(str));
+}
+
 void String::appendBoldRed(const string& str) {
 
 	this->append(String::makeBoldRed(str));
+}
+
+void String::appendBoldRedBg(const string& str) {
+
+	this->append(String::makeBoldRedBg(str));
 }
 
 void String::appendPink(const string& str) {
@@ -1371,6 +1386,14 @@ String String::makeBoldBlue(const string& str) {
 	return ret;
 }
 
+String String::makeBoldBlueBg(const string& str) {
+
+	String ret(str);
+	ret.prepend("\033[1;44m");
+	ret.append("\033[0m");
+	return ret;
+}
+
 String String::makeBoldYellow(const string& str) {
 
 	String ret(str);
@@ -1387,10 +1410,26 @@ String String::makeBoldGreen(const string& str) {
 	return ret;
 }
 
+String String::makeBoldGreenBg(const string& str) {
+
+	String ret(str);
+	ret.prepend("\033[1;42m");
+	ret.append("\033[0m");
+	return ret;
+}
+
 String String::makeBoldRed(const string& str) {
 
 	String ret(str);
 	ret.prepend("\033[1;31m");
+	ret.append("\033[0m");
+	return ret;
+}
+
+String String::makeBoldRedBg(const string& str) {
+
+	String ret(str);
+	ret.prepend("\033[1;41m");
 	ret.append("\033[0m");
 	return ret;
 }

@@ -95,6 +95,10 @@ public:
 	static	String	makeGreen(const std::string& str);
 	static	String	makeRed(const std::string& str);
 
+	static	String	makeBoldBlueBg(const std::string& str);
+	static	String	makeBoldGreenBg(const std::string& str);
+	static	String	makeBoldRedBg(const std::string& str);
+
 	static	size_t	getCommonPrefixLength(const std::string& str1, const std::string& str2);
 	static	size_t	getCommonPrefixLength(const std::vector<std::string>& strings);
 
@@ -158,6 +162,10 @@ public:
 	void 	appendYellow(const std::string& str);
 	void 	appendGreen(const std::string& str);
 	void 	appendRed(const std::string& str);
+
+	void 	appendBoldBlueBg(const std::string& str);
+	void 	appendBoldGreenBg(const std::string& str);
+	void 	appendBoldRedBg(const std::string& str);
 
 	void	assignHexDump(uint8_t* buf, size_t len,
 				char* fmt = 0, char* space = 0);
