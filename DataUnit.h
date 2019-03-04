@@ -396,13 +396,6 @@ public:
 		name_ = name;
 	}
 
-	/* Method for getting this data unit's name */
-	inline const std::string& getName() const {
-
-		return name_;
-	}
-
-
 
 	/* ---------------------------------------------------------------------
 	 *  Referencing GMT nodes (a.k.a. data units)
@@ -416,11 +409,37 @@ public:
      *
      */
 
+
+	// Return the name
+	inline const std::string& getName() const {
+
+		return name_;
+	}
+
 	// TODO: Add description
+	inline const size_t getTypeID() const {
+
+		return this->getTypeDescriptor().id();
+	}
+
+	// Return the static type as string
+	inline const std::string& getStaticType() const {
+
+		return this->getTypeDescriptor().name();
+	}
+
+	// Return the dynamic type as string (might be empty)
 	inline std::string getDynamicType() const {
 
 		return this->getDynamicType_();
 	}
+
+
+
+	// TODO: Add description
+	std::string getFullTypeName() const;
+
+
 
 	// TODO: Add description
 	std::string getIdentifier(bool name = true, bool staticType = true,
@@ -453,20 +472,8 @@ public:
 
 
 
-	// TODO: Add description
-	inline const size_t getTypeID() const {
 
-		return this->getTypeDescriptor().id();
-	}
 
-	// TODO: Add description
-	inline const std::string& getStaticType() const {
-
-		return this->getTypeDescriptor().name();
-	}
-
-	// TODO: Add description
-	std::string getFullTypeName() const;
 
 	// TODO: Add description
 	inline std::string getTypeInheritance() const {

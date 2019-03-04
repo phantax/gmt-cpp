@@ -65,7 +65,7 @@ bool DataUnitOperator::apply(Cursor& cursor) {
 		DataUnit& operand = cursor.getCurrent();
 
 		lastOpLog_.propSet("operand.path", operand.getChainedRefName());
-		lastOpLog_.propSet("operand.type", operand.getTypeName());
+		lastOpLog_.propSet("operand.type", operand.getStaticType());
 		lastOpLog_.propSet("operand.inherit", operand.getTypeInheritance());
 		lastOpLog_.propSet("operand.length", operand.getLength().toString());
 

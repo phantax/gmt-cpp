@@ -69,7 +69,7 @@ string DataUnitConverter::getAsJSON_(const DataUnit& dataUnit) const {
 	json.appendFormat("\"__refname__\": \"%s\",\n",
 			dataUnit.getRefName().c_str());
 	json.appendFormat("\"__type__\": \"%s\",\n",
-			dataUnit.getTypeName().c_str());
+			dataUnit.getStaticType().c_str());
 
 	if (dataUnit.containsType(LeafNode::typeDescriptor())) {
 		json.appendFormat("\"__data__\": \"%s\",\n",

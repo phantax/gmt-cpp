@@ -122,7 +122,7 @@ string LeafNode::getAsText() const {
 
 	String text;
 	text.appendFormat("%s(\"%s\", %s of %s) [ %s ] <%s>",
-			this->getTypeName().c_str(), this->getRefName().c_str(),
+			this->getStaticType().c_str(), this->getRefName().c_str(),
 			this->getLength().toString().c_str(),
 			this->dissector().getSize().toString().c_str(),
 			this->toHexString(true).c_str(),
