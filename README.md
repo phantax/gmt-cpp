@@ -21,14 +21,14 @@ is also available.
 git clone https://github.com/phantax/gmt-cpp.git
 ```
 
-2. Clone the bitbuffers-cpp repository and create link in the gmt-cpp directory
+2. Clone the [bitbuffers-cpp repository](https://github.com/phantax/bitbuffers-cpp) and create link in the gmt-cpp directory
 
 ```bash
 git clone https://github.com/phantax/bitbuffers-cpp.git
 ln -s ../bitbuffers-cpp gmt-cpp/bitbuffers-cpp
 ```
 
-3. Clone the propertynode-cpp repository and create link in the gmt-cpp directory
+3. Clone the [propertynode-cpp repository](https://github.com/phantax/propertynode-cpp) and create link in the gmt-cpp directory
 
 ```bash
 git clone https://github.com/phantax/propertynode-cpp.git
