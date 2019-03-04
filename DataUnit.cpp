@@ -557,17 +557,19 @@ string DataUnit::getPath() const {
 /*
  * ___________________________________________________________________________
  */
-string DataUnit::getFullTypeName() const {
+string DataUnit::getFullType() const {
 
-	string type = this->getStaticType();
+	string fullType = this->getStaticType();
 
 	string dynamicType = this->getDynamicType();
 	if (!dynamicType.empty()) {
-		type.append(":");
-		type.append(dynamicType);
+        // >>> This node has a dynamic type (that is,
+        // a non-empty dynamic type string) >>>
+		fullType.append(":");
+		fullType.append(dynamicType);
 	}
 
-	return type;
+	return fullType;
 }
 
 
@@ -759,7 +761,7 @@ void DataUnit::print(const PrintOptions& options) const {
 		line.append(this->getAnchorString_());
 		line.setWidth(50);
 		line.appendFixedWidth(String::format("%s",
-				this->getFullTypeName().c_str()), 40);
+				this->getFullType().c_str()), 40);
 //				this->getStaticType().c_str(), this->getTypeID()), 40);
 //				this->getPath().c_str(), this->getTypeID()), 40);
 		cout << line;

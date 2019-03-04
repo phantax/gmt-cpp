@@ -401,12 +401,28 @@ public:
 	 *  Referencing GMT nodes (a.k.a. data units)
 	 * --------------------------------------------------------------------- */
 
-    /*  GMT nodes (a.k.a. data units) have several inherent attributes for
+    /*  GMT nodes (a.k.a. data units) can have several inherent attributes for
      *  identification:
-     *  (1) name (might be empty)
-     *  (2) static type (must not be empty)
-     *  (3) dynamic type (might be empty)
      *
+     *  (1) name
+     *  (2) static type
+     *  (3) dynamic type
+     *
+     *  Basically, these attributes are strings (with certain restrictions
+     *  that apply to the types of characters that can be used). Name (1) and
+     *  dynamic type (3) are optional and might be empty (string of length 0).
+     *  The static type cannot be empty.
+     *
+     *  GMT nodes can be identified by using string combinations of the above
+     *  attributes. Let "[]" enclose optional components, the composition rule
+     *  is as follows:
+     *
+     *      "[[static_type][:dynamic_type]%][name]"
+     *
+     *  This can be considered a filter expression that matches a node if the
+     *  the node's attributes are identical to those given in the filter
+     *  expression. If an attribute is omitted in the filter expression it
+     *  essentially acts as a wildcard.
      */
 
 
@@ -428,10 +444,8 @@ public:
 		return this->getDynamicType_();
 	}
 
-
-
 	// TODO: Add description
-	std::string getFullTypeName() const;
+	std::string getFullType() const;
 
 
 
