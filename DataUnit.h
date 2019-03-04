@@ -460,7 +460,7 @@ public:
 	}
 
 	// TODO: Add description
-	inline const std::string& getTypeName() const {
+	inline const std::string& getStaticType() const {
 
 		return this->getTypeDescriptor().name();
 	}

@@ -325,7 +325,7 @@ string DataUnit::getIdentifier(bool name, bool staticType,
     string identifier;
 
     if (staticType) {
-        identifier.append(this->getTypeName());
+        identifier.append(this->getStaticType());
     }
     if (dynamicType) {
         string dynamicTypeStr = this->getDynamicType();
@@ -353,7 +353,7 @@ string DataUnit::getIdentifier(bool name, bool staticType,
 string DataUnit::getUniqueIdentifier() const {
     
 	string name = this->getName();
-	string staticType = this->getTypeName();
+	string staticType = this->getStaticType();
 	string dynamicType = this->getDynamicType();
 
 	size_t indexByName = 0;
@@ -467,7 +467,7 @@ bool DataUnit::matchesIdentifier(const string& name,
         // Matching name
         (name.empty() || name == this->getName()) &&
         // Matching static type
-        (staticType.empty() || staticType == this->getTypeName()) &&
+        (staticType.empty() || staticType == this->getStaticType()) &&
         // Matching dynamic type
         (dynamicType.empty() || dynamicType == this->getDynamicType());
 }
@@ -559,7 +559,7 @@ string DataUnit::getPath() const {
  */
 string DataUnit::getFullTypeName() const {
 
-	string type = this->getTypeName();
+	string type = this->getStaticType();
 
 	string dynamicType = this->getDynamicType();
 	if (!dynamicType.empty()) {
@@ -613,7 +613,7 @@ bool DataUnit::propRedirectHook_(string& name, PropertyNode*& node) const {
 void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
 
 	if (name == ".typename") {
-		value.setValue<string>(this->getTypeName());
+		value.setValue<string>(this->getStaticType());
 	} else if (name == ".typeid") {
 		value.setValue<int>(this->getTypeID());
 	} else if (name == ".overflow") {
@@ -762,7 +762,7 @@ void DataUnit::print(const PrintOptions& options) const {
 		line.setWidth(50);
 		line.appendFixedWidth(String::format("%s",
 				this->getFullTypeName().c_str(), this->getTypeID()), 40);
-//				this->getTypeName().c_str(), this->getTypeID()), 40);
+//				this->getStaticType().c_str(), this->getTypeID()), 40);
 //				this->getPath().c_str(), this->getTypeID()), 40);
 		cout << line;
 	}
@@ -1375,7 +1375,7 @@ DataUnit* DataUnit::getNeighbourByName(const string& name) {
 	while (unit != 0 && index > 0 && neighbour == 0) {
 		bool match =
 				/* matching (static) type */
-				(statType.empty() || statType == unit->getTypeName()) &&
+				(statType.empty() || statType == unit->getStaticType()) &&
 				/* matching (dynamic) type */
 				(dynType.empty() || dynType == unit->getDynamicType()) &&
 				/* matching name*/
