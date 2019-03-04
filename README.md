@@ -48,6 +48,6 @@ make
 
 Andreas Walz  
 andreas.walz@hs-offenburg.de  
-Institute of Reliable Embedded Systems and Communication Electronics  
+Institute of Reliable Embedded Systems and Communication Electronics (ivESK)  
 Offenburg University of Applied Sciences  
 ivesk.hs-offenburg.de
