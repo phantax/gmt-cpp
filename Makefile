@@ -13,19 +13,22 @@ SOURCES = $(shell ls *.cpp)
 
 OBJECTS = $(foreach o, $(SOURCES:.cpp=.o), build/$o)
 
-USES = bitbuffers-cpp propertynode-cpp
+DEPS = bitbuffers-cpp propertynode-cpp
 
 CFLAGS  = -O0 -g
-CFLAGS += $(foreach u, $(USES), -I$(realpath $u))
+CFLAGS += $(foreach d, $(DEPS), -I$(realpath $d))
 
-LDFLAGS = $(foreach u, $(USES), -L$(realpath $u)/build)
-LDFLAGS += $(foreach u, $(USES), -l$u)
+LDFLAGS = $(foreach d, $(DEPS), -L$(realpath $d)/build)
+LDFLAGS += $(foreach d, $(DEPS), -l$d)
 
 export CFLAGS
 export LDFLAGS
 
 
 all: library
+
+deps:
+	$(foreach d, $(DEPS), $(MAKE) -C $d;)  
 
 build/%.o: %.cpp %.h
 	@echo "\033[01;32m=> Compiling '$<' ...\033[00;00m"

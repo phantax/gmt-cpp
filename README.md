@@ -17,9 +17,31 @@ is also available.
 
 1. Clone this repository
 
-2. Clone the bitbuffers-cpp repository
+```bash
+git clone https://github.com/phantax/gmt-cpp.git
+```
 
-3. Clone the propertynode-cpp repository
+2. Clone the bitbuffers-cpp repository and create link in the gmt-cpp directory
+
+```bash
+git clone https://github.com/phantax/bitbuffers-cpp.git
+ln -s ../bitbuffers-cpp gmt-cpp/bitbuffers-cpp
+```
+
+3. Clone the propertynode-cpp repository and create link in the gmt-cpp directory
+
+```bash
+git clone https://github.com/phantax/propertynode-cpp.git
+ln -s ../propertynode-cpp gmt-cpp/propertynode-cpp
+```
+
+4. Build gmt-cpp library including libraries it depends on (bitbuffers-cpp and propertynode-cpp)
+
+```bash
+cd gmt-cpp
+make deps
+make
+```
 
 
 ## Contact
