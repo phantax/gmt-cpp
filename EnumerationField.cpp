@@ -349,7 +349,7 @@ bool EnumerationField::decode_(const BufferReader& reader) {
 /*
  * ___________________________________________________________________________
  */
-std::string EnumerationField::getDynamicTypeName_() const {
+std::string EnumerationField::getDynamicType_() const {
 
 	return this->getItemName();
 }

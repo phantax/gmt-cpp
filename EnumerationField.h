@@ -228,7 +228,7 @@ protected:
 	virtual void propWriteHook_(const std::string& name, DynamicValue& value);
 
 	// TODO: Add description
-	virtual std::string getDynamicTypeName_() const;
+	virtual std::string getDynamicType_() const;
 
 	/* --------------------------------------------------------------------- */
 

@@ -73,8 +73,8 @@ bool TypeRegistry::add(const TypeDescriptor& typeDescriptor) {
 	bool success = false;
 
 	/* prevent duplicates in registry */
-	if (this->findById(typeDescriptor.getTypeId()) == 0 &&
-			this->findByName(typeDescriptor.getTypeName()) == 0) {
+	if (this->findById(typeDescriptor.id()) == 0 &&
+			this->findByName(typeDescriptor.name()) == 0) {
 
 		/* add to registry */
 		registry_.push_back(&typeDescriptor);
@@ -97,7 +97,7 @@ const TypeDescriptor* TypeRegistry::findByName(
 	size_t i = 0;
 
 	while (i < n && desc == 0) {
-		if (registry_[i]->getTypeName() == typeName) {
+		if (registry_[i]->name() == typeName) {
 			desc = registry_[i];
 		}
 		++i;
@@ -117,7 +117,7 @@ const TypeDescriptor* TypeRegistry::findById(size_t typeId) {
 	size_t i = 0;
 
 	while (i < n && desc == 0) {
-		if (registry_[i]->getTypeId() == typeId) {
+		if (registry_[i]->id() == typeId) {
 			desc = registry_[i];
 		}
 		++i;
@@ -137,13 +137,13 @@ size_t TypeRegistry::print() {
 			it != registry_.end(); ++it) {
 
 		/* print typeId and type name */
-		cout << String::format("[%5d] %s", (*it)->getTypeId(),
-				String::makeBoldBlue((*it)->getTypeName()).c_str());
+		cout << String::format("[%5d] %s", (*it)->id(),
+				String::makeBoldBlue((*it)->name()).c_str());
 
 		/* point to base type (where applicable) */
 		const TypeDescriptor* base = (*it)->getBaseTypeDescriptor();
 		if (base != 0) {
-			cout << String::format(" ==> %s", base->getTypeName().c_str());
+			cout << String::format(" ==> %s", base->name().c_str());
 		}
 
 		cout << endl;
@@ -168,17 +168,17 @@ TypeRegistry::~TypeRegistry() {
 /*
  * ___________________________________________________________________________
  */
-TypeDescriptor::TypeDescriptor(size_t typeId, const string& typeName)
-		: baseTypeDesc_(0), typeId_(typeId), typeName_(typeName) {
+TypeDescriptor::TypeDescriptor(size_t id, const string& name)
+		: base_(0), id_(id), name_(name) {
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-TypeDescriptor::TypeDescriptor(const TypeDescriptor& baseTypeDesc,
-		size_t typeId, const string& typeName)
-		: baseTypeDesc_(&baseTypeDesc), typeId_(typeId), typeName_(typeName) {
+TypeDescriptor::TypeDescriptor(const TypeDescriptor& base,
+		size_t id, const string& name)
+		: base_(&base), id_(id), name_(name) {
 }
 
 
@@ -214,7 +214,7 @@ string TypeDescriptor::getTypeInheritance() const {
 		if (inheritance.length() > 0) {
 			inheritance.insert(0, 1, '/');
 		}
-		inheritance.insert(0, type->getTypeName());
+		inheritance.insert(0, type->name());
 		type = type->getBaseTypeDescriptor();
 	}
 
@@ -328,7 +328,7 @@ string DataUnit::getIdentifier(bool name, bool staticType,
         identifier.append(this->getTypeName());
     }
     if (dynamicType) {
-        string dynamicTypeStr = this->getDynamicTypeName();
+        string dynamicTypeStr = this->getDynamicType();
 	    if (!dynamicTypeStr.empty()) {
             identifier.append(":");
             identifier.append(dynamicTypeStr);
@@ -354,7 +354,7 @@ string DataUnit::getUniqueIdentifier() const {
     
 	string name = this->getName();
 	string staticType = this->getTypeName();
-	string dynamicType = this->getDynamicTypeName();
+	string dynamicType = this->getDynamicType();
 
 	size_t indexByName = 0;
 	size_t indexByType = 0;
@@ -469,7 +469,7 @@ bool DataUnit::matchesIdentifier(const string& name,
         // Matching static type
         (staticType.empty() || staticType == this->getTypeName()) &&
         // Matching dynamic type
-        (dynamicType.empty() || dynamicType == this->getDynamicTypeName());
+        (dynamicType.empty() || dynamicType == this->getDynamicType());
 }
 
 
@@ -561,7 +561,7 @@ string DataUnit::getFullTypeName() const {
 
 	string type = this->getTypeName();
 
-	string dynamicType = this->getDynamicTypeName();
+	string dynamicType = this->getDynamicType();
 	if (!dynamicType.empty()) {
 		type.append(":");
 		type.append(dynamicType);
@@ -1377,7 +1377,7 @@ DataUnit* DataUnit::getNeighbourByName(const string& name) {
 				/* matching (static) type */
 				(statType.empty() || statType == unit->getTypeName()) &&
 				/* matching (dynamic) type */
-				(dynType.empty() || dynType == unit->getDynamicTypeName()) &&
+				(dynType.empty() || dynType == unit->getDynamicType()) &&
 				/* matching name*/
 				(namePart.empty() || namePart == unit->getName());
 
@@ -1496,7 +1496,7 @@ bool DataUnit::repair_(bool recursive) {
 /*
  * ___________________________________________________________________________
  */
-string DataUnit::getDynamicTypeName_() const {
+string DataUnit::getDynamicType_() const {
 
 	return "";
 }

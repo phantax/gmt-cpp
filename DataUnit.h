@@ -109,23 +109,23 @@ class TypeDescriptor {
 private:
 
 	// TODO: Add description
-	const TypeDescriptor* baseTypeDesc_;
+	const TypeDescriptor* base_;
 
 	// TODO: Add description
-	size_t typeId_;
+	size_t id_;
 
 	// TODO: Add description
-	const std::string typeName_;
+	const std::string name_;
 
 
 public:
 
 	// TODO: Add description
-	TypeDescriptor(size_t typeId, const std::string& typeName);
+	TypeDescriptor(size_t id, const std::string& name);
 
 	// TODO: Add description
 	TypeDescriptor(const TypeDescriptor& baseTypeDesc,
-			size_t typeId, const std::string& typeName);
+			size_t id, const std::string& name);
 
 
 	// TODO: Add description
@@ -142,29 +142,31 @@ public:
 
 
 	// TODO: Add description
-	inline size_t getTypeId() const {
+	inline size_t id() const {
 
-		return typeId_;
+		return id_;
 	}
 
 	// TODO: Add description
-	inline const std::string& getTypeName() const {
+	inline const std::string& name() const {
 
-		return typeName_;
+		return name_;
 	}
 
 	// TODO: Add description
 	inline const TypeDescriptor* getBaseTypeDescriptor() const {
 
-		return baseTypeDesc_;
+		return base_;
 	}
 
 
+	// TODO: Add description
 	inline bool operator==(const TypeDescriptor& desc) const {
 
 		return this == &desc;
 	}
 
+	// TODO: Add description
 	inline bool operator!=(const TypeDescriptor& desc) const {
 
 		return !(this == &desc);
@@ -295,7 +297,7 @@ protected:
 	virtual bool repair_(bool recursive = true);
 
 	// TODO: Add description
-	virtual std::string getDynamicTypeName_() const;
+	virtual std::string getDynamicType_() const;
 
 	/* --- Potentially to be overwritten by sub-classes: ------------------- */
 
@@ -400,10 +402,24 @@ public:
 		return name_;
 	}
 
-	// TODO: Add description
-	inline std::string getDynamicTypeName() const {
 
-		return this->getDynamicTypeName_();
+
+	/* ---------------------------------------------------------------------
+	 *  Referencing GMT nodes (a.k.a. data units)
+	 * --------------------------------------------------------------------- */
+
+    /*  GMT nodes (a.k.a. data units) have several inherent attributes for
+     *  identification:
+     *  (1) name (might be empty)
+     *  (2) static type (must not be empty)
+     *  (3) dynamic type (might be empty)
+     *
+     */
+
+	// TODO: Add description
+	inline std::string getDynamicType() const {
+
+		return this->getDynamicType_();
 	}
 
 	// TODO: Add description
@@ -440,13 +456,13 @@ public:
 	// TODO: Add description
 	inline const size_t getTypeID() const {
 
-		return this->getTypeDescriptor().getTypeId();
+		return this->getTypeDescriptor().id();
 	}
 
 	// TODO: Add description
 	inline const std::string& getTypeName() const {
 
-		return this->getTypeDescriptor().getTypeName();
+		return this->getTypeDescriptor().name();
 	}
 
 	// TODO: Add description
