@@ -516,7 +516,52 @@ public:
 	 *  Navigating between data units
 	 * ---------------------------------------------------------------------
      *  
+     *  Conceptually, Generic Message Trees (GMTs) are trees, as the name 
+     *  suggests. However, internally, the nodes are linkes in a different way:
+     *
+     * +-------+                                              +-------+
+     * |   1   |<-------------------------------------------->|   9   |---...
+     * +-------+                                              +-------+
+     *     ^
+     *     |
+     *     v
+     * +-------+                          +-------+
+     * |   2   |<------------------------>|   7   |---...
+     * +-------+                          +-------+
+     *     ^                                  ^
+     *     |                                  |
+     *     v                                  v
+     * +-------+      +-------+           +-------+
+     * |   3   |<---->|   4   |           |   8   |
+     * +-------+      +-------+           +-------+
+     *                    ^
+     *                    |
+     *                    v
+     *                +-------+      +-------+
+     *                |   5   |<---->|   6   |
+     *                +-------+      +-------+
+     *
+     *  Here, for instance, node [1] is the root node and nodes [2] and [7] 
+     *  the root's child nodes. That is, instead of each node holding a list
+     *  of its child nodes, each node just holds a pointer to its first child
+     *  node and its parent (if existent). Additionally, each nodes can have a
+     *  'previous' node and a 'next' node, building a doubly-linked list of 
+     *  sibling nodes. 
+     *
+     *                                    ^  parent  
+     *                                    |
+     *                              +------------+
+     *              previous <------|  GMT node  |------> next
+     *                              +------------+
+     *                                    |  
+     *                                    v  first child
+     *  
+     *  Navigating through a GMT can be done in several ways. One way is to 
+     *  call methods defined in the DataUnit (GMT node) class:
+     *  
      *  -> getParent()
+     *
+     *  
      *
      *  -> getPrevious()
      *  -> getPrevious(filterExpr)
