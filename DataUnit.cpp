@@ -363,16 +363,16 @@ string DataUnit::getUniqueIdentifier() const {
 
 	const DataUnit* du = this->getPrevious();
 	while (du != 0) {
-		if (du->matchesIdentifier(name)) {
+		if (du->matchesFilter(name)) {
 			++indexByName;
 		}
-		if (du->matchesIdentifier("", staticType, "")) {
+		if (du->matchesFilter("", staticType, "")) {
 			++indexByType;
 		}
-		if (du->matchesIdentifier("", staticType, dynamicType)) {
+		if (du->matchesFilter("", staticType, dynamicType)) {
 			++indexByFullType;
 		}
-		if (du->matchesIdentifier(name, staticType, dynamicType)) {
+		if (du->matchesFilter(name, staticType, dynamicType)) {
 			++indexByFullTypeAndName;
 		}
 		du = du->getPrevious();
@@ -409,7 +409,7 @@ string DataUnit::getUniqueIdentifier() const {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnit::splitIdentifier(const string& identifier, string& name,
+bool DataUnit::splitFilterExpression(const string& identifier, string& name,
         string& staticType, string& dynamicType) {
 
     // Extract name
@@ -443,24 +443,24 @@ bool DataUnit::splitIdentifier(const string& identifier, string& name,
 /*
  * ___________________________________________________________________________
  */
-bool DataUnit::matchesIdentifier(const string& identifier) const {
+bool DataUnit::matchesFilter(const string& filterExpression) const {
 
 	string name;
 	string staticType;
 	string dynamicType;
 
-    if (!splitIdentifier(identifier, name, staticType, dynamicType)) {
+    if (!splitFilterExpression(filterExpression, name, staticType, dynamicType)) {
         return false;
     }
 
-    return this->matchesIdentifier(name, staticType, dynamicType);
+    return this->matchesFilter(name, staticType, dynamicType);
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-bool DataUnit::matchesIdentifier(const string& name,
+bool DataUnit::matchesFilter(const string& name,
         const string& staticType, const string& dynamicType) const {
 
     return
@@ -1051,6 +1051,74 @@ DataUnit* DataUnit::getSuccessor() const {
 	}
 
 	return successor;
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+DataUnit* DataUnit::getPreviousByIdentifier(const string& identifier) const {
+
+	string name;
+	string staticType;
+	string dynamicType;
+
+    if (!splitFilterExpression(identifier, name, staticType, dynamicType)) {
+        return (DataUnit*)0;
+    }
+
+    return this->getPreviousByIdentifier(name, staticType, dynamicType);
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+DataUnit* DataUnit::getPreviousByIdentifier(const string& name,
+            const string& staticType, const string& dynamicType) const {
+
+    DataUnit* previous = this->getPrevious();
+    while (previous != 0) {
+        if (previous->matchesFilter(name, staticType, dynamicType)) {
+            break;
+        }
+        previous = previous->getPrevious();
+    }
+    return previous;
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+DataUnit* DataUnit::getNextByIdentifier(const string& identifier) const {
+
+	string name;
+	string staticType;
+	string dynamicType;
+
+    if (!splitFilterExpression(identifier, name, staticType, dynamicType)) {
+        return (DataUnit*)0;
+    }
+
+    return this->getNextByIdentifier(name, staticType, dynamicType);
+}
+
+
+/*
+ * ___________________________________________________________________________
+ */
+DataUnit* DataUnit::getNextByIdentifier(const string& name,
+            const string& staticType, const string& dynamicType) const {
+
+    DataUnit* next = this->getNext();
+    while (next != 0) {
+        if (next->matchesFilter(name, staticType, dynamicType)) {
+            break;
+        }
+        next = next->getNext();
+    }
+    return next;
 }
 
 

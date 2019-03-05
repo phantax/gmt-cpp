@@ -242,7 +242,7 @@ private:
 
 
 	// TODO: Add description
-    static bool splitIdentifier(const std::string& identifier,
+    static bool splitFilterExpression(const std::string& identifier,
             std::string& name, std::string& staticType,
             std::string& dynamicType);
 
@@ -405,24 +405,42 @@ public:
      *  identification:
      *
      *  (1) name
-     *  (2) static type
-     *  (3) dynamic type
+     *  (2) static type (read-only at runtime)
+     *  (3) dynamic type (read-only at runtime)
      *
      *  Basically, these attributes are strings (with certain restrictions
      *  that apply to the types of characters that can be used). Name (1) and
      *  dynamic type (3) are optional and might be empty (string of length 0).
-     *  The static type cannot be empty.
+     *  The static type (2) cannot be empty. 
      *
-     *  GMT nodes can be identified by using string combinations of the above
-     *  attributes. Let "[]" enclose optional components, the composition rule
-     *  is as follows:
+     *  The name attribute (1) of a node can be changed at runtime. The other
+     *  two attributes, that is (2) and(3), are read-only. Accessor methods are:
      *
-     *      "[[static_type][:dynamic_type]%][name]"
+     *  -> getName()            // Read name attribute
+     *  -> setName(name)        // Write name attribute
+     *  -> getStaticType()      // Read static type attribute
+     *  -> getDynamicType()     // Read dynamic type attribute
      *
-     *  This can be considered a filter expression that matches a node if the
-     *  the node's attributes are identical to those given in the filter
-     *  expression. If an attribute is omitted in the filter expression it
-     *  essentially acts as a wildcard.
+     *  The above attributes can be used to define a filter on GMT nodes using
+     *  the following filter expression syntax
+     *
+     *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
+     *
+     *  It matches a node if the the considered node's attributes are identical
+     *  to those given in the filter expression. If an attribute is omitted in
+     *  the filter expression it essentially acts as a wildcard. Examples are:
+     *
+     *  -> "length"                     (selects nodes that are named "length")
+     *  -> "uint32%"                    (selects nodes of static type "uint32")
+     *  -> "TLSExtension:heartbeat%"    (selects nodes of static type
+     *                                   "TLSExtension" with a dynamic type
+     *                                   "heartbeat")
+     *
+     *  
+     *
+     *
+
+
      */
 
 
@@ -457,10 +475,10 @@ public:
 	std::string getUniqueIdentifier() const;
 
 	// TODO: Add description
-	bool matchesIdentifier(const std::string& identifier) const;
+	bool matchesFilter(const std::string& filterExpression) const;
 
 	// TODO: Add description
-	bool matchesIdentifier(const std::string& name,
+	bool matchesFilter(const std::string& name,
             const std::string& staticType, const std::string& dynamicType) const;
 
 	/* Method for getting this data unit's name path */
@@ -524,11 +542,26 @@ public:
 		return previous_;
 	}
 
+	/* TODO: Add description */
+	DataUnit* getPreviousByIdentifier(const std::string& identifier) const;
+
+	/* TODO: Add description */
+	DataUnit* getPreviousByIdentifier(const std::string& name,
+            const std::string& staticType, const std::string& dynamicType) const;
+
+
 	/* Return pointer to data unit following this data unit in the chain */
 	inline DataUnit* getNext() const {
 
 		return next_;
 	}
+
+	/* TODO: Add description */
+	DataUnit* getNextByIdentifier(const std::string& identifier) const;
+
+	/* TODO: Add description */
+	DataUnit* getNextByIdentifier(const std::string& name,
+            const std::string& staticType, const std::string& dynamicType) const;
 
 
 	/* Return pointer to data unit at index <index> in this data unit's chain */
