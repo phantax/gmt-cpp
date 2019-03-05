@@ -237,15 +237,20 @@ public:
 
 private:
 
+	/* --- Static class members -------------------------------------------- */
+
 	/* this class type's descriptor */
 	static TypeDescriptor desc_;
 
 
-	// TODO: Add description
-    static bool splitFilterExpression(const std::string& identifier,
+	// Splits a filter expression ("[[static_type][:dynamic_type]%][name]") 
+    // into its static type, dynamic type, and name components
+    static bool splitFilterExpression(const std::string& filterExpr,
             std::string& name, std::string& staticType,
             std::string& dynamicType);
 
+
+	/* --- Non-static class members ---------------------------------------- */
 
 	/* data unit dissector */
 	Dissector dissector_;
@@ -398,7 +403,7 @@ public:
 
 
 	/* ---------------------------------------------------------------------
-	 *  Referencing GMT nodes (a.k.a. data units)
+	 *  Attributes of GMT nodes (a.k.a. data units)
 	 * --------------------------------------------------------------------- */
 
     /*  GMT nodes (a.k.a. data units) can have several inherent attributes for
@@ -421,26 +426,7 @@ public:
      *  -> getStaticType()      // Read static type attribute
      *  -> getDynamicType()     // Read dynamic type attribute
      *
-     *  The above attributes can be used to define a filter on GMT nodes using
-     *  the following filter expression syntax
      *
-     *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
-     *
-     *  It matches a node if the the considered node's attributes are identical
-     *  to those given in the filter expression. If an attribute is omitted in
-     *  the filter expression it essentially acts as a wildcard. Examples are:
-     *
-     *  -> "length"                     (selects nodes that are named "length")
-     *  -> "uint32%"                    (selects nodes of static type "uint32")
-     *  -> "TLSExtension:heartbeat%"    (selects nodes of static type
-     *                                   "TLSExtension" with a dynamic type
-     *                                   "heartbeat")
-     *
-     *  
-     *
-     *
-
-
      */
 
 
@@ -475,7 +461,7 @@ public:
 	std::string getUniqueIdentifier() const;
 
 	// TODO: Add description
-	bool matchesFilter(const std::string& filterExpression) const;
+	bool matchesFilter(const std::string& filterExpr) const;
 
 	// TODO: Add description
 	bool matchesFilter(const std::string& name,
@@ -528,13 +514,56 @@ public:
 
 	/* ---------------------------------------------------------------------
 	 *  Navigating between data units
-	 * --------------------------------------------------------------------- */
+	 * ---------------------------------------------------------------------
+     *  
+     *  -> getParent()
+     *
+     *  -> getPrevious()
+     *  -> getPrevious(filterExpr)
+     *  -> getPrevious(name, staticType, dynamicType)
+     *
+     *  -> getNext()
+     *  -> getNext(filterExpr)
+     *  -> getNext(name, staticType, dynamicType)
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *  GMT nodes have three attributes (name, static type, dynamic type) that
+     *  can be used to define a filter on GMT nodes using the following filter
+     *  expression syntax
+     *
+     *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
+     *
+     *  It matches a node if the the considered node's attributes are identical
+     *  to those given in the filter expression. If an attribute is omitted in
+     *  the filter expression it essentially acts as a wildcard. Examples are:
+     *
+     *  -> "length"                     (selects nodes that are named "length")
+     *  -> "uint32%"                    (selects nodes of static type "uint32")
+     *  -> "TLSExtension:heartbeat%"    (selects nodes of static type
+     *                                   "TLSExtension" with a dynamic type
+     *                                   "heartbeat")
+     *
+     *  
+     *
+     *
+     */
 
 	/* Return pointer to this data unit's container */
 	inline DataUnit* getParent() const {
 
 		return parent_;
 	}
+
+    
+	/* --- getPrevious(...) ------------------------------------------------ */
 
 	/* Return pointer to data unit preceeding this data unit in the chain */
 	inline DataUnit* getPrevious() const {
@@ -543,11 +572,14 @@ public:
 	}
 
 	/* TODO: Add description */
-	DataUnit* getPreviousByIdentifier(const std::string& identifier) const;
+	DataUnit* getPrevious(const std::string& filterExpr) const;
 
 	/* TODO: Add description */
-	DataUnit* getPreviousByIdentifier(const std::string& name,
+	DataUnit* getPrevious(const std::string& name,
             const std::string& staticType, const std::string& dynamicType) const;
+
+    
+	/* --- getNext(...) ---------------------------------------------------- */
 
 
 	/* Return pointer to data unit following this data unit in the chain */
@@ -557,11 +589,13 @@ public:
 	}
 
 	/* TODO: Add description */
-	DataUnit* getNextByIdentifier(const std::string& identifier) const;
+	DataUnit* getNext(const std::string& filterExpr) const;
 
 	/* TODO: Add description */
-	DataUnit* getNextByIdentifier(const std::string& name,
+	DataUnit* getNext(const std::string& name,
             const std::string& staticType, const std::string& dynamicType) const;
+
+
 
 
 	/* Return pointer to data unit at index <index> in this data unit's chain */

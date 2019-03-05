@@ -409,31 +409,31 @@ string DataUnit::getUniqueIdentifier() const {
 /*
  * ___________________________________________________________________________
  */
-bool DataUnit::splitFilterExpression(const string& identifier, string& name,
+bool DataUnit::splitFilterExpression(const string& filterExpr, string& name,
         string& staticType, string& dynamicType) {
 
     // Extract name
-	size_t namePos = identifier.find_first_of("%");
+	size_t namePos = filterExpr.find_first_of("%");
 	if (namePos != string::npos) {
-		name = identifier.substr(namePos + 1);
+		name = filterExpr.substr(namePos + 1);
 	} else {
-        // >>> It's a name-only identifier >>>
-        name = identifier;
+        // >>> It's a name-only filter expression >>>
+        name = filterExpr;
         return true;
     }
 
     // Extract type
-	size_t typePos = identifier.find_first_of(":");
+	size_t typePos = filterExpr.find_first_of(":");
 	if (typePos != string::npos) {
         if (typePos > namePos) {
-            // >>> Invalid identifier >>>
+            // >>> Invalid filter expression >>>
             return false;
         }
-        staticType = identifier.substr(0, typePos);
-        dynamicType = identifier.substr(typePos + 1, namePos - typePos - 1);
+        staticType = filterExpr.substr(0, typePos);
+        dynamicType = filterExpr.substr(typePos + 1, namePos - typePos - 1);
 	} else {
-        // It's a static-type-only type identifier
-        staticType = identifier.substr(0, namePos);
+        // It's a static-type-only type filter expression
+        staticType = filterExpr.substr(0, namePos);
     }
 
     return true;
@@ -443,13 +443,13 @@ bool DataUnit::splitFilterExpression(const string& identifier, string& name,
 /*
  * ___________________________________________________________________________
  */
-bool DataUnit::matchesFilter(const string& filterExpression) const {
+bool DataUnit::matchesFilter(const string& filterExpr) const {
 
 	string name;
 	string staticType;
 	string dynamicType;
 
-    if (!splitFilterExpression(filterExpression, name, staticType, dynamicType)) {
+    if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return false;
     }
 
@@ -1057,24 +1057,24 @@ DataUnit* DataUnit::getSuccessor() const {
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getPreviousByIdentifier(const string& identifier) const {
+DataUnit* DataUnit::getPrevious(const string& filterExpr) const {
 
 	string name;
 	string staticType;
 	string dynamicType;
 
-    if (!splitFilterExpression(identifier, name, staticType, dynamicType)) {
+    if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return (DataUnit*)0;
     }
 
-    return this->getPreviousByIdentifier(name, staticType, dynamicType);
+    return this->getPrevious(name, staticType, dynamicType);
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getPreviousByIdentifier(const string& name,
+DataUnit* DataUnit::getPrevious(const string& name,
             const string& staticType, const string& dynamicType) const {
 
     DataUnit* previous = this->getPrevious();
@@ -1091,24 +1091,24 @@ DataUnit* DataUnit::getPreviousByIdentifier(const string& name,
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getNextByIdentifier(const string& identifier) const {
+DataUnit* DataUnit::getNext(const string& filterExpr) const {
 
 	string name;
 	string staticType;
 	string dynamicType;
 
-    if (!splitFilterExpression(identifier, name, staticType, dynamicType)) {
+    if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return (DataUnit*)0;
     }
 
-    return this->getNextByIdentifier(name, staticType, dynamicType);
+    return this->getNext(name, staticType, dynamicType);
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getNextByIdentifier(const string& name,
+DataUnit* DataUnit::getNext(const string& name,
             const string& staticType, const string& dynamicType) const {
 
     DataUnit* next = this->getNext();
