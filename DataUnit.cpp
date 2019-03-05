@@ -1200,27 +1200,59 @@ DataUnit* DataUnit::getByPath(const string& path) {
 	size_t pos = path.find_first_not_of("/");
 	if (pos != string::npos) {
 		if (pos >= 1) {
+            // >>> There are leading slashes >>>
 			du = this->getRoot();
 		}
 		if (pos > 1) {
+            // Start from virtual root whenever
+            // there is more than one leading slash
 			vRoot = true;
 		}
 	}
 
-	string name;
+	string primaryRef;
 	while (du != 0 && pos != string::npos && pos < len) {
 
+        // The input path is split according to the following scheme:
+        //
+        //   [/[/]]PRIMARY-REFERENCE[/SECONDARY-PATH]
+        //
+        // Examples are:
+        //
+        //   "primary-reference"
+        //   "/primary-reference"
+        //   "//primary-reference"
+        //   "primary-reference/secondary/path"
+        //   "/primary-reference/secondary/path"
+        //   "//primary-reference/secondary/path"
+
+        // Find the first slash *after* the primary reference
 		size_t pos2 = path.find_first_of("/", pos);
 
 		if (pos2 != string::npos) {
-			name = path.substr(pos, pos2 - pos);
+			primaryRef = path.substr(pos, pos2 - pos);
 			pos2 = path.find_first_not_of("/", pos2);
 		} else {
-			name = path.substr(pos);
+			primaryRef = path.substr(pos);
 			pos2 = len;
 		}
 
-		if (name == "..") {
+        // Check for typed wildcard
+        bool isTypedWildcard = false;
+        size_t indexPos = primaryRef.find_first_of("~");
+        if (indexPos != string::npos) {
+            string indexStr = primaryRef.substr(indexPos);
+            isTypedWildcard = (indexStr == "~*");
+            if (isTypedWildcard) {
+                primaryRef.erase(indexPos);
+            }
+        }
+
+        // Check for any wildcard
+        bool isWildcard = isTypedWildcard || (!isTypedWildcard &&
+                (primaryRef == "*" || primaryRef == "**"));
+
+		if (primaryRef == "..") {
 			if (vRoot) {
 				/* A virtual root does not have a parent */
 				du = (DataUnit*)0;
@@ -1232,24 +1264,32 @@ DataUnit* DataUnit::getByPath(const string& path) {
 				vRoot = true;
 			}
 
-		} else if (name == "*" || name == "**") {
+		} else if (isWildcard) {
 
-            string subPath = path.substr(pos2);
+            string secondaryPath = path.substr(pos2);
 
             if (vRoot) {
-                if (name == "**" && !subPath.empty()) {
-                    // <du> currently points to root node
-                    DataUnit* root = du;
-                    // First: try to absorb "**"
-                    du = root->getByPath(subPath);
-                    // Second: if absorbing "**" did not succeed ...
-                    if (du == 0) {
-                        // ... keep "**"
-                        du = root->getByPath(path.substr(pos));
+                // >>> We're at the virtual root >>>
+
+                if (primaryRef == "**") {
+                    if (!secondaryPath.empty()) {
+                        // <du> currently points to root node
+                        DataUnit* root = du;
+                        // First: try to absorb "**"
+                        du = root->getByPath(secondaryPath);
+                        // Second: if absorbing "**" did not succeed ...
+                        if (du == 0) {
+                            // ... keep "**"
+                            du = root->getByPath(path.substr(pos));
+                        }
+                        // The following assignment exhausts remaining iterations
+                        pos2 = len;
                     }
-                    // The following recursion exhausts remaining iterations
-                    pos2 = len;
+                } else if (primaryRef != "*" && !primaryRef.empty()) {
+                    // Typed wildcards to not match virtual root
+                    du = (DataUnit*)0;
                 }
+
                 // We left the virtual root in all cases
                 vRoot = false;
 
@@ -1265,13 +1305,18 @@ DataUnit* DataUnit::getByPath(const string& path) {
                 do {
 
                     /*  1st iteration: absorb "*" or "**" and try to match rest
-                     *  2nd iteration: ...
+                     *  2nd iteration: keep "**" and try to find a match
                      */
 
                     DataUnit* child = head;
                     while (child != 0 && du == 0) {
-                        if (!subPath.empty()) {
-                            du = child->getByPath(subPath);
+                        // Fast-forward to node matching typed wildcard
+                        while (isTypedWildcard && child != 0 &&
+                                !child->matchesFilter(primaryRef)) {
+                            child = child->getNext();            
+                        }
+                        if (child != 0 && !secondaryPath.empty()) {
+                            du = child->getByPath(secondaryPath);
                             child = child->getNext();
                         } else {
                             // The while loop will terminate in all cases
@@ -1285,17 +1330,17 @@ DataUnit* DataUnit::getByPath(const string& path) {
                     }
                     second = true;
                     // For the second iteration we keep the "**/"
-                    subPath = path.substr(pos);
+                    secondaryPath = path.substr(pos);
 
-                } while (name == "**" && du == 0);
+                } while (primaryRef == "**" && du == 0);
             }
 
-		} else if (name != ".") {
+		} else if (primaryRef != ".") {
 			if (vRoot) {
-				du = du->getNeighbourByName(name);
+				du = du->getNeighbourByName(primaryRef);
 				vRoot = false;
 			} else {
-				du = du->getChildByName(name);
+				du = du->getChildByName(primaryRef);
 			}
 		}
 

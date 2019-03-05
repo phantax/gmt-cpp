@@ -542,32 +542,35 @@ public:
      *                +-------+      +-------+
      *
      *  Here, for instance, node [1] is the root node and nodes [2] and [7] 
-     *  the root's child nodes. That is, instead of each node holding a list
-     *  of its child nodes, each node just holds a pointer to its first child
-     *  node and its parent (if existent). Additionally, each nodes can have a
-     *  'previous' node and a 'next' node, building a doubly-linked list of 
-     *  sibling nodes. 
+     *  the root's child nodes. That is, instead of nodes holding a list of
+     *  child nodes, nodes just hold a pointer to their first child node. Note
+     *  that child nodes are only possible for non-leaf, that is, 'internal'
+     *  nodes. Except for the root, nodes also have a link to their respective
+     *  parent node . Additionally, each node can cave a 'previous' node and a
+     *  'next' node, forming a doubly-linked list of sibling nodes:
      *
      *                                    ^  parent  
      *                                    |
      *                              +------------+
      *              previous <------|  GMT node  |------> next
      *                              +------------+
-     *                                    |  
+     *                                    ?  [for non-leaf nodes]  
      *                                    v  first child
      *  
-     *  Navigating through a GMT can be done in several ways. One way is to 
-     *  call methods defined in the DataUnit (GMT node) class:
+     *  The corresponding accessor methods are
      *  
      *  -> getParent()
+     *  -> getPrevious()
+     *  -> getNext()
+     *  -> getChild()
+     *  
+     *  which may be used for basic GMT navigation. 
      *
      *  
      *
-     *  -> getPrevious()
      *  -> getPrevious(filterExpr)
      *  -> getPrevious(name, staticType, dynamicType)
      *
-     *  -> getNext()
      *  -> getNext(filterExpr)
      *  -> getNext(name, staticType, dynamicType)
      *
@@ -601,6 +604,9 @@ public:
      *
      */
 
+
+	/* --- getParent(...) -------------------------------------------------- */
+
 	/* Return pointer to this data unit's container */
 	inline DataUnit* getParent() const {
 
@@ -626,7 +632,6 @@ public:
     
 	/* --- getNext(...) ---------------------------------------------------- */
 
-
 	/* Return pointer to data unit following this data unit in the chain */
 	inline DataUnit* getNext() const {
 
@@ -639,6 +644,30 @@ public:
 	/* TODO: Add description */
 	DataUnit* getNext(const std::string& name,
             const std::string& staticType, const std::string& dynamicType) const;
+
+
+	/* --- getChild(...) --------------------------------------------------- */
+
+	// TODO: Add description
+	inline DataUnit* getChild() const {
+
+		return this->getChild_();
+	}
+
+	// TODO: Add description
+	DataUnit* getChild(size_t index) const;
+
+	// TODO: Add description
+	DataUnit* getChildTail() const;
+
+	// TODO: Add description
+	DataUnit* getChildByBC(BC& bc) const;
+
+	// TODO: Add description
+	DataUnit* getChildByConstBC(const BC& bc) const;
+
+	// TODO: Add description
+	DataUnit* getChildByName(const std::string& name);
 
 
 
@@ -661,27 +690,6 @@ public:
 	/* Return pointer to data unit referred to by relative path <path> */
 	DataUnit* getByPath(const std::string& path);
 
-
-	// TODO: Add description
-	inline DataUnit* getChild() const {
-
-		return this->getChild_();
-	}
-
-	// TODO: Add description
-	DataUnit* getChild(size_t index) const;
-
-	// TODO: Add description
-	DataUnit* getChildTail() const;
-
-	// TODO: Add description
-	DataUnit* getChildByBC(BC& bc) const;
-
-	// TODO: Add description
-	DataUnit* getChildByConstBC(const BC& bc) const;
-
-	// TODO: Add description
-	DataUnit* getChildByName(const std::string& name);
 
 
 	// TODO: Add description
