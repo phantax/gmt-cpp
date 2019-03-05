@@ -16,7 +16,7 @@ all: test
 test: $(SOURCES) ../build/libgmt-cpp.a
 	@echo "\033[01;32m=> Compiling '$<' ...\033[00;00m"
 	@mkdir -p $(shell dirname $@)
-	$(CC) -I../ $(CFLAGS) $(SOURCES) -lgmt-cpp -L../build $(LDFLAGS) -o $@
+	$(CC) -I. -I../ $(CFLAGS) $(SOURCES) -lgmt-cpp -L../build $(LDFLAGS) -o $@
 	@echo ""
 
 info:
