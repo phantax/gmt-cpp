@@ -196,21 +196,6 @@ public:
 
 /* ==========================================================================
  *
- * +-------+                                              +-------+
- * |   1   |<-------------------------------------------->|  [9]  |---...
- * +-------+                                              +-------+
- *     ^
- *     |     +-------+                          +-------+
- *     +---->|   2   |<------------------------>|   7   |---...
- *           +-------+                          +-------+
- *               ^                                  ^
- *               |     +-------+      +-------+     |     +-------+
- *               +---->|  [3]  |<---->|   4   |     +---->|  [8]  |
- *                     +-------+      +-------+           +-------+
- *                                        ^
- *                                        |     +-------+      +-------+
- *                                        +---->|  [5]  |<---->|  [6]  |
- *                                              +-------+      +-------+
  *
  * ========================================================================== */
 
@@ -403,7 +388,7 @@ public:
 
 
 	/* ---------------------------------------------------------------------
-	 *  Attributes of GMT nodes (a.k.a. data units)
+	 *  Attributes of GMT nodes, filter expressions
 	 * --------------------------------------------------------------------- */
 
     /*  GMT nodes (a.k.a. data units) can have several inherent attributes for
@@ -426,6 +411,21 @@ public:
      *  -> getStaticType()      // Read static type attribute
      *  -> getDynamicType()     // Read dynamic type attribute
      *
+     *  These attributes (name, static type, dynamic type) can be used to
+     *  define a filter on GMT nodes using the following filter expression
+     *  syntax:
+     *
+     *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
+     *
+     *  It matches a node if the the considered node's attributes are identical
+     *  to those given in the filter expression. If an attribute is omitted in
+     *  the filter expression it essentially acts as a wildcard. Examples are:
+     *
+     *  -> "length"                     (selects nodes that are named "length")
+     *  -> "uint32%"                    (selects nodes of static type "uint32")
+     *  -> "TLSExtension:heartbeat%"    (selects nodes of static type
+     *                                   "TLSExtension" with a dynamic type
+     *                                   "heartbeat")
      *
      */
 
@@ -513,11 +513,11 @@ public:
 
 
 	/* ---------------------------------------------------------------------
-	 *  Navigating between data units
+	 *  Navigating with a GMT
 	 * ---------------------------------------------------------------------
      *  
      *  Conceptually, Generic Message Trees (GMTs) are trees, as the name 
-     *  suggests. However, internally, the nodes are linkes in a different way:
+     *  suggests. However, internally, the nodes are linked in a different way:
      *
      * +-------+                                              +-------+
      * |   1   |<-------------------------------------------->|   9   |---...
@@ -546,8 +546,9 @@ public:
      *  child nodes, nodes just hold a pointer to their first child node. Note
      *  that child nodes are only possible for non-leaf, that is, 'internal'
      *  nodes. Except for the root, nodes also have a link to their respective
-     *  parent node . Additionally, each node can cave a 'previous' node and a
-     *  'next' node, forming a doubly-linked list of sibling nodes:
+     *  parent node. Additionally, each node can have a 'previous' node and a
+     *  'next' node, forming a doubly-linked list of sibling nodes. The full
+     *  picture of a single node's links within a GMT than looks as follows
      *
      *                                    ^  parent  
      *                                    |
@@ -559,45 +560,39 @@ public:
      *  
      *  The corresponding accessor methods are
      *  
-     *  -> getParent()
-     *  -> getPrevious()
-     *  -> getNext()
-     *  -> getChild()
+     *  -> getParent()      // Return pointer to parent node (null if root)
+     *  -> getPrevious()    // Return pointer to previous node (null if first)
+     *  -> getNext()        // Return pointer to next node (null if last)
+     *  -> getChild()       // Return pointer to first child (null if leaf)
      *  
-     *  which may be used for basic GMT navigation. 
+     *  which may be used for basic GMT navigation. Beyond that, the root of 
+     *  a GMT, as well as the head and tail of a chain of sibling nodes can
+     *  be retrieved using:
      *
-     *  
+     *  -> getRoot()    // Return pointer to the GMT's root node
+     *  -> getHead()    // Return pointer to first node in sibling chain
+     *  -> getTail()    // Return pointer to last node in sibling chain
+     *
+     *  There are more sophisticated means and methods for navigation a GMT.
+     *  For instance, both the getPrevious() and the getNext() method also
+     *  accept a filter expression (or its individual parts) to move along
+     *  a chain of sibilings (back or forth) and return the first node on the
+     *  way that matches (rather the first one found):
      *
      *  -> getPrevious(filterExpr)
      *  -> getPrevious(name, staticType, dynamicType)
-     *
      *  -> getNext(filterExpr)
      *  -> getNext(name, staticType, dynamicType)
      *
+     *  You may also navigate as if you were linearly walking along an unrolled
+     *  GMT. Unrolling a GMT means listing its nodes in the order they are
+     *  treated if the GMT is seralized. The corresponding navigation methods
+     *  are:
+     *
+     *  -> getPredecessor()     // Return pointer to predecessor in unrolled GMT
+     *  -> getSuccessor()       // Return pointer to successor in unrolled GMT
      *
      *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *  GMT nodes have three attributes (name, static type, dynamic type) that
-     *  can be used to define a filter on GMT nodes using the following filter
-     *  expression syntax
-     *
-     *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
-     *
-     *  It matches a node if the the considered node's attributes are identical
-     *  to those given in the filter expression. If an attribute is omitted in
-     *  the filter expression it essentially acts as a wildcard. Examples are:
-     *
-     *  -> "length"                     (selects nodes that are named "length")
-     *  -> "uint32%"                    (selects nodes of static type "uint32")
-     *  -> "TLSExtension:heartbeat%"    (selects nodes of static type
-     *                                   "TLSExtension" with a dynamic type
-     *                                   "heartbeat")
      *
      *  
      *
@@ -670,6 +665,24 @@ public:
 	DataUnit* getChildByName(const std::string& name);
 
 
+	/* --- Further navigation methods -------------------------------------- */
+
+	// TODO: Add description
+	DataUnit* getPredecessor() const;
+
+	// TODO: Add description
+	DataUnit* getSuccessor() const;
+
+	// TODO: Add description
+	DataUnit* getRoot();
+
+	// TODO: Add description
+	DataUnit* getHead();
+
+	// TODO: Add description
+	DataUnit* getTail();
+
+
 
 
 	/* Return pointer to data unit at index <index> in this data unit's chain */
@@ -696,20 +709,6 @@ public:
 	DataUnit* getNeighbourByName(const std::string& name);
 
 
-	// TODO: Add description
-	DataUnit* getRoot();
-
-	// TODO: Add description
-	DataUnit* getHead();
-
-	// TODO: Add description
-	DataUnit* getTail();
-
-	// TODO: Add description
-	DataUnit* getPredecessor() const;
-
-	// TODO: Add description
-	DataUnit* getSuccessor() const;
 
 
 	// TODO: Add description

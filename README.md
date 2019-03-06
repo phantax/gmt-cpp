@@ -13,6 +13,7 @@ and Advanced Computing Systems: Technology and Applications (IDAACS’2017),
 21-23 September 2017, Bucharest, Romania. A [preprint](https://ivesk.hs-offenburg.de/fileadmin/Einrichtungen/ivesk/files/preprint_eTPL_IDAACS-2017.pdf)
 is also available.
 
+
 ## How to install
 
 1. Clone this repository
@@ -41,6 +42,18 @@ ln -s ../propertynode-cpp gmt-cpp/propertynode-cpp
 cd gmt-cpp
 make deps
 make
+```
+
+
+## How to use
+
+gmt-cpp is a library that implements the GMT concept in C++. In order to make use of the code, you need an application that links against gmt-cpp.
+
+There is a test application in the test/ subdirectory, which you might use as a starting point. In order to build and run the test application (after the gmt-cpp library has been built), type
+
+```bash
+make test
+./test/test
 ```
 
 
