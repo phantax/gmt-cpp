@@ -50,11 +50,11 @@ using std::vector;
  */
 TypeRegistry& TypeRegistry::getInstance() {
 
-	static TypeRegistry* singleton = (TypeRegistry*)0;
-	if (singleton == 0) {
-		singleton = new TypeRegistry();
-	}
-	return *singleton;
+    static TypeRegistry* singleton = (TypeRegistry*)0;
+    if (singleton == 0) {
+        singleton = new TypeRegistry();
+    }
+    return *singleton;
 }
 
 
@@ -70,19 +70,19 @@ TypeRegistry::TypeRegistry() {
  */
 bool TypeRegistry::add(const TypeDescriptor& typeDescriptor) {
 
-	bool success = false;
+    bool success = false;
 
-	/* prevent duplicates in registry */
-	if (this->findById(typeDescriptor.id()) == 0 &&
-			this->findByName(typeDescriptor.name()) == 0) {
+    /* prevent duplicates in registry */
+    if (this->findById(typeDescriptor.id()) == 0 &&
+            this->findByName(typeDescriptor.name()) == 0) {
 
-		/* add to registry */
-		registry_.push_back(&typeDescriptor);
+        /* add to registry */
+        registry_.push_back(&typeDescriptor);
 
-		success = true;
-	}
+        success = true;
+    }
 
-	return success;
+    return success;
 }
 
 
@@ -90,20 +90,20 @@ bool TypeRegistry::add(const TypeDescriptor& typeDescriptor) {
  * ___________________________________________________________________________
  */
 const TypeDescriptor* TypeRegistry::findByName(
-		const string& typeName) {
+        const string& typeName) {
 
-	const TypeDescriptor* desc = (TypeDescriptor*)0;
-	size_t n = registry_.size();
-	size_t i = 0;
+    const TypeDescriptor* desc = (TypeDescriptor*)0;
+    size_t n = registry_.size();
+    size_t i = 0;
 
-	while (i < n && desc == 0) {
-		if (registry_[i]->name() == typeName) {
-			desc = registry_[i];
-		}
-		++i;
-	}
+    while (i < n && desc == 0) {
+        if (registry_[i]->name() == typeName) {
+            desc = registry_[i];
+        }
+        ++i;
+    }
 
-	return desc;
+    return desc;
 }
 
 
@@ -112,18 +112,18 @@ const TypeDescriptor* TypeRegistry::findByName(
  */
 const TypeDescriptor* TypeRegistry::findById(size_t typeId) {
 
-	const TypeDescriptor* desc = (TypeDescriptor*)0;
-	size_t n = registry_.size();
-	size_t i = 0;
+    const TypeDescriptor* desc = (TypeDescriptor*)0;
+    size_t n = registry_.size();
+    size_t i = 0;
 
-	while (i < n && desc == 0) {
-		if (registry_[i]->id() == typeId) {
-			desc = registry_[i];
-		}
-		++i;
-	}
+    while (i < n && desc == 0) {
+        if (registry_[i]->id() == typeId) {
+            desc = registry_[i];
+        }
+        ++i;
+    }
 
-	return desc;
+    return desc;
 }
 
 
@@ -132,24 +132,24 @@ const TypeDescriptor* TypeRegistry::findById(size_t typeId) {
  */
 size_t TypeRegistry::print() {
 
-	/* iterate over entries in registry */
-	for (registry_t::iterator it = registry_.begin();
-			it != registry_.end(); ++it) {
+    /* iterate over entries in registry */
+    for (registry_t::iterator it = registry_.begin();
+            it != registry_.end(); ++it) {
 
-		/* print typeId and type name */
-		cout << String::format("[%5d] %s", (*it)->id(),
-				String::makeBoldBlue((*it)->name()).c_str());
+        /* print typeId and type name */
+        cout << String::format("[%5d] %s", (*it)->id(),
+                String::makeBoldBlue((*it)->name()).c_str());
 
-		/* point to base type (where applicable) */
-		const TypeDescriptor* base = (*it)->getBaseTypeDescriptor();
-		if (base != 0) {
-			cout << String::format(" ==> %s", base->name().c_str());
-		}
+        /* point to base type (where applicable) */
+        const TypeDescriptor* base = (*it)->getBaseTypeDescriptor();
+        if (base != 0) {
+            cout << String::format(" ==> %s", base->name().c_str());
+        }
 
-		cout << endl;
-	}
+        cout << endl;
+    }
 
-	return registry_.size();
+    return registry_.size();
 }
 
 
@@ -169,7 +169,7 @@ TypeRegistry::~TypeRegistry() {
  * ___________________________________________________________________________
  */
 TypeDescriptor::TypeDescriptor(size_t id, const string& name)
-		: base_(0), id_(id), name_(name) {
+        : base_(0), id_(id), name_(name) {
 }
 
 
@@ -177,8 +177,8 @@ TypeDescriptor::TypeDescriptor(size_t id, const string& name)
  * ___________________________________________________________________________
  */
 TypeDescriptor::TypeDescriptor(const TypeDescriptor& base,
-		size_t id, const string& name)
-		: base_(&base), id_(id), name_(name) {
+        size_t id, const string& name)
+        : base_(&base), id_(id), name_(name) {
 }
 
 
@@ -187,18 +187,18 @@ TypeDescriptor::TypeDescriptor(const TypeDescriptor& base,
  */
 bool TypeDescriptor::inheritsFrom(const TypeDescriptor& other) const {
 
-	bool inherits = false;
+    bool inherits = false;
 
-	const TypeDescriptor* type = this->getBaseTypeDescriptor();
-	while (type != 0 && !inherits) {
-		if (*type == other) {
-			inherits = true;
-		} else {
-			type = type->getBaseTypeDescriptor();
-		}
-	}
+    const TypeDescriptor* type = this->getBaseTypeDescriptor();
+    while (type != 0 && !inherits) {
+        if (*type == other) {
+            inherits = true;
+        } else {
+            type = type->getBaseTypeDescriptor();
+        }
+    }
 
-	return inherits;
+    return inherits;
 }
 
 
@@ -207,18 +207,18 @@ bool TypeDescriptor::inheritsFrom(const TypeDescriptor& other) const {
  */
 string TypeDescriptor::getTypeInheritance() const {
 
-	string inheritance;
+    string inheritance;
 
-	const TypeDescriptor* type = this;
-	while (type != 0) {
-		if (inheritance.length() > 0) {
-			inheritance.insert(0, 1, '/');
-		}
-		inheritance.insert(0, type->name());
-		type = type->getBaseTypeDescriptor();
-	}
+    const TypeDescriptor* type = this;
+    while (type != 0) {
+        if (inheritance.length() > 0) {
+            inheritance.insert(0, 1, '/');
+        }
+        inheritance.insert(0, type->name());
+        type = type->getBaseTypeDescriptor();
+    }
 
-	return inheritance;
+    return inheritance;
 }
 
 
@@ -252,7 +252,7 @@ DataUnit::DataUnit() : dissector_(*this), parent_(0), previous_(0), next_(0) {
  */
 const TypeDescriptor& DataUnit::getTypeDescriptor() const {
 
-	return typeDescriptor();
+    return typeDescriptor();
 }
 
 
@@ -261,8 +261,8 @@ const TypeDescriptor& DataUnit::getTypeDescriptor() const {
  */
 DataUnit* DataUnit::newInstance_() const {
 
-	/* DataUnit is an abstract class */
-	return (DataUnit*)0;
+    /* DataUnit is an abstract class */
+    return (DataUnit*)0;
 }
 
 
@@ -271,11 +271,11 @@ DataUnit* DataUnit::newInstance_() const {
  */
 DataUnit* DataUnit::newInstance() const {
 
-	DataUnit* newInst = this->newInstance_();
-	if (newInst != 0) {
-		newInst->setName(name_);
-	}
-	return newInst;
+    DataUnit* newInst = this->newInstance_();
+    if (newInst != 0) {
+        newInst->setName(name_);
+    }
+    return newInst;
 }
 
 
@@ -284,11 +284,11 @@ DataUnit* DataUnit::newInstance() const {
  */
 DataUnit* DataUnit::clone() const {
 
-	DataUnit* newInst = this->newInstance();
-	if (newInst != 0) {
-		newInst->dissector().dissectFromBuffer(*this);
-	}
-	return newInst;
+    DataUnit* newInst = this->newInstance();
+    if (newInst != 0) {
+        newInst->dissector().dissectFromBuffer(*this);
+    }
+    return newInst;
 }
 
 
@@ -297,22 +297,22 @@ DataUnit* DataUnit::clone() const {
  */
 string DataUnit::getRefName() const {
 
-	String name = this->getName();
-	size_t suffix = 0;
+    String name = this->getName();
+    size_t suffix = 0;
 
-	const DataUnit* du = this->getPrevious();
-	while (du != 0) {
-		if (name.empty() || du->getName() == name) {
-			++suffix;
-		}
-		du = du->getPrevious();
-	}
+    const DataUnit* du = this->getPrevious();
+    while (du != 0) {
+        if (name.empty() || du->getName() == name) {
+            ++suffix;
+        }
+        du = du->getPrevious();
+    }
 
-	if (suffix > 0 || name.empty()) {
-		name.appendFormat("~%u", suffix);
-	}
+    if (suffix > 0 || name.empty()) {
+        name.appendFormat("~%u", suffix);
+    }
 
-	return name;
+    return name;
 }
 
 
@@ -329,7 +329,7 @@ string DataUnit::getIdentifier(bool name, bool staticType,
     }
     if (dynamicType) {
         string dynamicTypeStr = this->getDynamicType();
-	    if (!dynamicTypeStr.empty()) {
+        if (!dynamicTypeStr.empty()) {
             identifier.append(":");
             identifier.append(dynamicTypeStr);
         } else {
@@ -352,31 +352,31 @@ string DataUnit::getIdentifier(bool name, bool staticType,
  */
 string DataUnit::getUniqueIdentifier() const {
     
-	string name = this->getName();
-	string staticType = this->getStaticType();
-	string dynamicType = this->getDynamicType();
+    string name = this->getName();
+    string staticType = this->getStaticType();
+    string dynamicType = this->getDynamicType();
 
-	size_t indexByName = 0;
-	size_t indexByType = 0;
-	size_t indexByFullType = 0;
-	size_t indexByFullTypeAndName = 0;
+    size_t indexByName = 0;
+    size_t indexByType = 0;
+    size_t indexByFullType = 0;
+    size_t indexByFullTypeAndName = 0;
 
-	const DataUnit* du = this->getPrevious();
-	while (du != 0) {
-		if (du->matchesFilter(name)) {
-			++indexByName;
-		}
-		if (du->matchesFilter("", staticType, "")) {
-			++indexByType;
-		}
-		if (du->matchesFilter("", staticType, dynamicType)) {
-			++indexByFullType;
-		}
-		if (du->matchesFilter(name, staticType, dynamicType)) {
-			++indexByFullTypeAndName;
-		}
-		du = du->getPrevious();
-	}
+    const DataUnit* du = this->getPrevious();
+    while (du != 0) {
+        if (du->matchesFilter(name)) {
+            ++indexByName;
+        }
+        if (du->matchesFilter("", staticType, "")) {
+            ++indexByType;
+        }
+        if (du->matchesFilter("", staticType, dynamicType)) {
+            ++indexByFullType;
+        }
+        if (du->matchesFilter(name, staticType, dynamicType)) {
+            ++indexByFullTypeAndName;
+        }
+        du = du->getPrevious();
+    }
 
     String id;
     size_t index = 0;
@@ -398,11 +398,11 @@ string DataUnit::getUniqueIdentifier() const {
         index = indexByName;
     }
 
-	if (index > 0) {
-		id.appendFormat("~%u", index);
-	}
+    if (index > 0) {
+        id.appendFormat("~%u", index);
+    }
 
-	return id;
+    return id;
 }
 
 
@@ -413,25 +413,25 @@ bool DataUnit::splitFilterExpression(const string& filterExpr, string& name,
         string& staticType, string& dynamicType) {
 
     // Extract name
-	size_t namePos = filterExpr.find_first_of("%");
-	if (namePos != string::npos) {
-		name = filterExpr.substr(namePos + 1);
-	} else {
+    size_t namePos = filterExpr.find_first_of("%");
+    if (namePos != string::npos) {
+        name = filterExpr.substr(namePos + 1);
+    } else {
         // >>> It's a name-only filter expression >>>
         name = filterExpr;
         return true;
     }
 
     // Extract type
-	size_t typePos = filterExpr.find_first_of(":");
-	if (typePos != string::npos) {
+    size_t typePos = filterExpr.find_first_of(":");
+    if (typePos != string::npos) {
         if (typePos > namePos) {
             // >>> Invalid filter expression >>>
             return false;
         }
         staticType = filterExpr.substr(0, typePos);
         dynamicType = filterExpr.substr(typePos + 1, namePos - typePos - 1);
-	} else {
+    } else {
         // It's a static-type-only type filter expression
         staticType = filterExpr.substr(0, namePos);
     }
@@ -445,9 +445,9 @@ bool DataUnit::splitFilterExpression(const string& filterExpr, string& name,
  */
 bool DataUnit::matchesFilter(const string& filterExpr) const {
 
-	string name;
-	string staticType;
-	string dynamicType;
+    string name;
+    string staticType;
+    string dynamicType;
 
     if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return false;
@@ -478,18 +478,18 @@ bool DataUnit::matchesFilter(const string& name,
  */
 string DataUnit::getChainedName(const string& separator) const {
 
-	string name;
+    string name;
 
-	const DataUnit* du = this;
-	while (du != 0) {
-		if (name.length() > 0) {
-			name.insert(0, separator);
-		}
-		name.insert(0, du->getName());
-		du = du->getParent();
-	}
+    const DataUnit* du = this;
+    while (du != 0) {
+        if (name.length() > 0) {
+            name.insert(0, separator);
+        }
+        name.insert(0, du->getName());
+        du = du->getParent();
+    }
 
-	return name;
+    return name;
 }
 
 
@@ -498,18 +498,18 @@ string DataUnit::getChainedName(const string& separator) const {
  */
 string DataUnit::getChainedRefName(const string& separator) const {
 
-	string name;
+    string name;
 
-	const DataUnit* du = this;
-	while (du != 0) {
-		if (name.length() > 0) {
-			name.insert(0, separator);
-		}
-		name.insert(0, du->getRefName());
-		du = du->getParent();
-	}
+    const DataUnit* du = this;
+    while (du != 0) {
+        if (name.length() > 0) {
+            name.insert(0, separator);
+        }
+        name.insert(0, du->getRefName());
+        du = du->getParent();
+    }
 
-	return name;
+    return name;
 }
 
 
@@ -518,18 +518,18 @@ string DataUnit::getChainedRefName(const string& separator) const {
  */
 string DataUnit::getChainedIndex(const string& separator) const {
 
-	string name;
+    string name;
 
-	const DataUnit* du = this;
-	while (du != 0) {
-		if (name.length() > 0) {
-			name.insert(0, separator);
-		}
-		name.insert(0, String::format("%u", du->getIndexOffset()));
-		du = du->getParent();
-	}
+    const DataUnit* du = this;
+    while (du != 0) {
+        if (name.length() > 0) {
+            name.insert(0, separator);
+        }
+        name.insert(0, String::format("%u", du->getIndexOffset()));
+        du = du->getParent();
+    }
 
-	return name;
+    return name;
 }
 
 
@@ -538,19 +538,19 @@ string DataUnit::getChainedIndex(const string& separator) const {
  */
 string DataUnit::getPath() const {
 
-	string path;
+    string path;
 
-	const DataUnit* du = this;
-	while (du != 0) {
-		path.insert(0, du->getRefName());
-		path.insert(0, 1, '/');
-		du = du->getParent();
-	}
+    const DataUnit* du = this;
+    while (du != 0) {
+        path.insert(0, du->getRefName());
+        path.insert(0, 1, '/');
+        du = du->getParent();
+    }
 
     // Finally insert the leading slash
-	path.insert(0, 1, '/');
+    path.insert(0, 1, '/');
 
-	return path;
+    return path;
 }
 
 
@@ -559,17 +559,17 @@ string DataUnit::getPath() const {
  */
 string DataUnit::getFullType() const {
 
-	string fullType = this->getStaticType();
+    string fullType = this->getStaticType();
 
-	string dynamicType = this->getDynamicType();
-	if (!dynamicType.empty()) {
+    string dynamicType = this->getDynamicType();
+    if (!dynamicType.empty()) {
         // >>> This node has a dynamic type (that is,
         // a non-empty dynamic type string) >>>
-		fullType.append(":");
-		fullType.append(dynamicType);
-	}
+        fullType.append(":");
+        fullType.append(dynamicType);
+    }
 
-	return fullType;
+    return fullType;
 }
 
 
@@ -578,34 +578,34 @@ string DataUnit::getFullType() const {
  */
 bool DataUnit::propRedirectHook_(string& name, PropertyNode*& node) const {
 
-	/*
-	 * 	<tag name>[@[<path>]]
-	 */
+    /*
+     *     <tag name>[@[<path>]]
+     */
 
-	/* true if there is a redirection */
-	bool redirected = false;
+    /* true if there is a redirection */
+    bool redirected = false;
 
-	/* the path for redirection */
-	string path;
+    /* the path for redirection */
+    string path;
 
-	/* extract path and update name */
-	size_t pos = name.find_first_of("@");
-	if (pos != string::npos) {
-		path = name.substr(pos + 1);
-		name.erase(pos);
-	}
+    /* extract path and update name */
+    size_t pos = name.find_first_of("@");
+    if (pos != string::npos) {
+        path = name.substr(pos + 1);
+        name.erase(pos);
+    }
 
-	if (!path.empty()) {
-		/* redirect property access */
-		/* TODO: find some way to avoid this const_cast */
-		DataUnit* probe = const_cast<DataUnit*>(this)->getByPath(path);
-		if (probe != this) {
-			node = probe;
-			redirected = true;
-		}
-	}
+    if (!path.empty()) {
+        /* redirect property access */
+        /* TODO: find some way to avoid this const_cast */
+        DataUnit* probe = const_cast<DataUnit*>(this)->getByPath(path);
+        if (probe != this) {
+            node = probe;
+            redirected = true;
+        }
+    }
 
-	return redirected;
+    return redirected;
 }
 
 
@@ -614,9 +614,9 @@ bool DataUnit::propRedirectHook_(string& name, PropertyNode*& node) const {
  */
 void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
 
-	if (name == ".typename") {
-		value.setValue<string>(this->getStaticType());
-	} else if (name == ".overflow") {
+    if (name == ".typename") {
+        value.setValue<string>(this->getStaticType());
+    } else if (name == ".overflow") {
         // Overflow discarded by dissector?
         bool hasOverflow = this->dissector().hasOverflow();
         // Overflow pushed into additional overflow node?
@@ -625,10 +625,10 @@ void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
                 && ovNode->getLength() > 0) {
             hasOverflow = true;
         }
-		value.setValue<bool>(hasOverflow);
-	} else if (name == ".underflow") {
-		value.setValue<bool>(this->dissector().hasUnderflow());
-	}
+        value.setValue<bool>(hasOverflow);
+    } else if (name == ".underflow") {
+        value.setValue<bool>(this->dissector().hasUnderflow());
+    }
 }
 
 
@@ -637,7 +637,7 @@ void DataUnit::propReadHook_(const string& name, DynamicValue& value) const {
  */
 string DataUnit::getAnchorBrackets_() const {
 
-	return "[]";
+    return "[]";
 }
 
 
@@ -646,8 +646,8 @@ string DataUnit::getAnchorBrackets_() const {
  */
 DataUnit* DataUnit::getChild_() const {
 
-	/* The DataUnit class does not have children */
-	return (DataUnit*)0;
+    /* The DataUnit class does not have children */
+    return (DataUnit*)0;
 }
 
 
@@ -663,16 +663,16 @@ void DataUnit::setChild_(DataUnit* child) {
  */
 bool DataUnit::setChild(DataUnit* child) {
 
-	bool success = false;
-	if (child != 0 && child->isRoot()) {
-		this->setChild_(child);
-		child->setParent(this);
-		success = true;
-	} else if (child == 0) {
-		this->setChild_(child);
-		success = true;
-	}
-	return success;
+    bool success = false;
+    if (child != 0 && child->isRoot()) {
+        this->setChild_(child);
+        child->setParent(this);
+        success = true;
+    } else if (child == 0) {
+        this->setChild_(child);
+        success = true;
+    }
+    return success;
 }
 
 
@@ -681,46 +681,46 @@ bool DataUnit::setChild(DataUnit* child) {
  */
 string DataUnit::getAnchorString_() const {
 
-	string brackets = this->getAnchorBrackets_();
-	if (brackets.length() != 2) {
-		brackets = "[]";
-	}
+    string brackets = this->getAnchorBrackets_();
+    if (brackets.length() != 2) {
+        brackets = "[]";
+    }
 
-	String anchor;
+    String anchor;
 
-	if (this->dissector().isAccepting()) {
-		anchor.append(">>");
-	} else {
-		anchor.append("--");
-	}
+    if (this->dissector().isAccepting()) {
+        anchor.append(">>");
+    } else {
+        anchor.append("--");
+    }
 
-	if (this->propGetDefault<bool>(".overflow", false)) {
-		anchor.appendBoldRedBg("<OF>");
-	} else if (this->dissector().hasUnderflow()) {
-		anchor.appendBoldRedBg("<UF>");
-	}
+    if (this->propGetDefault<bool>(".overflow", false)) {
+        anchor.appendBoldRedBg("<OF>");
+    } else if (this->dissector().hasUnderflow()) {
+        anchor.appendBoldRedBg("<UF>");
+    }
 
-	anchor.append(1, brackets[0]);
+    anchor.append(1, brackets[0]);
 
-	anchor.appendFormat("%d:", this->getIndexOffset());
+    anchor.appendFormat("%d:", this->getIndexOffset());
 
-	if (this->isDecoded()) {
-		anchor.appendBoldGreen(this->getName());
-	} else {
-		anchor.appendBoldBlue(this->getName());
-	}
+    if (this->isDecoded()) {
+        anchor.appendBoldGreen(this->getName());
+    } else {
+        anchor.appendBoldBlue(this->getName());
+    }
 
-	anchor.append(1, brackets[1]);
-	/*
-	String dissector;
-	String strSize = this->getDissectorSize().toStringDefault("-");
-	String strLimit = this->getDissectorLimit().toStringDefault("-");
-	String strAccept = this->getDissectorAcceptance().toStringDefault("*");
-	dissector.appendFormat(" [%s:%s:%s]",
-			strSize.c_str(), strLimit.c_str(), strAccept.c_str());
-	anchor.appendYellow(dissector);
-	*/
-	return anchor;
+    anchor.append(1, brackets[1]);
+    /*
+    String dissector;
+    String strSize = this->getDissectorSize().toStringDefault("-");
+    String strLimit = this->getDissectorLimit().toStringDefault("-");
+    String strAccept = this->getDissectorAcceptance().toStringDefault("*");
+    dissector.appendFormat(" [%s:%s:%s]",
+            strSize.c_str(), strLimit.c_str(), strAccept.c_str());
+    anchor.appendYellow(dissector);
+    */
+    return anchor;
 }
 
 
@@ -729,13 +729,13 @@ string DataUnit::getAnchorString_() const {
  */
 BC DataUnit::redissect() {
 
-	/* make a copy of the raw content ... */
-	VectorBuffer buffer;
-	buffer.appendFromBuffer(*this);
+    /* make a copy of the raw content ... */
+    VectorBuffer buffer;
+    buffer.appendFromBuffer(*this);
 
-	/* and redissect it */
-	this->dissector().reset();
-	return this->dissector().dissectFromBuffer(buffer);
+    /* and redissect it */
+    this->dissector().reset();
+    return this->dissector().dissectFromBuffer(buffer);
 }
 
 
@@ -744,8 +744,8 @@ BC DataUnit::redissect() {
  */
 void DataUnit::print() const {
 
-	PrintOptions options;
-	this->print(options);
+    PrintOptions options;
+    this->print(options);
 }
 
 
@@ -754,22 +754,22 @@ void DataUnit::print() const {
  */
 void DataUnit::print(const PrintOptions& options) const {
 
-	PrintOptions myOptions(options);
+    PrintOptions myOptions(options);
 
-	if (!myOptions.bodyOnly) {
-		String line(myOptions.prefix);
-		line.append(this->getAnchorString_());
-		line.setWidth(50);
-		line.appendFixedWidth(String::format("%s",
-				this->getFullType().c_str()), 40);
-//				this->getStaticType().c_str(), this->getTypeID()), 40);
-//				this->getPath().c_str(), this->getTypeID()), 40);
-		cout << line;
-	}
+    if (!myOptions.bodyOnly) {
+        String line(myOptions.prefix);
+        line.append(this->getAnchorString_());
+        line.setWidth(50);
+        line.appendFixedWidth(String::format("%s",
+                this->getFullType().c_str()), 40);
+//                this->getStaticType().c_str(), this->getTypeID()), 40);
+//                this->getPath().c_str(), this->getTypeID()), 40);
+        cout << line;
+    }
 
-	myOptions.bodyOnly = false;
+    myOptions.bodyOnly = false;
 
-	this->printBody(myOptions);
+    this->printBody(myOptions);
 }
 
 
@@ -778,16 +778,16 @@ void DataUnit::print(const PrintOptions& options) const {
  */
 void DataUnit::printChain(ssize_t maxLen, const string& prefix) const {
 
-	const DataUnit* unit = this;
-	while (unit != 0 && (maxLen != 0)) {
-		PrintOptions options;
-		options.prefix = prefix;
-		unit->print(options);
-		unit = unit->getNext();
-		if (maxLen > 0) {
-			maxLen--;
-		}
-	}
+    const DataUnit* unit = this;
+    while (unit != 0 && (maxLen != 0)) {
+        PrintOptions options;
+        options.prefix = prefix;
+        unit->print(options);
+        unit = unit->getNext();
+        if (maxLen > 0) {
+            maxLen--;
+        }
+    }
 }
 
 
@@ -796,7 +796,7 @@ void DataUnit::printChain(ssize_t maxLen, const string& prefix) const {
  */
 string DataUnit::getAsText() const {
 
-	return this->getInfo_();
+    return this->getInfo_();
 }
 
 
@@ -805,7 +805,7 @@ string DataUnit::getAsText() const {
  */
 void DataUnit::printBody(const PrintOptions& options) const {
 
-	cout << " " << this->getInfo_() << endl;
+    cout << " " << this->getInfo_() << endl;
 }
 
 
@@ -814,22 +814,22 @@ void DataUnit::printBody(const PrintOptions& options) const {
  */
 bool DataUnit::appendNext(DataUnit* next) {
 
-	bool success = false;
+    bool success = false;
 
-	if (!this->hasNext()) {
-		if (next != 0 && next->isRoot()) {
-			this->setNext(next);
-			next->setParent(this->getParent());
-			next->setPrevious(this);
-			success = true;
-		}
-	} else {
-		/* select the last child in the linked
-		 * list and append new element there */
-		success = this->getTail()->appendNext(next);
-	}
+    if (!this->hasNext()) {
+        if (next != 0 && next->isRoot()) {
+            this->setNext(next);
+            next->setParent(this->getParent());
+            next->setPrevious(this);
+            success = true;
+        }
+    } else {
+        /* select the last child in the linked
+         * list and append new element there */
+        success = this->getTail()->appendNext(next);
+    }
 
-	return success;
+    return success;
 }
 
 
@@ -838,21 +838,21 @@ bool DataUnit::appendNext(DataUnit* next) {
  */
 DataUnit* DataUnit::remove() {
 
-	if (previous_ != 0) {
-		previous_->setNext(next_);
-	} else if (parent_ != 0) {
-		parent_->setChild_(next_);
-	}
-	if (next_ != 0) {
-		next_->setPrevious(previous_);
-	}
+    if (previous_ != 0) {
+        previous_->setNext(next_);
+    } else if (parent_ != 0) {
+        parent_->setChild_(next_);
+    }
+    if (next_ != 0) {
+        next_->setPrevious(previous_);
+    }
 
-	/* disconnect this data unit from surrounding data units */
-	previous_ = (DataUnit*)0;
-	next_ = (DataUnit*)0;
-	parent_ = (DataUnit*)0;
+    /* disconnect this data unit from surrounding data units */
+    previous_ = (DataUnit*)0;
+    next_ = (DataUnit*)0;
+    parent_ = (DataUnit*)0;
 
-	return this;
+    return this;
 }
 
 
@@ -861,35 +861,35 @@ DataUnit* DataUnit::remove() {
  */
 bool DataUnit::replaceBy(DataUnit* replacement) {
 
-	bool success = false;
+    bool success = false;
 
-	if (replacement != 0 && replacement != this &&
-			replacement->isRoot() && !replacement->hasNext()) {
+    if (replacement != 0 && replacement != this &&
+            replacement->isRoot() && !replacement->hasNext()) {
 
-		/* set pointers from surrounding data units to replacement */
-		if (previous_ != 0) {
-			previous_->setNext(replacement);
-		} else if (parent_ != 0) {
-			parent_->setChild_(replacement);
-		}
-		if (next_ != 0) {
-			next_->setPrevious(replacement);
-		}
+        /* set pointers from surrounding data units to replacement */
+        if (previous_ != 0) {
+            previous_->setNext(replacement);
+        } else if (parent_ != 0) {
+            parent_->setChild_(replacement);
+        }
+        if (next_ != 0) {
+            next_->setPrevious(replacement);
+        }
 
-		/* set pointers from replacement to surrounding data units */
-		replacement->setNext(next_);
-		replacement->setPrevious(previous_);
-		replacement->setParent(parent_);
+        /* set pointers from replacement to surrounding data units */
+        replacement->setNext(next_);
+        replacement->setPrevious(previous_);
+        replacement->setParent(parent_);
 
-		/* disconnect this data unit from surrounding data units */
-		previous_ = (DataUnit*)0;
-		next_ = (DataUnit*)0;
-		parent_ = (DataUnit*)0;
+        /* disconnect this data unit from surrounding data units */
+        previous_ = (DataUnit*)0;
+        next_ = (DataUnit*)0;
+        parent_ = (DataUnit*)0;
 
-		success = true;
-	}
+        success = true;
+    }
 
-	return success;
+    return success;
 }
 
 
@@ -898,30 +898,30 @@ bool DataUnit::replaceBy(DataUnit* replacement) {
  */
 bool DataUnit::insert(DataUnit* insertion) {
 
-	bool success = false;
+    bool success = false;
 
-	if (insertion != 0 && insertion != this &&
-			insertion->isRoot() && !insertion->hasNext()) {
+    if (insertion != 0 && insertion != this &&
+            insertion->isRoot() && !insertion->hasNext()) {
 
-		/* set pointers from previous/parent data units to insertion */
-		if (previous_ != 0) {
-			previous_->setNext(insertion);
-		} else if (parent_ != 0) {
-			parent_->setChild(insertion);
-		}
+        /* set pointers from previous/parent data units to insertion */
+        if (previous_ != 0) {
+            previous_->setNext(insertion);
+        } else if (parent_ != 0) {
+            parent_->setChild(insertion);
+        }
 
-		/* set pointers from insertion to surrounding data units */
-		insertion->setNext(this);
-		insertion->setPrevious(previous_);
-		insertion->setParent(parent_);
+        /* set pointers from insertion to surrounding data units */
+        insertion->setNext(this);
+        insertion->setPrevious(previous_);
+        insertion->setParent(parent_);
 
-		/* connect this data unit to insertion */
-		previous_ = insertion;
+        /* connect this data unit to insertion */
+        previous_ = insertion;
 
-		success = true;
-	}
+        success = true;
+    }
 
-	return success;
+    return success;
 }
 
 
@@ -930,20 +930,20 @@ bool DataUnit::insert(DataUnit* insertion) {
  */
 size_t DataUnit::deleteFollowing() {
 
-	size_t n = 0;
-	DataUnit* unit = next_;
+    size_t n = 0;
+    DataUnit* unit = next_;
 
-	/* now, the chain stops here */
-	next_ = (DataUnit*)0;
+    /* now, the chain stops here */
+    next_ = (DataUnit*)0;
 
-	while (unit != 0) {
-		DataUnit* next = unit->getNext();
-		delete unit;
-		n++;
-		unit = next;
-	}
+    while (unit != 0) {
+        DataUnit* next = unit->getNext();
+        delete unit;
+        n++;
+        unit = next;
+    }
 
-	return n;
+    return n;
 }
 
 
@@ -952,13 +952,13 @@ size_t DataUnit::deleteFollowing() {
  */
 size_t DataUnit::getIndexOffset() const {
 
-	size_t index = 0;
-	DataUnit* unit = this->getPrevious();
-	while (unit != 0) {
-		index++;
-		unit = unit->getPrevious();
-	}
-	return index;
+    size_t index = 0;
+    DataUnit* unit = this->getPrevious();
+    while (unit != 0) {
+        index++;
+        unit = unit->getPrevious();
+    }
+    return index;
 }
 
 
@@ -967,14 +967,14 @@ size_t DataUnit::getIndexOffset() const {
  */
 DataUnit* DataUnit::getRoot() {
 
-	DataUnit* root	= this;
-	DataUnit* hop	= this;
-	while (hop != 0) {
-		/* Hop to root without using recursion */
-		root = hop;
-		hop = hop->getParent();
-	}
-	return root;
+    DataUnit* root    = this;
+    DataUnit* hop    = this;
+    while (hop != 0) {
+        /* Hop to root without using recursion */
+        root = hop;
+        hop = hop->getParent();
+    }
+    return root;
 }
 
 
@@ -983,14 +983,14 @@ DataUnit* DataUnit::getRoot() {
  */
 DataUnit* DataUnit::getHead() {
 
-	DataUnit* head	= this;
-	DataUnit* hop	= this;
-	while (hop != 0) {
-		/* Hop to head (beginning of chain) without using recursion */
-		head = hop;
-		hop = hop->getPrevious();
-	}
-	return head;
+    DataUnit* head    = this;
+    DataUnit* hop    = this;
+    while (hop != 0) {
+        /* Hop to head (beginning of chain) without using recursion */
+        head = hop;
+        hop = hop->getPrevious();
+    }
+    return head;
 }
 
 
@@ -999,14 +999,14 @@ DataUnit* DataUnit::getHead() {
  */
 DataUnit* DataUnit::getTail() {
 
-	DataUnit* tail	= this;
-	DataUnit* hop	= this;
-	while (hop != 0) {
-		/* Hop to tail (end of chain) without using recursion */
-		tail = hop;
-		hop = hop->getNext();
-	}
-	return tail;
+    DataUnit* tail    = this;
+    DataUnit* hop    = this;
+    while (hop != 0) {
+        /* Hop to tail (end of chain) without using recursion */
+        tail = hop;
+        hop = hop->getNext();
+    }
+    return tail;
 }
 
 
@@ -1015,19 +1015,19 @@ DataUnit* DataUnit::getTail() {
  */
 DataUnit* DataUnit::getPredecessor() const {
 
-	DataUnit* predecessor = (DataUnit*)0;
+    DataUnit* predecessor = (DataUnit*)0;
 
-	if (this->hasPrevious()) {
-		DataUnit* du = this->getPrevious();
-		while (du != 0) {
-			predecessor = du;
-			du = du->getChildTail();
-		}
-	} else if (this->hasParent()) {
-		predecessor = this->getParent();
-	}
+    if (this->hasPrevious()) {
+        DataUnit* du = this->getPrevious();
+        while (du != 0) {
+            predecessor = du;
+            du = du->getChildTail();
+        }
+    } else if (this->hasParent()) {
+        predecessor = this->getParent();
+    }
 
-	return predecessor;
+    return predecessor;
 }
 
 
@@ -1036,21 +1036,21 @@ DataUnit* DataUnit::getPredecessor() const {
  */
 DataUnit* DataUnit::getSuccessor() const {
 
-	DataUnit* successor = (DataUnit*)0;
+    DataUnit* successor = (DataUnit*)0;
 
-	if (this->hasChild()) {
-		successor = this->getChild_();
-	} else if (this->hasNext()) {
-		successor = this->getNext();
-	} else {
-		DataUnit* parent = this->getParent();
-		while (parent != 0 && successor == 0) {
-			successor = parent->getNext();
-			parent = parent->getParent();
-		}
-	}
+    if (this->hasChild()) {
+        successor = this->getChild_();
+    } else if (this->hasNext()) {
+        successor = this->getNext();
+    } else {
+        DataUnit* parent = this->getParent();
+        while (parent != 0 && successor == 0) {
+            successor = parent->getNext();
+            parent = parent->getParent();
+        }
+    }
 
-	return successor;
+    return successor;
 }
 
 
@@ -1059,9 +1059,9 @@ DataUnit* DataUnit::getSuccessor() const {
  */
 DataUnit* DataUnit::getPrevious(const string& filterExpr) const {
 
-	string name;
-	string staticType;
-	string dynamicType;
+    string name;
+    string staticType;
+    string dynamicType;
 
     if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return (DataUnit*)0;
@@ -1093,9 +1093,9 @@ DataUnit* DataUnit::getPrevious(const string& name,
  */
 DataUnit* DataUnit::getNext(const string& filterExpr) const {
 
-	string name;
-	string staticType;
-	string dynamicType;
+    string name;
+    string staticType;
+    string dynamicType;
 
     if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
         return (DataUnit*)0;
@@ -1128,21 +1128,21 @@ DataUnit* DataUnit::getNext(const string& name,
 /* TODO: rename to "getNeighborByRelIndexConst" */
 DataUnit* DataUnit::getByRelIndexConst(int index) const {
 
-	bool stop = false;
-	DataUnit* unit = (DataUnit*)0;
+    bool stop = false;
+    DataUnit* unit = (DataUnit*)0;
 
-	while (index != 0 && !stop) {
-		if (index > 0) {
-			unit = (unit != 0 ? unit : this)->getNext();
-			index--;
-		} else {
-			unit = (unit != 0 ? unit : this)->getPrevious();
-			index++;
-		}
-		stop = (unit == 0);
-	}
+    while (index != 0 && !stop) {
+        if (index > 0) {
+            unit = (unit != 0 ? unit : this)->getNext();
+            index--;
+        } else {
+            unit = (unit != 0 ? unit : this)->getPrevious();
+            index++;
+        }
+        stop = (unit == 0);
+    }
 
-	return unit;
+    return unit;
 }
 
 
@@ -1152,20 +1152,20 @@ DataUnit* DataUnit::getByRelIndexConst(int index) const {
 /* TODO: rename to "getNeighborByRelBC" */
 DataUnit* DataUnit::getByRelBC(BC& bc) {
 
-	bool stop = false;
-	DataUnit* unit = this;
+    bool stop = false;
+    DataUnit* unit = this;
 
-	while (unit != 0 && !stop) {
-		BC len = unit->getLength();
-		if (bc >= len) {
-			bc -= len;
-			unit = unit->getNext();
-		} else {
-			stop = true;
-		}
-	}
+    while (unit != 0 && !stop) {
+        BC len = unit->getLength();
+        if (bc >= len) {
+            bc -= len;
+            unit = unit->getNext();
+        } else {
+            stop = true;
+        }
+    }
 
-	return unit;
+    return unit;
 }
 
 
@@ -1175,8 +1175,8 @@ DataUnit* DataUnit::getByRelBC(BC& bc) {
 /* TODO: rename to "getNeighborByConstRelBC" */
 DataUnit* DataUnit::getByConstBC(const BC& bc) {
 
-	BC bc_ = bc;
-	return this->getByRelBC(bc_);
+    BC bc_ = bc;
+    return this->getByRelBC(bc_);
 }
 
 
@@ -1193,25 +1193,25 @@ DataUnit* DataUnit::getByPath(const string& path) {
      *      "**"    One or more arbitrary nodes
      */
 
-	bool vRoot = false;
-	DataUnit* du = this;
-	size_t len = path.length();
+    bool vRoot = false;
+    DataUnit* du = this;
+    size_t len = path.length();
 
-	size_t pos = path.find_first_not_of("/");
-	if (pos != string::npos) {
-		if (pos >= 1) {
+    size_t pos = path.find_first_not_of("/");
+    if (pos != string::npos) {
+        if (pos >= 1) {
             // >>> There are leading slashes >>>
-			du = this->getRoot();
-		}
-		if (pos > 1) {
+            du = this->getRoot();
+        }
+        if (pos > 1) {
             // Start from virtual root whenever
             // there is more than one leading slash
-			vRoot = true;
-		}
-	}
+            vRoot = true;
+        }
+    }
 
-	string primaryRef;
-	while (du != 0 && pos != string::npos && pos < len) {
+    string primaryRef;
+    while (du != 0 && pos != string::npos && pos < len) {
 
         // The input path is split according to the following scheme:
         //
@@ -1227,15 +1227,15 @@ DataUnit* DataUnit::getByPath(const string& path) {
         //   "//primary-reference/secondary/path"
 
         // Find the first slash *after* the primary reference
-		size_t pos2 = path.find_first_of("/", pos);
+        size_t pos2 = path.find_first_of("/", pos);
 
-		if (pos2 != string::npos) {
-			primaryRef = path.substr(pos, pos2 - pos);
-			pos2 = path.find_first_not_of("/", pos2);
-		} else {
-			primaryRef = path.substr(pos);
-			pos2 = len;
-		}
+        if (pos2 != string::npos) {
+            primaryRef = path.substr(pos, pos2 - pos);
+            pos2 = path.find_first_not_of("/", pos2);
+        } else {
+            primaryRef = path.substr(pos);
+            pos2 = len;
+        }
 
         // Check for typed wildcard
         bool isTypedWildcard = false;
@@ -1252,19 +1252,19 @@ DataUnit* DataUnit::getByPath(const string& path) {
         bool isWildcard = isTypedWildcard || (!isTypedWildcard &&
                 (primaryRef == "*" || primaryRef == "**"));
 
-		if (primaryRef == "..") {
-			if (vRoot) {
-				/* A virtual root does not have a parent */
-				du = (DataUnit*)0;
-			} else if (du->hasParent()) {
-				du = du->getParent();
-				vRoot = false;
-			} else {
+        if (primaryRef == "..") {
+            if (vRoot) {
+                /* A virtual root does not have a parent */
+                du = (DataUnit*)0;
+            } else if (du->hasParent()) {
+                du = du->getParent();
+                vRoot = false;
+            } else {
                 // >>> We are at the root of the GMT >>>
-				vRoot = true;
-			}
+                vRoot = true;
+            }
 
-		} else if (isWildcard) {
+        } else if (isWildcard) {
 
             string secondaryPath = path.substr(pos2);
 
@@ -1335,24 +1335,24 @@ DataUnit* DataUnit::getByPath(const string& path) {
                 } while (primaryRef == "**" && du == 0);
             }
 
-		} else if (primaryRef != ".") {
-			if (vRoot) {
-				du = du->getNeighbourByName(primaryRef);
-				vRoot = false;
-			} else {
-				du = du->getChildByName(primaryRef);
-			}
-		}
+        } else if (primaryRef != ".") {
+            if (vRoot) {
+                du = du->getSibling(primaryRef);
+                vRoot = false;
+            } else {
+                du = du->getChildByName(primaryRef);
+            }
+        }
 
         pos = pos2;
-	}
+    }
 
-	if (vRoot) {
-		// Cannot return a pointer to the virtual root
-		du = (DataUnit*)0;
-	}
+    if (vRoot) {
+        // Cannot return a pointer to the virtual root
+        du = (DataUnit*)0;
+    }
 
-	return du;
+    return du;
 }
 
 
@@ -1361,11 +1361,11 @@ DataUnit* DataUnit::getByPath(const string& path) {
  */
 DataUnit* DataUnit::getChild(size_t index) const {
 
-	DataUnit* child = this->getChild_();
-	if (child != 0 && index != 0) {
-		child = child->getByRelIndex(index);
-	}
-	return child;
+    DataUnit* child = this->getChild_();
+    if (child != 0 && index != 0) {
+        child = child->getByRelIndex(index);
+    }
+    return child;
 }
 
 
@@ -1374,11 +1374,11 @@ DataUnit* DataUnit::getChild(size_t index) const {
  */
 DataUnit* DataUnit::getChildTail() const {
 
-	DataUnit* tail = this->getChild_();
-	if (tail != 0) {
-		tail = tail->getTail();
-	}
-	return tail;
+    DataUnit* tail = this->getChild_();
+    if (tail != 0) {
+        tail = tail->getTail();
+    }
+    return tail;
 }
 
 
@@ -1387,11 +1387,11 @@ DataUnit* DataUnit::getChildTail() const {
  */
 DataUnit* DataUnit::getChildByBC(BC& bc) const {
 
-	DataUnit* child = this->getChild_();
-	if (child != 0) {
-		child = child->getByRelBC(bc);
-	}
-	return child;
+    DataUnit* child = this->getChild_();
+    if (child != 0) {
+        child = child->getByRelBC(bc);
+    }
+    return child;
 }
 
 
@@ -1400,113 +1400,155 @@ DataUnit* DataUnit::getChildByBC(BC& bc) const {
  */
 DataUnit* DataUnit::getChildByConstBC(const BC& bc) const {
 
-	DataUnit* child = this->getChild_();
-	if (child != 0) {
-		child = child->getByConstBC(bc);
-	}
-	return child;
+    DataUnit* child = this->getChild_();
+    if (child != 0) {
+        child = child->getByConstBC(bc);
+    }
+    return child;
 }
 
 
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getNeighbourByName(const string& name) {
+DataUnit* DataUnit::getSibling(const string& indexedFilterExpr, bool relative) {
 
-	/*
-	 * 	[[<type>]:[<dynamic type>]%][<name>][~<index>]
-	 */
+    /*
+     *  An indexed filter expression looks as follows:
+     *
+     *      [filter-expression][~index]     (indexed filter expression)
+     *
+     *  or (detailling the filter expression part)
+     *  
+     *      [[static_type][:dynamic_type]%][name][~index]
+     *
+     *
+     *            [head]                              [me]              [tail]
+     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
+     *            |   |----|   |----|   |----|   |----|   |----|   |----|   |
+     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
+     *
+     *  absolute: (~0)      ~1       ~2       ~3       ~4       ~5       ~6
+     *  absolute:  ~-7      ~-6      ~-5      ~-4      ~-3      ~-2     (~-1)
+     *  relative:  ~-4      ~-3      ~-2      ~-1     (~0)      ~1       ~2
+     *
+     *
+     *
+     *  This becomes somewhat involved if the reference node does not match the 
+     *  filter expression.
+     *
+     *  [head]                              [me]                       [tail]
+     *  +---+             +---+                      +---+    +---+    +---+
+     *  |   |----|###|----|   |----|###|----|###|----|   |----|   |----|   |
+     *  +---+             +---+                      +---+    +---+    +---+
+     *
+     *
+     *
+     *
+     *
+     */
 
-	/* this index starts at 1 as 0 is used to indicate an error */
-	size_t index = 1;
+    // Don't accept empty indexed filter expression input
+    if (indexedFilterExpr.empty()) {
+        return (DataUnit*)0;
+    }
 
-	/* true if search starts from tail rathern than head */
-	bool fromTail = false;
+    // True if the filter expression has to match exactly one node
+    bool unique = false;
 
-	/* name of (static) type */
-	string statType;
+    // True if the search is to be performed backwards
+    bool backwards = false;
 
-	/* name of dynamic type */
-	string dynType;
+    // The absolute index (note that, internally, counting starts at 1)
+    size_t index = 1;
 
-	/* part of the name string before potential index part */
-	string namePart(name);
+    // Filter expression without index
+    string filterExpr(indexedFilterExpr);
 
-	/* extract type part */
-	size_t pos = name.find_first_of("%");
-	if (pos != string::npos) {
-		/* copy type name part */
-		statType = name.substr(0, pos);
-		namePart.erase(0, pos + 1);
+    // Split off and parse index 
+    size_t pos = indexedFilterExpr.find_first_of("~");
+    if (pos != string::npos) {
+        // >>> Has index >>>
 
-		/* split static and dynamic types */
-		size_t pos = statType.find_first_of(":");
-		if (pos != string::npos) {
-			/* copy dynamic type part */
-			dynType = statType.substr(pos + 1);
-			statType.erase(pos);
-		}
-	}
+        // Check for uniqueness request (index = "!")
+        if (pos == indexedFilterExpr.length() - 2
+                && indexedFilterExpr[pos + 1] == '!') {
+            unique = true;
+        } else {
 
-	/* extract name and index part (the latter as integer) */
-	pos = namePart.find_first_of("~");
-	if (pos != string::npos) {
-		/* detect negative indices */
-		if (pos != string::npos && pos < namePart.length() - 1
-				&& namePart[pos + 1] == '-') {
-			fromTail = true;
-			++pos;
-		}
-		/* check whether a decimal number (and nothing else follows) */
-		if (pos == namePart.length() - 1 ||
-				namePart.find_first_not_of(
-						"0123456789", pos + 1) != string::npos) {
-			index = 0;
-		} else {
-			if (fromTail) {
-				index = atoi(namePart.substr(pos + 1).c_str());
-				namePart.erase(pos - 1);
-			} else {
-				index = atoi(namePart.substr(pos + 1).c_str()) + 1;
-				namePart.erase(pos);
-			}
-		}
-	}
+            // Check for negative index
+            if (pos < indexedFilterExpr.length() - 1 
+                    && indexedFilterExpr[pos + 1] == '-') {
+                // >>> Index is negative >>>
+                backwards = true;
+                ++pos;
+            }
 
-	/* pointer to the neighbour requested */
-	DataUnit* neighbour = (DataUnit*)0;
+            // Sanitize index: must be a decimal number and nothing else
+            if (pos == indexedFilterExpr.length() - 1 ||
+                    indexedFilterExpr.find_first_not_of(
+                            "0123456789", pos + 1) != string::npos) {
+                // >>> Invalid index >>>
+                return (DataUnit*)0;
+            }
 
-	/* scan the chain starting from ... */
-	DataUnit* unit;
-	if (fromTail) {
-		/* ... the tail  */
-		unit = this->getTail();
-	} else {
-		/* ... the head  */
-		unit = this->getHead();
-	}
-	while (unit != 0 && index > 0 && neighbour == 0) {
-		bool match =
-				/* matching (static) type */
-				(statType.empty() || statType == unit->getStaticType()) &&
-				/* matching (dynamic) type */
-				(dynType.empty() || dynType == unit->getDynamicType()) &&
-				/* matching name*/
-				(namePart.empty() || namePart == unit->getName());
+            // Extract index as positive number and strip off from filter
+            // expression
+            index = atoi(indexedFilterExpr.substr(pos + 1).c_str());
+            if (backwards) {
+                if (relative) {
+                    index += 1;
+                }
+                filterExpr.erase(pos - 1);
+            } else {
+                index += + 1;
+                filterExpr.erase(pos);
+            }
+        }
+    }
 
-		if (!match || --index > 0) {
-			if (fromTail) {
-				unit = unit->getPrevious();
-			} else {
-				unit = unit->getNext();
-			}
-		} else {
-			/* <unit> is the one we were looking for */
-			neighbour = unit;
-		}
-	}
+    // Split filter expression into its components
+    string name;
+    string staticType;
+    string dynamicType;
+    if (!splitFilterExpression(filterExpr, name, staticType, dynamicType)) {
+        // >>> Invalid filter expression >>>
+        return (DataUnit*)0;
+    }
 
-	return neighbour;
+    // Will become a pointer to the requested sibling node
+    DataUnit* sibling = (DataUnit*)0;
+
+    // Where to start the search?
+    DataUnit* node = this;
+    if (!relative) {
+        if (backwards) {
+            // Start at the tail of the sibling chain
+            node = this->getTail();
+        } else {
+            // Start at the head of the sibling chain
+            node = this->getHead();
+        }
+    }
+
+    // Do the search by hopping from node to node
+    while (node != 0 && index > 0 && sibling == 0) {
+        if (!node-> matchesFilter(name, staticType, dynamicType)
+                || --index > 0) {
+            // >>> Not yet done (either the node does not match the filter
+            // expression or the index has (still) not reached zero >>>
+            if (backwards) {
+                node = node->getPrevious();
+            } else {
+                node = node->getNext();
+            }
+        } else {
+            // <node> holds a pointer to the node we were looking for
+            sibling = node;
+        }
+    }
+
+    return sibling;
 }
 
 
@@ -1515,11 +1557,11 @@ DataUnit* DataUnit::getNeighbourByName(const string& name) {
  */
 DataUnit* DataUnit::getChildByName(const string& name) {
 
-	DataUnit* child = this->getChild_();
-	if (child != 0) {
-		child = child->getNeighbourByName(name);
-	}
-	return child;
+    DataUnit* child = this->getChild_();
+    if (child != 0) {
+        child = child->getSibling(name);
+    }
+    return child;
 }
 
 
@@ -1528,13 +1570,13 @@ DataUnit* DataUnit::getChildByName(const string& name) {
  */
 size_t DataUnit::getNElements() const {
 
-	size_t n = this->getIndexOffset() + 1;
-	DataUnit* unit = this->getNext();
-	while (unit != 0) {
-		++n;
-		unit = unit->getNext();
-	}
-	return n;
+    size_t n = this->getIndexOffset() + 1;
+    DataUnit* unit = this->getNext();
+    while (unit != 0) {
+        ++n;
+        unit = unit->getNext();
+    }
+    return n;
 }
 
 
@@ -1543,12 +1585,12 @@ size_t DataUnit::getNElements() const {
  */
 size_t DataUnit::getNChildren() const {
 
-	size_t n = 0;
-	DataUnit* child = this->getChild_();
-	if (child != 0) {
-		n = child->getNElements();
-	}
-	return n;
+    size_t n = 0;
+    DataUnit* child = this->getChild_();
+    if (child != 0) {
+        n = child->getNElements();
+    }
+    return n;
 }
 
 
@@ -1557,17 +1599,17 @@ size_t DataUnit::getNChildren() const {
  */
 size_t DataUnit::getNNodes() const {
 
-	/* this node counts as one */
-	size_t n = 1;
+    /* this node counts as one */
+    size_t n = 1;
 
-	/* sum the number of nodes from children */
-	DataUnit* child = this->getChild_();
-	while (child != 0) {
-		n += child->getNNodes();
-		child = child->getNext();
-	}
+    /* sum the number of nodes from children */
+    DataUnit* child = this->getChild_();
+    while (child != 0) {
+        n += child->getNNodes();
+        child = child->getNext();
+    }
 
-	return n;
+    return n;
 }
 
 
@@ -1593,7 +1635,7 @@ void DataUnit::reset_() {
  */
 string DataUnit::getInfo_() const {
 
-	return "";
+    return "";
 }
 
 
@@ -1602,7 +1644,7 @@ string DataUnit::getInfo_() const {
  */
 bool DataUnit::repair_(bool recursive) {
 
-	return true;
+    return true;
 }
 
 
@@ -1611,7 +1653,7 @@ bool DataUnit::repair_(bool recursive) {
  */
 string DataUnit::getDynamicType_() const {
 
-	return "";
+    return "";
 }
 
 
@@ -1620,18 +1662,18 @@ string DataUnit::getDynamicType_() const {
  */
 bool DataUnit::isDescendantOf(const DataUnit& dataUnit) const {
 
-	bool isDescendant = false;
+    bool isDescendant = false;
 
-	const DataUnit* parent = this->getParent();
-	while (!isDescendant && parent != 0) {
-		if (parent == &dataUnit) {
-			isDescendant = true;
-		} else {
-			parent = parent->getParent();
-		}
-	}
+    const DataUnit* parent = this->getParent();
+    while (!isDescendant && parent != 0) {
+        if (parent == &dataUnit) {
+            isDescendant = true;
+        } else {
+            parent = parent->getParent();
+        }
+    }
 
-	return isDescendant;
+    return isDescendant;
 }
 
 
@@ -1640,16 +1682,16 @@ bool DataUnit::isDescendantOf(const DataUnit& dataUnit) const {
  */
 size_t DataUnit::getDistanceToRoot() const {
 
-	size_t dist = 0;
+    size_t dist = 0;
 
-	const DataUnit* du = this;
-	while (du != 0) {
-		++dist;
-		du = du->getParent();
-	}
+    const DataUnit* du = this;
+    while (du != 0) {
+        ++dist;
+        du = du->getParent();
+    }
 
-	/* we always count one too much */
-	return dist - 1;
+    /* we always count one too much */
+    return dist - 1;
 }
 
 
@@ -1658,15 +1700,15 @@ size_t DataUnit::getDistanceToRoot() const {
  */
 BC DataUnit::getDataOffset() const {
 
-	BC offset = 0;
+    BC offset = 0;
 
-	DataUnit* unit = this->getPrevious();
-	while (unit != 0) {
-		offset += unit->getLength();
-		unit = unit->getPrevious();
-	}
+    DataUnit* unit = this->getPrevious();
+    while (unit != 0) {
+        offset += unit->getLength();
+        unit = unit->getPrevious();
+    }
 
-	return offset;
+    return offset;
 }
 
 
@@ -1675,61 +1717,61 @@ BC DataUnit::getDataOffset() const {
  */
 bool DataUnit::checkConsistency(bool printErrors) const {
 
-	bool consistent = true;
+    bool consistent = true;
 
-	if (this->hasNext()) {
+    if (this->hasNext()) {
 
-		DataUnit* next = this->getNext();
-		/* the previous element of the next element needs to be this one */
-		if (next->getPrevious() != this) {
-			consistent = false;
-			if (printErrors) {
-				cout << String::format("Broken right back-reference of '%s'\n",
-						this->getChainedRefName().c_str());
-			}
-		}
+        DataUnit* next = this->getNext();
+        /* the previous element of the next element needs to be this one */
+        if (next->getPrevious() != this) {
+            consistent = false;
+            if (printErrors) {
+                cout << String::format("Broken right back-reference of '%s'\n",
+                        this->getChainedRefName().c_str());
+            }
+        }
 
-		/* the parent of the next element needs to be the parent of this one */
-		if (consistent && next->getParent() != this->getParent()) {
-			consistent = false;
-			if (printErrors) {
-				cout << String::format("Mismatching parents in '%s'\n",
-						this->getChainedRefName().c_str());
-			}
-		}
+        /* the parent of the next element needs to be the parent of this one */
+        if (consistent && next->getParent() != this->getParent()) {
+            consistent = false;
+            if (printErrors) {
+                cout << String::format("Mismatching parents in '%s'\n",
+                        this->getChainedRefName().c_str());
+            }
+        }
 
-		/* the next elements needs to be consistent */
-		consistent &= next->checkConsistency();
-	}
+        /* the next elements needs to be consistent */
+        consistent &= next->checkConsistency();
+    }
 
-	DataUnit* child = this->getChild();
-	if (consistent && child != 0) {
+    DataUnit* child = this->getChild();
+    if (consistent && child != 0) {
 
-		/* the previous element of the child element needs to be non-existent */
-		if (child->hasPrevious()) {
-			consistent = false;
-			if (printErrors) {
-				cout << String::format("Backward reference of child of '%s'\n",
-						this->getChainedRefName().c_str());
-			}
-		}
+        /* the previous element of the child element needs to be non-existent */
+        if (child->hasPrevious()) {
+            consistent = false;
+            if (printErrors) {
+                cout << String::format("Backward reference of child of '%s'\n",
+                        this->getChainedRefName().c_str());
+            }
+        }
 
-		/* the parent of the child element needs to be this one */
-		if (consistent && child->getParent() != this) {
-			consistent = false;
-			if (printErrors) {
-				cout << String::format(
-						"Broken parent reference from '%s' to '%s'\n",
-						child->getChainedRefName().c_str(),
-						this->getChainedRefName().c_str());
-			}
-		}
+        /* the parent of the child element needs to be this one */
+        if (consistent && child->getParent() != this) {
+            consistent = false;
+            if (printErrors) {
+                cout << String::format(
+                        "Broken parent reference from '%s' to '%s'\n",
+                        child->getChainedRefName().c_str(),
+                        this->getChainedRefName().c_str());
+            }
+        }
 
-		/* the child element needs to be consistent */
-		consistent &= child->checkConsistency();
-	}
+        /* the child element needs to be consistent */
+        consistent &= child->checkConsistency();
+    }
 
-	return consistent;
+    return consistent;
 }
 
 

@@ -37,6 +37,19 @@ int main(int argc , char *argv[]) {
 
     node.print();
 
+    
+    cout << endl << endl;
+
+
+    DataUnit* testnode = node.getByPath("**/ClientHello_extensions%/_V/~2");
+
+    testnode->getSibling("~-2", true)->print();
+    testnode->getSibling("~-1", true)->print();
+    testnode->getSibling("~0", true)->print();
+    testnode->getSibling("~1", true)->print();
+    testnode->getSibling("~2", true)->print();
+
+
 	return EXIT_SUCCESS;
 }
 

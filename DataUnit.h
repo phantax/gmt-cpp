@@ -665,6 +665,13 @@ public:
 	DataUnit* getChildByName(const std::string& name);
 
 
+	/* --- getSibling(...) ------------------------------------------------- */
+
+	// TODO: Add description
+	DataUnit* getSibling(const std::string& indexedFilterExpr,
+            bool relative = false);
+
+
 	/* --- Further navigation methods -------------------------------------- */
 
 	// TODO: Add description
@@ -702,11 +709,6 @@ public:
 
 	/* Return pointer to data unit referred to by relative path <path> */
 	DataUnit* getByPath(const std::string& path);
-
-
-
-	// TODO: Add description
-	DataUnit* getNeighbourByName(const std::string& name);
 
 
 
