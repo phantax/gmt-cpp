@@ -1015,6 +1015,11 @@ DataUnit* DataUnit::getTail() {
  */
 DataUnit* DataUnit::getPredecessor() const {
 
+    /*
+     * getPredecessor() can be defined as 'const' because it can never return
+     * a pointer to the callee node ('this').
+     */
+
     DataUnit* predecessor = (DataUnit*)0;
 
     if (this->hasPrevious()) {
@@ -1035,6 +1040,11 @@ DataUnit* DataUnit::getPredecessor() const {
  * ___________________________________________________________________________
  */
 DataUnit* DataUnit::getSuccessor() const {
+
+    /*
+     * getPredecessor() can be defined as 'const' because it can never return
+     * a pointer to the callee node ('this').
+     */
 
     DataUnit* successor = (DataUnit*)0;
 
@@ -1411,42 +1421,7 @@ DataUnit* DataUnit::getChildByConstBC(const BC& bc) const {
 /*
  * ___________________________________________________________________________
  */
-DataUnit* DataUnit::getSibling(const string& indexedFilterExpr, bool relative) {
-
-    /*
-     *  An indexed filter expression looks as follows:
-     *
-     *      [filter-expression][~index]     (indexed filter expression)
-     *
-     *  or (detailling the filter expression part)
-     *  
-     *      [[static_type][:dynamic_type]%][name][~index]
-     *
-     *
-     *            [head]                              [me]              [tail]
-     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
-     *            |   |----|   |----|   |----|   |----|   |----|   |----|   |
-     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
-     *
-     *  absolute: (~0)      ~1       ~2       ~3       ~4       ~5       ~6
-     *  absolute:  ~-7      ~-6      ~-5      ~-4      ~-3      ~-2     (~-1)
-     *  relative:  ~-4      ~-3      ~-2      ~-1     (~0)      ~1       ~2
-     *
-     *
-     *
-     *  This becomes somewhat involved if the reference node does not match the 
-     *  filter expression.
-     *
-     *  [head]                              [me]                       [tail]
-     *  +---+             +---+                      +---+    +---+    +---+
-     *  |   |----|###|----|   |----|###|----|###|----|   |----|   |----|   |
-     *  +---+             +---+                      +---+    +---+    +---+
-     *
-     *
-     *
-     *
-     *
-     */
+DataUnit* DataUnit::getSibling(const string& indexedFilterExpr) {
 
     // Don't accept empty indexed filter expression input
     if (indexedFilterExpr.empty()) {
@@ -1459,8 +1434,11 @@ DataUnit* DataUnit::getSibling(const string& indexedFilterExpr, bool relative) {
     // True if the search is to be performed backwards
     bool backwards = false;
 
+    // True if indexing is relative to 'this' node
+    bool relative = false;
+
     // The absolute index (note that, internally, counting starts at 1)
-    size_t index = 1;
+    int index = 1;
 
     // Filter expression without index
     string filterExpr(indexedFilterExpr);
@@ -1468,41 +1446,48 @@ DataUnit* DataUnit::getSibling(const string& indexedFilterExpr, bool relative) {
     // Split off and parse index 
     size_t pos = indexedFilterExpr.find_first_of("~");
     if (pos != string::npos) {
-        // >>> Has index >>>
+        // >>> Filter expression is indexed (i.e., has an index) >>>
 
-        // Check for uniqueness request (index = "!")
+        // Check for uniqueness request (index == "!")
         if (pos == indexedFilterExpr.length() - 2
                 && indexedFilterExpr[pos + 1] == '!') {
+
             unique = true;
+
         } else {
 
+            size_t numOffset = 0;
+
+            // Check for relative indexing
+            if (pos < indexedFilterExpr.length() - 1
+                    && indexedFilterExpr[pos + 1] == 'r') {
+                // >>> Indexing is relative to  >>>
+                relative = true;
+                numOffset += 1;
+            }
+
             // Check for negative index
-            if (pos < indexedFilterExpr.length() - 1 
-                    && indexedFilterExpr[pos + 1] == '-') {
+            if ((pos + numOffset) < indexedFilterExpr.length() - 1 
+                    && indexedFilterExpr[pos + numOffset + 1] == '-') {
                 // >>> Index is negative >>>
                 backwards = true;
-                ++pos;
+                numOffset += 1;
             }
 
             // Sanitize index: must be a decimal number and nothing else
-            if (pos == indexedFilterExpr.length() - 1 ||
-                    indexedFilterExpr.find_first_not_of(
-                            "0123456789", pos + 1) != string::npos) {
+            if ((pos + numOffset) == indexedFilterExpr.length() - 1 ||
+                    indexedFilterExpr.find_first_not_of("0123456789",
+                            pos + numOffset + 1) != string::npos) {
                 // >>> Invalid index >>>
                 return (DataUnit*)0;
             }
 
             // Extract index as positive number and strip off from filter
             // expression
-            index = atoi(indexedFilterExpr.substr(pos + 1).c_str());
-            if (backwards) {
-                if (relative) {
-                    index += 1;
-                }
-                filterExpr.erase(pos - 1);
-            } else {
-                index += + 1;
-                filterExpr.erase(pos);
+            filterExpr.erase(pos);
+            index = atoi(indexedFilterExpr.substr(pos + numOffset + 1).c_str());
+            if (!backwards || relative) {
+                index += 1;
             }
         }
     }

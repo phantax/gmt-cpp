@@ -388,7 +388,7 @@ public:
 
 
 	/* ---------------------------------------------------------------------
-	 *  Attributes of GMT nodes, filter expressions
+	 *  Attributes of GMT nodes, (indexed) filter expressions, ...
 	 * --------------------------------------------------------------------- */
 
     /*  GMT nodes (a.k.a. data units) can have several inherent attributes for
@@ -427,6 +427,12 @@ public:
      *                                   "TLSExtension" with a dynamic type
      *                                   "heartbeat")
      *
+     *  A filter expression can be augmented by an integer index to become an
+     *  indexed filter expression:
+     *  
+     *      "[filter-expression][~index]"     (indexed filter expression)
+     *
+     *  
      */
 
 
@@ -513,11 +519,12 @@ public:
 
 
 	/* ---------------------------------------------------------------------
-	 *  Navigating with a GMT
+	 *  Navigating within a GMT
 	 * ---------------------------------------------------------------------
      *  
      *  Conceptually, Generic Message Trees (GMTs) are trees, as the name 
-     *  suggests. However, internally, the nodes are linked in a different way:
+     *  suggests. However, internally, the nodes are linked in a different way.
+     *  The following figure illustrates the actual links between the nodes:
      *
      * +-------+                                              +-------+
      * |   1   |<-------------------------------------------->|   9   |---...
@@ -541,21 +548,21 @@ public:
      *                |   5   |<---->|   6   |
      *                +-------+      +-------+
      *
-     *  Here, for instance, node [1] is the root node and nodes [2] and [7] 
+     *  Here, for instance, node [1] is the root node and nodes [2] and [7] are
      *  the root's child nodes. That is, instead of nodes holding a list of
      *  child nodes, nodes just hold a pointer to their first child node. Note
      *  that child nodes are only possible for non-leaf, that is, 'internal'
      *  nodes. Except for the root, nodes also have a link to their respective
      *  parent node. Additionally, each node can have a 'previous' node and a
      *  'next' node, forming a doubly-linked list of sibling nodes. The full
-     *  picture of a single node's links within a GMT than looks as follows
+     *  picture of a single node's links within a GMT then looks as follows
      *
      *                                    ^  parent  
      *                                    |
      *                              +------------+
      *              previous <------|  GMT node  |------> next
      *                              +------------+
-     *                                    ?  [for non-leaf nodes]  
+     *                                    |  [existent only for non-leaf nodes]  
      *                                    v  first child
      *  
      *  The corresponding accessor methods are
@@ -583,20 +590,6 @@ public:
      *  -> getPrevious(name, staticType, dynamicType)
      *  -> getNext(filterExpr)
      *  -> getNext(name, staticType, dynamicType)
-     *
-     *  You may also navigate as if you were linearly walking along an unrolled
-     *  GMT. Unrolling a GMT means listing its nodes in the order they are
-     *  treated if the GMT is seralized. The corresponding navigation methods
-     *  are:
-     *
-     *  -> getPredecessor()     // Return pointer to predecessor in unrolled GMT
-     *  -> getSuccessor()       // Return pointer to successor in unrolled GMT
-     *
-     *
-     *
-     *  
-     *
-     *
      */
 
 
@@ -611,7 +604,7 @@ public:
     
 	/* --- getPrevious(...) ------------------------------------------------ */
 
-	/* Return pointer to data unit preceeding this data unit in the chain */
+	/* Return pointer to data unit preceding this data unit in the chain */
 	inline DataUnit* getPrevious() const {
 
 		return previous_;
@@ -641,7 +634,7 @@ public:
             const std::string& staticType, const std::string& dynamicType) const;
 
 
-	/* --- getChild(...) --------------------------------------------------- */
+	/* --- getChild(...) and alike ----------------------------------------- */
 
 	// TODO: Add description
 	inline DataUnit* getChild() const {
@@ -665,20 +658,7 @@ public:
 	DataUnit* getChildByName(const std::string& name);
 
 
-	/* --- getSibling(...) ------------------------------------------------- */
-
-	// TODO: Add description
-	DataUnit* getSibling(const std::string& indexedFilterExpr,
-            bool relative = false);
-
-
-	/* --- Further navigation methods -------------------------------------- */
-
-	// TODO: Add description
-	DataUnit* getPredecessor() const;
-
-	// TODO: Add description
-	DataUnit* getSuccessor() const;
+	/* --- getRoot(), getHead(), getTail()---------------------------------- */
 
 	// TODO: Add description
 	DataUnit* getRoot();
@@ -688,6 +668,81 @@ public:
 
 	// TODO: Add description
 	DataUnit* getTail();
+
+
+
+    /*
+     *  As a generic version of the former methods, getSibling(...) can be used.
+     *  It accepts an index filter expression to return a pointer to the nth
+     *  matching node from the chain the callee node is part of. n essentially 
+     *  is given by the index. 
+     *
+     *  -> getSibling(indexedFilterExpr)
+     *
+     *  In the indexed filter expression, both the filter expression and the
+     *  index part are optional, but at least one of them must be present (an
+     *  empty indexed filter expression is not accepted).
+     *
+     *  Indexing can be treated in an absolute and in a relative manner; the
+     *  mode to use is selected via the <relative> parameter.
+     *
+     *
+     *            [head]                              [this]            [tail]
+     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
+     *            |   |----|   |----|   |----|   |----|   |----|   |----|   |
+     *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
+     *
+     *  absolute: (~0)      ~1       ~2       ~3       ~4       ~5       ~6
+     *             ~-7      ~-6      ~-5      ~-4      ~-3      ~-2     (~-1)
+     *  relative:  ~-4      ~-3      ~-2      ~-1     (~0)      ~1       ~2
+     *
+     *  Here, round brackets mark the reference nodes: the head (index zero) in 
+     *  case of forward-counting absolute indexing, the tail (index -1) in case 
+     *  of backward-counting absolute indexing, and 'this' node, i.e., the
+     *  callee node, (index zero) in case of relative indexing.
+     *
+     *  The picture becomes somewhat more involved if the reference node does
+     *  not match the filter expression.
+     *
+     *            [head]                              [this]           [tail]
+     *            +---+             +---+                      +---+    +---+
+     *            |   |----|###|----|   |----|###|----|###|----|   |----|   |
+     *            +---+             +---+                      +---+    +---+
+     *
+     *  absolute: (~0)               ~1                         ~2       ~3
+     *             ~-4               ~-3                        ~-2     (~-1)
+     *  relative:  ~-2               ~-1                        ~1       ~2
+     *
+     *  
+     *
+     *
+     */
+
+	/* --- getSibling(...) ------------------------------------------------- */
+
+	// TODO: Add description
+	DataUnit* getSibling(const std::string& indexedFilterExpr);
+
+
+    /*
+     *  You may also navigate as if you were linearly walking along an unrolled
+     *  GMT. Unrolling a GMT means listing its nodes in the order they are
+     *  treated if the GMT is seralized. The corresponding navigation methods
+     *  are:
+     *
+     *  -> getPredecessor()     // Return pointer to predecessor in unrolled GMT
+     *  -> getSuccessor()       // Return pointer to successor in unrolled GMT
+     *
+     */
+
+	/* --- getPredecessor(), getSuccessor() -------------------------------- */
+
+	// TODO: Add description
+	DataUnit* getPredecessor() const;
+
+	// TODO: Add description
+	DataUnit* getSuccessor() const;
+
 
 
 

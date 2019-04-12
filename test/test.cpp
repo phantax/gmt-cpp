@@ -14,6 +14,7 @@ using std::string;
 
 int main(int argc , char *argv[]) {
 
+    // Hex representation of a TLS ClientHello message generated with OpenSSL.
     string hex = "0x"
             "160301012c01000128030340c70e243001b96d8c63687738696432d3e6f949"
 			"107aabad8450cdffd6a266e4000092c030c02cc028c024c014c00a00a3009f"
@@ -26,11 +27,11 @@ int main(int argc , char *argv[]) {
 			"000100020003000f0010001100230000000d0020001e060106020603050105"
 			"020503040104020403030103020303020102020203000f000101";
 
+    
 	VectorBuffer buf;
 
     buf.appendFromString(hex);
-
-
+    
     TVector_MainType node;
 
     node.dissector().dissectFromBuffer(buf);
@@ -43,11 +44,37 @@ int main(int argc , char *argv[]) {
 
     DataUnit* testnode = node.getByPath("**/ClientHello_extensions%/_V/~2");
 
-    testnode->getSibling("~-2", true)->print();
-    testnode->getSibling("~-1", true)->print();
-    testnode->getSibling("~0", true)->print();
-    testnode->getSibling("~1", true)->print();
-    testnode->getSibling("~2", true)->print();
+    cout << "~-2" << endl;
+    testnode->getSibling("~-2")->print();
+
+    cout << "~-1" << endl;
+    testnode->getSibling("~-1")->print();
+
+    cout << "~0" << endl;
+    testnode->getSibling("~0")->print();
+
+    cout << "~1" << endl;
+    testnode->getSibling("~1")->print();
+
+    cout << "~2" << endl;
+    testnode->getSibling("~2")->print();
+
+
+    cout << "~r-2" << endl;
+    testnode->getSibling("~r-2")->print();
+
+    cout << "~r-1" << endl;
+    testnode->getSibling("~r-1")->print();
+
+    cout << "~r0" << endl;
+    testnode->getSibling("~r0")->print();
+
+    cout << "~r1" << endl;
+    testnode->getSibling("~r1")->print();
+
+    cout << "~r2" << endl;
+    testnode->getSibling("~r2")->print();
+
 
 
 	return EXIT_SUCCESS;
