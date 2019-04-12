@@ -404,7 +404,8 @@ public:
      *  The static type (2) cannot be empty. 
      *
      *  The name attribute (1) of a node can be changed at runtime. The other
-     *  two attributes, that is (2) and(3), are read-only. Accessor methods are:
+     *  two attributes, that is (2) and (3), are read-only. Accessor methods
+     *  are:
      *
      *  -> getName()            // Read name attribute
      *  -> setName(name)        // Write name attribute
@@ -417,7 +418,7 @@ public:
      *
      *      "[[static_type][:dynamic_type]%][name]"    (filter expression)
      *
-     *  It matches a node if the the considered node's attributes are identical
+     *  It matches a node if the considered node's attributes are identical
      *  to those given in the filter expression. If an attribute is omitted in
      *  the filter expression it essentially acts as a wildcard. Examples are:
      *
@@ -427,11 +428,17 @@ public:
      *                                   "TLSExtension" with a dynamic type
      *                                   "heartbeat")
      *
-     *  A filter expression can be augmented by an integer index to become an
-     *  indexed filter expression:
-     *  
-     *      "[filter-expression][~index]"     (indexed filter expression)
+     *  Whether a GMT nodes passes a certain filter expression or not can be
+     *  checked with the following function(s):
      *
+     *  -> matchesFilter(filterExpression)
+     *  -> matchesFilter(name, staticType, dynamicType)
+     *
+     *  where the second one is different from the first one just in that it
+     *  wants the filter expression's components already split.
+     *
+     *  The true benefit of filter expressions becomes evident if mechanisms for
+     *  navigating a GMT are considered.
      *  
      */
 
@@ -580,7 +587,7 @@ public:
      *  -> getHead()    // Return pointer to first node in sibling chain
      *  -> getTail()    // Return pointer to last node in sibling chain
      *
-     *  There are more sophisticated means and methods for navigation a GMT.
+     *  There are more sophisticated means and methods for navigation a GMT. 
      *  For instance, both the getPrevious() and the getNext() method also
      *  accept a filter expression (or its individual parts) to move along
      *  a chain of sibilings (back or forth) and return the first node on the
@@ -590,6 +597,25 @@ public:
      *  -> getPrevious(name, staticType, dynamicType)
      *  -> getNext(filterExpr)
      *  -> getNext(name, staticType, dynamicType)
+     *
+     *  This becomes even more powerful if so-called indexed filter expressions
+     *  are used. An indexed filter expression looks as follows:
+     *  
+     *      "[filter-expression][~[r]index]"     (indexed filter expression)
+     *
+     *  The index allows to move along a chain of sibling nodes and not stop at
+     *  the first node matching the filter expression but only at the nth, where
+     *  n is essentially given by the index.
+
+
+     *  By default, counting starts at the
+     *  first node in the chain (the head) with index 0, or at the last node in
+     *  the chain (the tail) with index -1 for negative indices. With an "r"
+     *  (for _r_elative) added right before the index, counting starts at the 
+     *  callee node with index 0 and move towards the tail for positive indices
+     *  and towards the head for negative indices.
+
+
      */
 
 
@@ -673,7 +699,7 @@ public:
 
     /*
      *  As a generic version of the former methods, getSibling(...) can be used.
-     *  It accepts an index filter expression to return a pointer to the nth
+     *  It accepts an indexed filter expression to return a pointer to the nth
      *  matching node from the chain the callee node is part of. n essentially 
      *  is given by the index. 
      *
@@ -692,14 +718,15 @@ public:
      *            |   |----|   |----|   |----|   |----|   |----|   |----|   |
      *            +---+    +---+    +---+    +---+    +---+    +---+    +---+
      *
-     *  absolute: (~0)      ~1       ~2       ~3       ~4       ~5       ~6
-     *             ~-7      ~-6      ~-5      ~-4      ~-3      ~-2     (~-1)
-     *  relative:  ~-4      ~-3      ~-2      ~-1     (~0)      ~1       ~2
+     *  absolute:  ~0       ~1       ~2       ~3       ~4       ~5       ~6
+     *             ~-7      ~-6      ~-5      ~-4      ~-3      ~-2      ~-1 
+     *  relative:  ~r-4     ~r-3     ~r-2     ~r-1     ~r0      ~r1      ~r2
      *
-     *  Here, round brackets mark the reference nodes: the head (index zero) in 
-     *  case of forward-counting absolute indexing, the tail (index -1) in case 
-     *  of backward-counting absolute indexing, and 'this' node, i.e., the
-     *  callee node, (index zero) in case of relative indexing.
+     *
+     *
+     *
+     *
+     *
      *
      *  The picture becomes somewhat more involved if the reference node does
      *  not match the filter expression.

@@ -7,6 +7,7 @@
 #include "tls-with1.3.h"
 
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
@@ -29,52 +30,56 @@ int main(int argc , char *argv[]) {
 
     
 	VectorBuffer buf;
-
     buf.appendFromString(hex);
-    
     TVector_MainType node;
-
     node.dissector().dissectFromBuffer(buf);
 
     node.print();
-
-    
     cout << endl << endl;
 
 
-    DataUnit* testnode = node.getByPath("**/ClientHello_extensions%/_V/~2");
+    for (;;) {
 
-    cout << "~-2" << endl;
-    testnode->getSibling("~-2")->print();
+        cout << "Enter query, (q) to quit and (p) to print the whole GMT: ";
 
-    cout << "~-1" << endl;
-    testnode->getSibling("~-1")->print();
+        string query;
+        cin >> query;
 
-    cout << "~0" << endl;
-    testnode->getSibling("~0")->print();
+        if (query == "(q)") {
 
-    cout << "~1" << endl;
-    testnode->getSibling("~1")->print();
+            return 0;
 
-    cout << "~2" << endl;
-    testnode->getSibling("~2")->print();
+        } else if (query == "(p)") {
+
+            node.print();
+            cout << endl << endl;
+            continue;
+
+        }
+
+        cout << "Query was: " << query << endl;
 
 
-    cout << "~r-2" << endl;
-    testnode->getSibling("~r-2")->print();
+        DataUnit* testnode = node.getByPath(query);
 
-    cout << "~r-1" << endl;
-    testnode->getSibling("~r-1")->print();
+        if (testnode) {
 
-    cout << "~r0" << endl;
-    testnode->getSibling("~r0")->print();
+            testnode->print();
+            cout << endl << endl;
 
-    cout << "~r1" << endl;
-    testnode->getSibling("~r1")->print();
+        } else {
 
-    cout << "~r2" << endl;
-    testnode->getSibling("~r2")->print();
+            cout << "... unknown!" << endl;
+            cout << endl << endl;
 
+        }
+
+    }
+
+    return 0;
+
+
+    //    **/ClientHello_extensions%/_V/~2
 
 
 	return EXIT_SUCCESS;

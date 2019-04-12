@@ -1201,6 +1201,11 @@ DataUnit* DataUnit::getByPath(const string& path) {
      *      ".."    Parent node
      *      "*"     One arbitrary node
      *      "**"    One or more arbitrary nodes
+     *      
+     *  TODO: Explain typed wildcard "~*"
+     *  TODO: Add feature navigate through the chain of the current node
+     *        (getSibling) rather than through the chain of the current node's
+     *        children.
      */
 
     bool vRoot = false;
@@ -1638,6 +1643,7 @@ bool DataUnit::repair_(bool recursive) {
  */
 string DataUnit::getDynamicType_() const {
 
+    // An abstract GMT node does not have a dynamic type
     return "";
 }
 
